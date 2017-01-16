@@ -15,7 +15,7 @@ typedef enum {//枚举请求地址种类
     DaySensorURLType
     
 }NITPostUrlType;
-
+     
 @interface SealAFNetworking : NSObject
 /** AFN请求管理者 */
 @property (nonatomic, strong) AFHTTPSessionManager *manager;
