@@ -471,7 +471,7 @@
                                     <constraint firstAttribute="height" constant="50" id="9Lk-cH-9kl"/>
                                 </constraints>
                                 <segments>
-                                    <segment title="生活リズムの一覧詳細"/>
+                                    <segment title="生活リズムの一覧"/>
                                     <segment title="活動の集計"/>
                                 </segments>
                                 <color key="tintColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
