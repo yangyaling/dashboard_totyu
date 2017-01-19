@@ -9,8 +9,12 @@
 #import "LifeRhythmVC.h"
 #import "LifeRhythmVCModel.h"
 #import "LifeRhythmVCCell.h"
+#import "LifeRhythmDetailMainVC.h"
 
 @interface LifeRhythmVC ()
+{
+    NSInteger btntag;
+}
 /**
  *  总数组
  */
@@ -44,25 +48,44 @@ static NSString * const reuseIdentifier = @"ChartCollectionViewCell";
 
 -(void)loadNewData{
     
-    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    NSString *userid1 = [NITUserDefaults objectForKey:@"userid1"];
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    parameters[@"nowdate"] = [[NSDate date]needDateStatus:HaveHMSType];
-    parameters[@"userid1"] = userid1;
-    parameters[@"userid0"] = _model.userid0;
-    parameters[@"deviceclass"] = @"1";
-    [[SealAFNetworking NIT] PostWithUrl:DaySensorURLType parameters:parameters mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
-        NSArray *tmpArr = [LifeRhythmVCModel mj_objectArrayWithKeyValuesArray:[tmpDic valueForKey:@"deviceinfo"]];
-        if (tmpArr.count == 0) {
-            [_ZworksDataArray removeAllObjects];
-            [MBProgressHUD showError:@"データがありません" toView:self.view];
-        }else{
-            _ZworksDataArray = [NSMutableArray arrayWithArray:tmpArr];
-            [_chartTableView reloadData];
-        }
-    }defeats:^(NSError *defeats){
-    }];
+//    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+//    NSString *userid1 = [NITUserDefaults objectForKey:@"userid1"];
+//    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+//    parameters[@"nowdate"] = [[NSDate date]needDateStatus:HaveHMSType];
+//    parameters[@"userid1"] = userid1;
+//    parameters[@"userid0"] = _model.userid0;
+//    parameters[@"deviceclass"] = @"1";
+//    [[SealAFNetworking NIT] PostWithUrl:DaySensorURLType parameters:parameters mjheader:nil superview:self.view success:^(id success){
+//        NSDictionary *tmpDic = success;
+//        NSArray *tmpArr = [LifeRhythmVCModel mj_objectArrayWithKeyValuesArray:[tmpDic valueForKey:@"deviceinfo"]];
+//        if (tmpArr.count == 0) {
+//            [_ZworksDataArray removeAllObjects];
+//            [MBProgressHUD showError:@"データがありません" toView:self.view];
+//        }else{
+//            _ZworksDataArray = [NSMutableArray arrayWithArray:tmpArr];
+//            [_chartTableView reloadData];
+//        }
+//    }defeats:^(NSError *defeats){
+//    }];
+}
+- (IBAction)DetailPush:(UIButton*)sender {
+    btntag = sender.tag;
+    [self performSegueWithIdentifier:@"ShowChartDetailPush" sender:self];
+    
+}
+
+//segue跳转
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([segue.identifier isEqualToString:@"ShowChartDetailPush"]){
+        
+        LifeRhythmDetailMainVC *vc = segue.destinationViewController;
+
+        NSArray *weekarray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
+        NSArray *timearray = @[@"10月17日",@"10月18日",@"10月19日",@"10月20日",@"10月21日",@"10月22日",@"10月23日"];
+        vc.model = _model;
+        vc.weektime = [NSString stringWithFormat:@"%@(%@)",timearray[btntag],weekarray[btntag]];
+    }
 }
 
 #pragma mark UITableView delegate and dataSource

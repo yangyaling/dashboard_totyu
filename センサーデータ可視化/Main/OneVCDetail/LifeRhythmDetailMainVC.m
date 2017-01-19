@@ -1,30 +1,36 @@
 //
-//  MainCVC.m
+//  LifeRhythmDetailMainVC.m
 //  センサーデータ可視化
 //
-//  Created by totyu3 on 17/1/11.
+//  Created by totyu3 on 17/1/19.
 //  Copyright © 2017年 LGF. All rights reserved.
 //
 
-#import "MainCVC.h"
-#import "OneVC.h"
+#import "LifeRhythmDetailMainVC.h"
+#import "LifeRhythmDetailVC.h"
 
-@interface MainCVC ()
+@interface LifeRhythmDetailMainVC ()
+
 /**
  *  总数组
  */
 @property (strong, nonatomic) NSMutableArray *controlarr;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *SelectViewSeg;
 @end
 
-@implementation MainCVC
+@implementation LifeRhythmDetailMainVC
 
-static NSString * const reuseIdentifier = @"MainCVCell";
+static NSString * const reuseIdentifier = @"OneVCDetailMainCellTwo";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
     
     [self.collectionView layoutIfNeeded];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+}
+-(void)loadNewData{
+    
 }
 
 -(NSMutableArray *)controlarr{
@@ -32,13 +38,14 @@ static NSString * const reuseIdentifier = @"MainCVCell";
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
         UIStoryboard *lifesb = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        OneVC *onevc = [lifesb instantiateViewControllerWithIdentifier:@"OneVCSB"];
+        LifeRhythmDetailVC *onevc = [lifesb instantiateViewControllerWithIdentifier:@"OneLifeRhythmDetailVCSB"];
+        onevc.model = _model;
+        onevc.weektime = _weektime;
         [self addChildViewController:onevc];
         [_controlarr addObject:onevc];
-        UIViewController *twovc = [lifesb instantiateViewControllerWithIdentifier:@"TwoVCSB"];
+        UIViewController *twovc = [lifesb instantiateViewControllerWithIdentifier:@"TwoLifeRhythmDetailVCSB"];
         [self addChildViewController:twovc];
         [_controlarr addObject:twovc];
-        
     }
     return _controlarr;
 }
@@ -46,19 +53,16 @@ static NSString * const reuseIdentifier = @"MainCVCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIFont *font = [UIFont boldSystemFontOfSize:30.0f];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
+                                                           forKey:NSFontAttributeName];
+    [_SelectViewSeg setTitleTextAttributes:attributes
+                                  forState:UIControlStateNormal];
+    
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     [self collectionViewsets];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:1 inSection:0]  atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
-}
-
-- (IBAction)getNewData:(id)sender {
-
-    [NITNotificationCenter removeObserver:self name:@"loadnewdata" object:nil];
-    //创建一个消息对象
-    NSNotification * notice = [NSNotification notificationWithName:@"loadnewdata" object:nil userInfo:nil];
-    //发送消息
-    [NITNotificationCenter postNotification:notice];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -68,7 +72,7 @@ static NSString * const reuseIdentifier = @"MainCVCell";
 -(void)collectionViewsets{
     
     UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
-    CGSize itemSize = CGSizeMake(NITScreenW,NITScreenH-185);
+    CGSize itemSize = CGSizeMake(NITScreenW,NITScreenH-64);
     layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
     layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     layout.itemSize = itemSize;

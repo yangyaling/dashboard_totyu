@@ -1,4 +1,4 @@
-//
+  //
 //  OneVCDetailMain.m
 //  センサーデータ可視化
 //
@@ -14,6 +14,7 @@
  *  总数组
  */
 @property (strong, nonatomic) NSMutableArray *controlarr;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *SelectViewSeg;
 @end
 
@@ -25,8 +26,6 @@ static NSString * const reuseIdentifier = @"OneVCDetailMainCell";
     
     [self.collectionView layoutIfNeeded];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
-    
-    
 }
 
 -(void)loadNewData{
@@ -51,6 +50,12 @@ static NSString * const reuseIdentifier = @"OneVCDetailMainCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    UIFont *font = [UIFont boldSystemFontOfSize:30.0f];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
+                                                           forKey:NSFontAttributeName];
+    [_SelectViewSeg setTitleTextAttributes:attributes
+                               forState:UIControlStateNormal];
     
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     

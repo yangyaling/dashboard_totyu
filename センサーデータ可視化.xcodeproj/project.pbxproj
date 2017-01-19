@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E920E9BB1E28799B0044D559 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E920E9AE1E28799B0044D559 /* LoginVC.m */; };
-		E920E9BC1E28799B0044D559 /* MainCVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E920E9B11E28799B0044D559 /* MainCVC.m */; };
 		E920E9BD1E28799B0044D559 /* TopTabVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E920E9B31E28799B0044D559 /* TopTabVC.m */; };
 		E920E9C71E287B470044D559 /* OneVCDetailMain.m in Sources */ = {isa = PBXBuildFile; fileRef = E920E9C61E287B470044D559 /* OneVCDetailMain.m */; };
 		E920E9CA1E287B6F0044D559 /* LifeRhythmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E920E9C91E287B6F0044D559 /* LifeRhythmVC.m */; };
@@ -72,7 +71,6 @@
 		E97A4C761E0B74820083643E /* NSDate+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = E97A4C731E0B74820083643E /* NSDate+Extension.m */; };
 		E97A4C771E0B74820083643E /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = E97A4C751E0B74820083643E /* UIView+Extension.m */; };
 		E97A4C7A1E0B79310083643E /* AlertLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E97A4C791E0B79310083643E /* AlertLabel.m */; };
-		E9D446C61E2892F80078AABC /* OneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D446C21E2892F80078AABC /* OneVC.m */; };
 		E9D446C71E2892F80078AABC /* OneVCCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D446C41E2892F80078AABC /* OneVCCell.m */; };
 		E9D446C81E2892F80078AABC /* UserTestData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9D446C51E2892F80078AABC /* UserTestData.plist */; };
 		E9D446CC1E28932A0078AABC /* OneVCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D446CB1E28932A0078AABC /* OneVCModel.m */; };
@@ -103,6 +101,8 @@
 		E9D447291E2C61BF0078AABC /* PSNormalRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D447151E2C61BF0078AABC /* PSNormalRefreshHeader.m */; };
 		E9D4472A1E2C61BF0078AABC /* UIScrollView+PSRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D447171E2C61BF0078AABC /* UIScrollView+PSRefresh.m */; };
 		E9D4472B1E2C61BF0078AABC /* UIView+PSFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D447191E2C61BF0078AABC /* UIView+PSFrame.m */; };
+		E9E65E701E30496F00609F28 /* LifeRhythmDetailMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E65E6F1E30496F00609F28 /* LifeRhythmDetailMainVC.m */; };
+		E9E65E731E3049D200609F28 /* LifeRhythmDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E65E721E3049D200609F28 /* LifeRhythmDetailVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,8 +125,6 @@
 /* Begin PBXFileReference section */
 		E920E9AD1E28799B0044D559 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
 		E920E9AE1E28799B0044D559 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
-		E920E9B01E28799B0044D559 /* MainCVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainCVC.h; sourceTree = "<group>"; };
-		E920E9B11E28799B0044D559 /* MainCVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCVC.m; sourceTree = "<group>"; };
 		E920E9B21E28799B0044D559 /* TopTabVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopTabVC.h; sourceTree = "<group>"; };
 		E920E9B31E28799B0044D559 /* TopTabVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopTabVC.m; sourceTree = "<group>"; };
 		E920E9C51E287B470044D559 /* OneVCDetailMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneVCDetailMain.h; sourceTree = "<group>"; };
@@ -256,8 +254,6 @@
 		E97A4C751E0B74820083643E /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		E97A4C781E0B79310083643E /* AlertLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertLabel.h; sourceTree = "<group>"; };
 		E97A4C791E0B79310083643E /* AlertLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertLabel.m; sourceTree = "<group>"; };
-		E9D446C11E2892F80078AABC /* OneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneVC.h; sourceTree = "<group>"; };
-		E9D446C21E2892F80078AABC /* OneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneVC.m; sourceTree = "<group>"; };
 		E9D446C31E2892F80078AABC /* OneVCCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OneVCCell.h; sourceTree = "<group>"; };
 		E9D446C41E2892F80078AABC /* OneVCCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OneVCCell.m; sourceTree = "<group>"; };
 		E9D446C51E2892F80078AABC /* UserTestData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserTestData.plist; sourceTree = "<group>"; };
@@ -322,6 +318,10 @@
 		E9D447171E2C61BF0078AABC /* UIScrollView+PSRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+PSRefresh.m"; sourceTree = "<group>"; };
 		E9D447181E2C61BF0078AABC /* UIView+PSFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PSFrame.h"; sourceTree = "<group>"; };
 		E9D447191E2C61BF0078AABC /* UIView+PSFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PSFrame.m"; sourceTree = "<group>"; };
+		E9E65E6E1E30496F00609F28 /* LifeRhythmDetailMainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LifeRhythmDetailMainVC.h; sourceTree = "<group>"; };
+		E9E65E6F1E30496F00609F28 /* LifeRhythmDetailMainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LifeRhythmDetailMainVC.m; sourceTree = "<group>"; };
+		E9E65E711E3049D200609F28 /* LifeRhythmDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LifeRhythmDetailVC.h; sourceTree = "<group>"; };
+		E9E65E721E3049D200609F28 /* LifeRhythmDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LifeRhythmDetailVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,8 +361,6 @@
 		E920E9AF1E28799B0044D559 /* MainVC */ = {
 			isa = PBXGroup;
 			children = (
-				E920E9B01E28799B0044D559 /* MainCVC.h */,
-				E920E9B11E28799B0044D559 /* MainCVC.m */,
 				E920E9B21E28799B0044D559 /* TopTabVC.h */,
 				E920E9B31E28799B0044D559 /* TopTabVC.m */,
 			);
@@ -395,6 +393,10 @@
 				E920E9C91E287B6F0044D559 /* LifeRhythmVC.m */,
 				E9D446D41E28CD640078AABC /* LifeRhythmVCCell.h */,
 				E9D446D51E28CD640078AABC /* LifeRhythmVCCell.m */,
+				E9E65E6E1E30496F00609F28 /* LifeRhythmDetailMainVC.h */,
+				E9E65E6F1E30496F00609F28 /* LifeRhythmDetailMainVC.m */,
+				E9E65E711E3049D200609F28 /* LifeRhythmDetailVC.h */,
+				E9E65E721E3049D200609F28 /* LifeRhythmDetailVC.m */,
 			);
 			name = OneVCDetail;
 			path = "センサーデータ可視化/Main/OneVCDetail";
@@ -571,7 +573,6 @@
 			children = (
 				E97A4BB71E07FA370083643E /* センサーデータ可視化 */,
 				E97A4BD11E07FA370083643E /* センサーデータ可視化Tests */,
-				E97A4BDC1E07FA370083643E /* センサーデータ可視化UITests */,
 				E97A4BB61E07FA370083643E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -601,6 +602,7 @@
 		E97A4BB81E07FA370083643E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E97A4BDC1E07FA370083643E /* センサーデータ可視化UITests */,
 				E97A4BC41E07FA370083643E /* Assets.xcassets */,
 				E97A4C5A1E0A7E560083643E /* AppDelegate.h */,
 				E97A4C5B1E0A7E560083643E /* AppDelegate.m */,
@@ -628,7 +630,7 @@
 				E97A4BDF1E07FA370083643E /* Info.plist */,
 			);
 			path = "センサーデータ可視化UITests";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		E97A4BEB1E07FFDB0083643E /* Main */ = {
 			isa = PBXGroup;
@@ -709,8 +711,6 @@
 			isa = PBXGroup;
 			children = (
 				E9D446C91E2893100078AABC /* OneVCModel */,
-				E9D446C11E2892F80078AABC /* OneVC.h */,
-				E9D446C21E2892F80078AABC /* OneVC.m */,
 				E9D446C31E2892F80078AABC /* OneVCCell.h */,
 				E9D446C41E2892F80078AABC /* OneVCCell.m */,
 				E9D446C51E2892F80078AABC /* UserTestData.plist */,
@@ -991,7 +991,6 @@
 				E92E9CF61E25EED200DE0B09 /* NSString+MJExtension.m in Sources */,
 				E92E9D171E25F9EB00DE0B09 /* WKAvoidKeyboardViewController.m in Sources */,
 				E97A4C041E08D8EC0083643E /* AlertBar.m in Sources */,
-				E920E9BC1E28799B0044D559 /* MainCVC.m in Sources */,
 				E92E9CFF1E25EED200DE0B09 /* MJRefreshBackGifFooter.m in Sources */,
 				E9D446E41E28CE960078AABC /* UUBar.m in Sources */,
 				E9D447281E2C61BF0078AABC /* PSGifRefreshHeader.m in Sources */,
@@ -1002,7 +1001,6 @@
 				E9D446D31E28CA870078AABC /* LifeRhythmVCModel.m in Sources */,
 				E9D446CC1E28932A0078AABC /* OneVCModel.m in Sources */,
 				E97A4C6B1E0A81780083643E /* FishTabTitleViewCell.m in Sources */,
-				E9D446C61E2892F80078AABC /* OneVC.m in Sources */,
 				E9D446E61E28CE960078AABC /* UUChart.m in Sources */,
 				E92E9CF71E25EED200DE0B09 /* MJRefreshAutoFooter.m in Sources */,
 				E9D4471F1E2C61BF0078AABC /* MASViewAttribute.m in Sources */,
@@ -1029,6 +1027,7 @@
 				E97A4C5C1E0A7E560083643E /* AppDelegate.m in Sources */,
 				E92E9CE61E25EED200DE0B09 /* AFURLRequestSerialization.m in Sources */,
 				E9D447291E2C61BF0078AABC /* PSNormalRefreshHeader.m in Sources */,
+				E9E65E701E30496F00609F28 /* LifeRhythmDetailMainVC.m in Sources */,
 				E9D446E81E28CE960078AABC /* UULineChart.m in Sources */,
 				E9D446E91E28CE960078AABC /* UUColor.m in Sources */,
 				E9D447271E2C61BF0078AABC /* PSNormalRefreshFooter.m in Sources */,
@@ -1045,6 +1044,7 @@
 				E92E9CE51E25EED200DE0B09 /* AFSecurityPolicy.m in Sources */,
 				E97A4C691E0A81780083643E /* FishTabPagerController.m in Sources */,
 				E9D446C71E2892F80078AABC /* OneVCCell.m in Sources */,
+				E9E65E731E3049D200609F28 /* LifeRhythmDetailVC.m in Sources */,
 				E97A4C681E0A81780083643E /* FishPagerController.m in Sources */,
 				E9D4471E1E2C61BF0078AABC /* MASLayoutConstraint.m in Sources */,
 				E92E9CFE1E25EED200DE0B09 /* MJRefreshAutoStateFooter.m in Sources */,

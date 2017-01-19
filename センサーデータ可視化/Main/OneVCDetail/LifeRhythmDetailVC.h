@@ -1,14 +1,15 @@
 //
-//  OneVCDetailMain.h
+//  LifeRhythmDetailVC.h
 //  センサーデータ可視化
 //
-//  Created by totyu3 on 17/1/13.
+//  Created by totyu3 on 17/1/19.
 //  Copyright © 2017年 LGF. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "OneVCModel.h"
 
-@interface OneVCDetailMain : UIViewController
+@interface LifeRhythmDetailVC : UIViewController
 @property (nonatomic, strong) OneVCModel *model;
+@property (nonatomic, copy) NSString *weektime;
 @end
