@@ -1,0 +1,73 @@
+//
+//  LGFPaoMaView.m
+//  センサーデータ可視化
+//
+//  Created by totyu3 on 16/12/21.
+//  Copyright © 2016年 LGF. All rights reserved.
+//
+
+#define xisnshigeshu 3
+
+#define PaoMaLabelFrame CGRectMake(self.width/xisnshigeshu*i+5, 5, self.width/xisnshigeshu-10, self.height-10)
+
+#define currentFrame CGRectMake(0, 0, self.width/xisnshigeshu*titlearray.count, self.height)
+
+#import "LGFPaoMaView.h"
+@interface LGFPaoMaView ()
+{
+    //单次循环的时间
+    NSInteger time;
+    
+    //展示的内容视图
+    UIView *OneShowContentView;
+}
+@end
+@implementation LGFPaoMaView
+
+- (instancetype)initWithFrame:(CGRect)frame withTitleArray:(NSArray *)titlearray
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        
+        self.clipsToBounds = YES;
+        
+        time = titlearray.count*2;
+
+        OneShowContentView = [[UIView alloc]initWithFrame:currentFrame];
+        for (int i = 0; i<titlearray.count; i++) {
+            UILabel *lab = [[UILabel alloc]initWithFrame:PaoMaLabelFrame];
+            NSDictionary *alertdict = titlearray[i];
+            lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate needDateStatus:hhmmssType date:[NSDate needDateStrStatus:HaveHMSType datestr:alertdict[@"registdate"]]]];
+            [self labelset:lab];
+            [OneShowContentView addSubview:lab];
+        }
+        [self addSubview: OneShowContentView];
+        
+        if (OneShowContentView.width>self.width) {
+            [self doAnimation];
+        }
+    }
+    return self;
+}
+
+-(void)labelset:(UILabel*)lab{
+    
+    lab.textAlignment = NSTextAlignmentCenter;
+    lab.textColor = [UIColor whiteColor];
+    lab.font = [UIFont boldSystemFontOfSize:20];
+    lab.backgroundColor = [UIColor orangeColor];
+    lab.opaque = YES;
+}
+
+- (void)doAnimation{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:time];
+    [UIView setAnimationRepeatCount:LONG_MAX];
+    [UIView setAnimationRepeatAutoreverses:YES];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    OneShowContentView.transform = CGAffineTransformMakeTranslation(-(OneShowContentView.width-self.width), 0);
+    [UIView commitAnimations];
+}
+
+@end
