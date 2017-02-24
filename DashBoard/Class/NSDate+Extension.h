@@ -17,6 +17,7 @@ typedef enum {
     DDType,
     YYYYType,
     hhmmssType,
+    JapanHMDType,
     HMSType
     
 }DateStatus;

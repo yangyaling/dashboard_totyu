@@ -28,6 +28,8 @@
         fmt.dateFormat = @"yyyy";
     }else if(type == hhmmssType){
         fmt.dateFormat = @"HH:mm:ss";
+    }else if(type == JapanHMDType){
+        fmt.dateFormat = @"yyyy年MM月dd日";
     }
     return [fmt stringFromDate:date];
 }

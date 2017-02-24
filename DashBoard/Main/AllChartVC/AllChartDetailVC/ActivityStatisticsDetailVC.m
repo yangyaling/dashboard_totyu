@@ -92,7 +92,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    _TimeFrameTitle.text = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage];
+    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
     [_PageCV reloadData];
     [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }
@@ -117,7 +117,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay);
-    _TimeFrameTitle.text = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage];
+    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
 }
 
 - (void)dealloc{
