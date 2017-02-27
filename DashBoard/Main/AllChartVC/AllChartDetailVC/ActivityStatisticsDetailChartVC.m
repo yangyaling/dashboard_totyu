@@ -17,7 +17,7 @@
 
 @interface ActivityStatisticsDetailChartVC ()
 @property (weak, nonatomic) IBOutlet NITCollectionView *ChartCV;
-@property (nonatomic, strong) NSArray *DataArray;
+@property (nonatomic, strong) NSMutableArray *DataArray;
 @end
 
 @implementation ActivityStatisticsDetailChartVC
@@ -49,8 +49,18 @@
         NSDictionary *tmpDic = success;
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
-            _DataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
+            _DataArray = [NSMutableArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
             [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count];
+            
+            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+            NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+            
+            [_DataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([[removedict objectForKey:obj[@"actionid"]]isEqualToString:@"1"]) {
+                    [_DataArray removeObjectAtIndex:[_DataArray indexOfObject:obj]];
+                }
+            }];
+            
             [_ChartCV reloadData];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);

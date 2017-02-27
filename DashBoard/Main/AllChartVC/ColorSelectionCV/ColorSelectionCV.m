@@ -20,6 +20,7 @@
 -(void)setDataDict:(NSDictionary *)DataDict{
     
     _DataDict = DataDict;
+    
     [self.Device setTitle:DataDict[@"actionname"] forState:UIControlStateNormal];
     self.ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
 }
@@ -32,7 +33,7 @@
         self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
         
         [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
-        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:@{@"1":@"123"}]];
+        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
         
         if ([tmpDic[@"code"] isEqualToString:@"501"]) {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -45,9 +46,34 @@
     
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
-- (IBAction)DeviceSelectButton:(id)sender {
+- (IBAction)DeviceSelectButton:(UIButton*)sender {
+    
+
     
     
+    
+    
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSData *data = [SystemUserDict objectForKey:@"systemactioninfo"];
+    NSMutableArray *actioninfoarr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    NSMutableDictionary *removedict = [NSMutableDictionary dictionary];
+    
+    [actioninfoarr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj[@"actionid"] isEqualToString:_DataDict[@"actionid"]]) {
+            [removedict setValue:@"0" forKey:obj[@"actionid"]];
+        }else{
+            [removedict setValue:@"1" forKey:obj[@"actionid"]];
+        }
+    }];
+    
+    
+    
+    [SystemUserDict setObject:removedict forKey:@"actionremove"];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+        
+    
+    [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
 }
 
 @end
@@ -116,6 +142,9 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
                 for (NSDictionary *dict in UserListArray) {
                     if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]]&&[dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
                         actioninfoarray = dict[@"actioninfo"];
+
+                        [SystemUserDict setObject:[NSKeyedArchiver archivedDataWithRootObject:actioninfoarray] forKey:@"systemactioninfo"];
+                        [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
                     }
                 }
                 

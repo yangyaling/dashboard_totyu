@@ -30,6 +30,9 @@
 
 -(void)drawRect:(CGRect)rect{
     
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+
     //获得处理的上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
     //设置线条粗细宽度
@@ -37,21 +40,25 @@
     if (_BarType==1) {
         if (_BarDataArray) {
             for (NSDictionary *DataDict in _BarDataArray) {
-                NSArray *DataArray = DataDict[@"data"];
-                for (int i = 0; i<DataArray.count; i++) {
-                    [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
-                    CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
-                    CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
-                    CGContextDrawPath(context, kCGPathStroke);
+                if (![[removedict objectForKey:DataDict[@"actionid"]]isEqualToString:@"1"]) {
+                    NSArray *DataArray = DataDict[@"data"];
+                    for (int i = 0; i<DataArray.count; i++) {
+                        [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
+                        CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
+                        CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
+                        CGContextDrawPath(context, kCGPathStroke);
+                    }
                 }
             }
         }else{
-            [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
-            NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
-            for (int i = 0; i<array.count; i++) {
-                CGContextMoveToPoint(context, BarX(array[i]), self.height);
-                CGContextAddLineToPoint(context, BarX(array[i]), 0);
-                CGContextDrawPath(context, kCGPathStroke);
+            if (![[removedict objectForKey:_BarDataDict[@"actionid"]]isEqualToString:@"1"]) {
+                [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
+                NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
+                for (int i = 0; i<array.count; i++) {
+                    CGContextMoveToPoint(context, BarX(array[i]), self.height);
+                    CGContextAddLineToPoint(context, BarX(array[i]), 0);
+                    CGContextDrawPath(context, kCGPathStroke);
+                }
             }
         }
     }else{

@@ -51,7 +51,11 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     [_ColorSelectionCV layoutIfNeeded];
+    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    [SystemUserDict removeObjectForKey:@"actionremove"];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    
     _DarkColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"darkcolor"]];
     _LightColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"lightcolor"]];
     _FloorTitle.text = SystemUserDict[@"displayname"];

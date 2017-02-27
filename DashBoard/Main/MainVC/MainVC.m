@@ -134,7 +134,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
             NSDictionary *alertdict = alertarray[alertarray.count-1];
             UIAlertController *testalert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
             [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                
             }]];
             [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
             
@@ -145,6 +144,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }];
 }
 - (void)LoadNoticeCount{
+    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSLog(@"%@",SystemUserDict);
     NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};

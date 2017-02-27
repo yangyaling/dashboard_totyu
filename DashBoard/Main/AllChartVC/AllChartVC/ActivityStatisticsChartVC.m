@@ -20,7 +20,7 @@
 @interface ActivityStatisticsChartVC ()
 @property (weak, nonatomic) IBOutlet NITCollectionView *ChartCV;
 @property (weak, nonatomic) IBOutlet LGFChartNumBar *ChartNum;
-@property (nonatomic, strong) NSArray *DataArray;
+@property (nonatomic, strong) NSMutableArray *DataArray;
 @end
 
 @implementation ActivityStatisticsChartVC
@@ -53,8 +53,17 @@
         NSDictionary *tmpDic = success;
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _ChartNum.YValuesArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"dates"]];
-            _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
+            _DataArray = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
             [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count];
+            
+            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+            NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+            [_DataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if ([[removedict objectForKey:obj[@"actionid"]]isEqualToString:@"1"]) {
+                    [_DataArray removeObjectAtIndex:[_DataArray indexOfObject:obj]];
+                }
+            }];
+            
             [_ChartCV reloadData];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);

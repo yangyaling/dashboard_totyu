@@ -58,6 +58,9 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    [SystemUserDict removeObjectForKey:@"actionremove"];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
