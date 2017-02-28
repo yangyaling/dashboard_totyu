@@ -1083,13 +1083,6 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="......" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y24-ZL-4If">
-                                        <rect key="frame" x="20" y="72" width="482" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
@@ -1158,7 +1151,6 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ColorSelectionCV" destination="cXf-h1-GTv" id="zcJ-pI-8gf"/>
-                        <outlet property="DateLabel" destination="Y24-ZL-4If" id="DRE-tU-cyX"/>
                         <outlet property="FloorTitle" destination="7zw-e0-Xni" id="nlL-ZS-lBU"/>
                         <outlet property="PageCV" destination="hm6-oX-54U" id="Gfv-XB-qGN"/>
                         <outlet property="RoomTitle" destination="BEK-qM-6G1" id="l3V-SG-ZdQ"/>
