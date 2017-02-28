@@ -10,4 +10,5 @@
 
 @interface LifeRhythmDetailVC : UIViewController
 @property (nonatomic, copy) NSString *SelectDay;
+@property (nonatomic, copy) NSString  *Weekdate;
 @end

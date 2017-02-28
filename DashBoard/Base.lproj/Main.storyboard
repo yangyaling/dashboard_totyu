@@ -1060,10 +1060,10 @@
                                                                 <action selector="ColorSelectButton:" destination="65w-2o-a9a" eventType="touchUpInside" id="b0h-aH-kbQ"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
+                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
                                                             <rect key="frame" x="32" y="0.0" width="168" height="26"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -1083,6 +1083,13 @@
                                             <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="......" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y24-ZL-4If">
+                                        <rect key="frame" x="20" y="72" width="482" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <userDefinedRuntimeAttributes>
@@ -1151,6 +1158,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="ColorSelectionCV" destination="cXf-h1-GTv" id="zcJ-pI-8gf"/>
+                        <outlet property="DateLabel" destination="Y24-ZL-4If" id="DRE-tU-cyX"/>
                         <outlet property="FloorTitle" destination="7zw-e0-Xni" id="nlL-ZS-lBU"/>
                         <outlet property="PageCV" destination="hm6-oX-54U" id="Gfv-XB-qGN"/>
                         <outlet property="RoomTitle" destination="BEK-qM-6G1" id="l3V-SG-ZdQ"/>
@@ -1159,7 +1167,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hnD-JB-dWw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2274.609375" y="19.53125"/>
+            <point key="canvasLocation" x="2207.8125" y="-78.125"/>
         </scene>
         <!--Activity StatisticsVC-->
         <scene sceneID="65d-sz-WoS">

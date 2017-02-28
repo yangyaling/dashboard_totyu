@@ -48,6 +48,8 @@
 
 -(void)MJHeaderLoadNewData{
     
+//    [self LoadNewData];
+    
     [self.delegate MJGetNewData];
 }
 
@@ -81,6 +83,7 @@
     
     LifeRhythmChartCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LifeRhythmChartCell" forIndexPath:indexPath];
     if ([_DataArray[indexPath.item]isKindOfClass:[NSDictionary class]]||[_DataArray[indexPath.item]isKindOfClass:[NSMutableDictionary class]]) {
+        
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         cell.WeekTitle.text = self.WeekArray[indexPath.row];
         cell.DayTitle.text = [[DataDict allKeys] firstObject];
@@ -111,6 +114,8 @@
         NSIndexPath *indexPath = _ChartCV.indexPathsForSelectedItems.lastObject;
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         advc.SelectDay = [[DataDict allKeys] firstObject];
+        
+        advc.Weekdate = _WeekArray[indexPath.item];
     }
 }
 

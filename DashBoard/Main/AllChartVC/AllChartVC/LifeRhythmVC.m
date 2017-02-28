@@ -17,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *FloorTitle;
 @property (weak, nonatomic) IBOutlet UILabel *RoomTitle;
 @property (weak, nonatomic) IBOutlet UILabel *UserNameTitle;
+@property (weak, nonatomic) IBOutlet UILabel *DateLabel;
+
+
 @property (weak, nonatomic) IBOutlet NITCollectionView *PageCV;
 @property (weak, nonatomic) IBOutlet ColorSelectionCV *ColorSelectionCV;
 @property (strong, nonatomic) NSMutableArray *controlarr;

@@ -50,7 +50,8 @@
                     }
                 }
             }
-        }else{
+        } else {
+            
             if (![[removedict objectForKey:_BarDataDict[@"actionid"]]isEqualToString:@"1"]) {
                 [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
                 NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
@@ -58,7 +59,7 @@
                     CGContextMoveToPoint(context, BarX(array[i]), self.height);
                     CGContextAddLineToPoint(context, BarX(array[i]), 0);
                     CGContextDrawPath(context, kCGPathStroke);
-                }
+               }
             }
         }
     }else{

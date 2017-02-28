@@ -31,6 +31,7 @@ static NSString * const reuseIdentifier = @"AllChartDetailVCCell";
         _controlarr = [NSMutableArray array];
         LifeRhythmDetailVC *lrdvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmDetailVCSB"];
         lrdvc.SelectDay = _SelectDay;
+        lrdvc.Weekdate = _Weekdate;
         [self addChildViewController:lrdvc];
         [_controlarr addObject:lrdvc];
         ActivityStatisticsDetailVC *asdvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsDetailVCSB"];

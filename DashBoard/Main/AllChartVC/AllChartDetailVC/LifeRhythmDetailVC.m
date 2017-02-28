@@ -101,7 +101,14 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+    if (ColorType) {
+//        NSString *str = [NSString stringWithFormat:@"%@(%@)",[NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]], self.Weekdate];
+        _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+    } else {
+//        NSString *str = [NSString stringWithFormat:@"%@(%@)",[NSDate needDateStatus:JapanHMDType date:_SelectDate],_Weekdate];
+        _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:_SelectDate];
+    }
+    
     [_PageCV reloadData];
     [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }

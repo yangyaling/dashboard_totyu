@@ -54,13 +54,19 @@
             
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+//            NSString *sre =  [removedict objectForKey:obj[@"actionid"]];
             
             [_DataArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//                NSLog(@"-----%@",[removedict objectForKey:obj[@"actionid"]]);
+//                NSLog(@"-----%ld",idx);
                 if ([[removedict objectForKey:obj[@"actionid"]]isEqualToString:@"1"]) {
-                    [_DataArray removeObjectAtIndex:[_DataArray indexOfObject:obj]];
+//                    [_DataArray removeAllObjects];
+//                    [_DataArray addObject:obj];
+//                    NSLog(@"00000000000%ld",idx);
+                    [_DataArray removeObjectAtIndex:idx];
                 }
             }];
-            
+//            NSLog(@"%ld",_DataArray.count);
             [_ChartCV reloadData];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -73,8 +79,16 @@
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+//    NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[section]];
+//    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+//    NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+//    NSString *keyid =DataDict[@"actionid"];
+//    if (![[removedict objectForKey:keyid] isEqualToString:@"1"]) {
+//        return _DataArray.count;
+//    } else {
+        return _DataArray.count;
+//    }
     
-    return _DataArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -82,9 +96,12 @@
     ActivityStatisticsDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ActivityStatisticsDetailCell" forIndexPath:indexPath];
     NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
     cell.DeciceName.text = DataDict[@"actionname"];
+   
     UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:1];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];
+    
+    
     return cell;
 }
 

@@ -298,7 +298,15 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.UserSex.text = DataDict[@"usersex"];
         cell.UserAge.text = [NSString stringWithFormat:@"%@",DataDict[@"userold"]];
         cell.temperature.text = [NSString stringWithFormat:@"%@%@",DataDict[@"tvalue"],DataDict[@"tunit"]];
-        cell.luminance.text = DataDict[@"bd"];
+        
+        NSString *str = DataDict[@"bd"];
+        
+        if ([str isEqualToString:@"明"]) {
+            cell.luminance.text = @"明るい";
+        } else {
+            cell.luminance.text = @"暗い";
+        }
+        
         if ([DataDict[@"resultname"]isEqualToString:@"異常検知あり"]) {
             cell.alerttype = @"1";
         }else{
