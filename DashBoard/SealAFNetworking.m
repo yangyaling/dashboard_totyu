@@ -19,7 +19,9 @@
 #define ZwgetvznoticecountURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvznoticecount.php"
 
 #define WeeklylrinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetweeklylrinfo.php"
+
 #define LrinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetlrinfo.php"
+
 #define LrsuminfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetlrsuminfo.php"
 
 #import "SealAFNetworking.h"

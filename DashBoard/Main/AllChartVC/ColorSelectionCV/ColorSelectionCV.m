@@ -122,7 +122,7 @@
     
     
     [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:[NSString stringWithFormat:@"%ld",_Row] userInfo:nil]];
     
 }
 
@@ -200,7 +200,7 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
                     }
                 }
                 
-                for (NSDictionary *datadict in actioninfoarray) {
+                for (NSDictionary *datadict in actioninfoarray) { 
                     if (![datadict[@"actionclass"]isEqualToString:@"1"]) {
                         [self.ColorSelectionArray addObject:datadict];
                     }else{

@@ -104,7 +104,7 @@
     NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
     cell.DeciceName.text = DataDict[@"actionname"];
     UIView *ChartView;
-    if ([DataDict[@"actionexplain"] isEqualToString:@"4"]) {
+    if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]] isEqualToString:@"4"]) {
         ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:2];
     }else{
         ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:0];

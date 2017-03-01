@@ -49,8 +49,8 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict removeObjectForKey:@"actionremove"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+//    [SystemUserDict removeObjectForKey:@"actionremove"];
+//    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
@@ -94,7 +94,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 
 -(void)ReloadNewData:(NSDate*)date ColorType:(BOOL)ColorType{
     
-    self.controlarr = nil;
+//    self.controlarr = nil;
     _SelectDate = date;
     _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
     [_PageCV reloadData];
