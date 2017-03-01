@@ -66,6 +66,7 @@
 -(void)MJHeaderLoadNewData{
     
     [_ChartCV reloadData];
+    
     [_ChartCV.mj_header endRefreshing];
 }
 
@@ -87,11 +88,14 @@
             [NITUserDefaults setObject:tmpdata forKey:_DayStr];
             
             [_ChartCV reloadData];
+            [_ChartCV.mj_header endRefreshing];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:[tmpDic[@"errors"] firstObject] SuperView:_ChartCV DataBool:0];
+            [_ChartCV.mj_header endRefreshing];
         }
     }defeats:^(NSError *defeats){
+        [_ChartCV.mj_header endRefreshing];
     }];
 }
 

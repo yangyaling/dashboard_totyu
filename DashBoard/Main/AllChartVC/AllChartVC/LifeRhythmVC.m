@@ -71,6 +71,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     ScrollPage = TotalWeek-1;
     [self ReloadNewData:[NSDate date] ColorType:NO];
+    _DateLabel.text = [NSDate getWeekBeginAndEndWith:[NSDate date]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -110,6 +111,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     _SelectDate = date;
     [_PageCV reloadData];
     [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -132,7 +134,12 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalWeek);
-    NSLog(@"%d",ScrollPage);
+    
+    LifeRhythmChartVC *Previousascvc = _controlarr[ScrollPage];
+    
+    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+    
+    _DateLabel.text = [NSDate getWeekBeginAndEndWith:Previousdate];
 }
 
 - (void)dealloc{

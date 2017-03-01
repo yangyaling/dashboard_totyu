@@ -56,6 +56,14 @@ typedef enum {
 
 
 /**
+  获取当前是星期几
+
+ @param dateString 输入当前日期
+ @return 返回当天星期
+ */
++ (NSString *)getTheDayOfTheWeekByDateString:(NSString *)dateString;
+
+/**
  *  获取今天的日期
  *
  *  @return 字符串型的今天

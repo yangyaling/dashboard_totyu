@@ -102,11 +102,10 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     self.controlarr = nil;
     _SelectDate = date;
     if (ColorType) {
-//        NSString *str = [NSString stringWithFormat:@"%@(%@)",[NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]], self.Weekdate];
-        _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+//        [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString: [NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
     } else {
-//        NSString *str = [NSString stringWithFormat:@"%@(%@)",[NSDate needDateStatus:JapanHMDType date:_SelectDate],_Weekdate];
-        _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:_SelectDate];
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
     }
     
     [_PageCV reloadData];
@@ -133,7 +132,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay);
-    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
 }
 
 - (void)dealloc{

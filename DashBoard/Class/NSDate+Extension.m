@@ -11,6 +11,32 @@
 @implementation NSDate (Extension)
 
 
+///根据用户输入的时间(dateString)确定当天是星期几,输入的时间格式 yyyy-MM-dd ,如 2015-12-18
++ (NSString *)getTheDayOfTheWeekByDateString:(NSString *)dateString{
+    
+    NSDateFormatter *inputFormatter=[[NSDateFormatter alloc]init];
+    
+    [inputFormatter setDateFormat:@"yyyy-MM-dd"];
+    
+    NSDate *formatterDate=[inputFormatter dateFromString:dateString];
+    
+    NSDateFormatter *outputFormatter=[[NSDateFormatter alloc]init];
+    
+    [outputFormatter setDateFormat:@"EEEE-MMMM-d"];
+    
+    NSString *outputDateStr=[outputFormatter stringFromDate:formatterDate];
+    
+    NSArray *weekArray=[outputDateStr componentsSeparatedByString:@"-"];
+    
+    NSString *str  = [[weekArray objectAtIndex:0] substringToIndex:1];
+    
+    [inputFormatter setDateFormat:@"yyyy年MM月dd日"];
+    
+    NSString *ruStr = [NSString stringWithFormat:@"%@(%@)",[inputFormatter stringFromDate:formatterDate],str];
+     
+    return ruStr;
+}
+
 + (NSString *)needDateStatus:(DateStatus)type date:(NSDate*)date
 {
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
@@ -49,7 +75,9 @@
         fmt.dateFormat = @"DD";
     }else if(type == YYYYType){
         fmt.dateFormat = @"YYYY";
-    }else {
+    } else if(type == JapanHMDType) {
+        fmt.dateFormat = @"yyyy年MM月dd日";
+    } else {
         fmt.dateFormat = @"HH:mm:ss";
     }
     return [fmt dateFromString:datestr];

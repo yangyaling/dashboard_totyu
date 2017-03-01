@@ -131,11 +131,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
             
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
             _AlertBarView.AlertArray = alertarray;
-            NSDictionary *alertdict = alertarray[alertarray.count-1];
-            UIAlertController *testalert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
-            [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-            }]];
-            [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+            if (alertarray.count >0) {
+                NSDictionary *alertdict = alertarray[alertarray.count-1];
+                UIAlertController *testalert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
+                [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+                }]];
+                [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+            }
             
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);

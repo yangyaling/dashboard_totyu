@@ -81,14 +81,15 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     }
 }
 
--(void)MJGetNewData{
-    
-    [self ReloadNewData:[NSDate date] ColorType:NO];
-}
+//-(void)MJGetNewData{
+//    self.controlarr = nil;
+//    [self ReloadNewData:[NSDate date] ColorType:NO];
+//}
 
 -(void)SelectDate:(NSDate *)date{
     
     ColorSelectDate = date;
+    self.controlarr = nil;
     [self ReloadNewData:date ColorType:NO];
 }
 
@@ -96,7 +97,12 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     
 //    self.controlarr = nil;
     _SelectDate = date;
-    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+    if (ColorType) {
+        //        [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString: [NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
+    } else {
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+    }
     [_PageCV reloadData];
     [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }
@@ -121,7 +127,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay);
-    _TimeFrameTitle.text = [NSDate needDateStatus:JapanHMDType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]];
+    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString: [NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
 }
 
 - (void)dealloc{
