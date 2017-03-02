@@ -82,31 +82,7 @@
     return YES;
 }
 
-//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    
-//    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
-//    NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
-//    
-//    if (textField==self.ActionName) {
-//        [savedict setValue:textField.text forKey:@"actionname"];
-//    }else if(textField==self.ActionOrder){
-//        [savedict setValue:textField.text forKey:@"actionorder"];
-//    }else if(textField==self.ActionExplain){
-//        [savedict setValue:textField.text forKey:@"actionexplain"];
-//    }else if(textField==self.ActionSummary){
-//        [savedict setValue:textField.text forKey:@"actionsummary"];
-//    }else if(textField==self.SensorName){
-//        [savedict setValue:textField.text forKey:@"sensorname"];
-//    }else if(textField==self.DeviceName){
-//        [savedict setValue:textField.text forKey:@"devicename1"];
-//    }else if(textField==self.DataExplain){
-//        [savedict setValue:textField.text forKey:@"dataexplain1"];
-//    }
-//    [savearr replaceObjectAtIndex:_Row withObject:savedict];
-//    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
-//    [textField resignFirstResponder];
-//    return YES;
-//}
+
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
     
@@ -163,10 +139,7 @@
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
 
-
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
     
     NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
@@ -195,7 +168,9 @@
     [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
     [textField resignFirstResponder];
     return YES;
+
 }
+
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
     
