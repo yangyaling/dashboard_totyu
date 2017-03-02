@@ -13,6 +13,7 @@
 
 #define ZwgetvzconfiginfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvzconfiginfo.php"
 #define ZwgetupdatevzconfiginfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwupdatevzconfiginfo.php"
+
 #define ZwupdateactioncolorURL @"https://mimamori2.azurewebsites.net/dashboard/zwupdateactioncolor.php"
 
 #define ZwgetvznoticeinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvznoticeinfo.php"

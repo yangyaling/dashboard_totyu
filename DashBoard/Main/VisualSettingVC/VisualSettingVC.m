@@ -57,8 +57,7 @@
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
     NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
     NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
     
@@ -82,6 +81,32 @@
     [textField resignFirstResponder];
     return YES;
 }
+
+//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+//    
+//    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
+//    NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
+//    
+//    if (textField==self.ActionName) {
+//        [savedict setValue:textField.text forKey:@"actionname"];
+//    }else if(textField==self.ActionOrder){
+//        [savedict setValue:textField.text forKey:@"actionorder"];
+//    }else if(textField==self.ActionExplain){
+//        [savedict setValue:textField.text forKey:@"actionexplain"];
+//    }else if(textField==self.ActionSummary){
+//        [savedict setValue:textField.text forKey:@"actionsummary"];
+//    }else if(textField==self.SensorName){
+//        [savedict setValue:textField.text forKey:@"sensorname"];
+//    }else if(textField==self.DeviceName){
+//        [savedict setValue:textField.text forKey:@"devicename1"];
+//    }else if(textField==self.DataExplain){
+//        [savedict setValue:textField.text forKey:@"dataexplain1"];
+//    }
+//    [savearr replaceObjectAtIndex:_Row withObject:savedict];
+//    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
+//    [textField resignFirstResponder];
+//    return YES;
+//}
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
     
@@ -137,6 +162,8 @@
 - (IBAction)ColorSelect:(id)sender {
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
+
+
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
 
@@ -288,17 +315,20 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
     NSDictionary *parameter = @{@"userid1":SystemUserDict[@"userid1"],@"userid0":DataDict[@"userid0"],@"roomid":DataDict[@"roomid"],@"actioninfo":[self ArrayToJson:savearr]};
+    
     [[SealAFNetworking NIT] PostWithUrl:ZwgetupdatevzconfiginfoType parameters:parameter mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = success;
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
 
             [self LoadVzConfigData:self.BuildingArray[_PlaceDropDown.SelectRow]];
 //            [MBProgressHUD showSuccess:@"成功" toView:self.view];
+            
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
 //            [MBProgressHUD showError:@"失败" toView:self.view];
         }
     }defeats:^(NSError *defeats){
+        NSLog(@"errors");
     }];
 }
 

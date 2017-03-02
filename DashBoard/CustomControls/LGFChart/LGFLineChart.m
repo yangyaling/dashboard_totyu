@@ -97,13 +97,15 @@
         CGContextDrawPath(context, kCGPathStroke);
         
     }else{
-        CGContextMoveToPoint(context, 0, LineY(_LineDataArray[0]));
-        for (int i = 1; i<_LineDataArray.count; i++) {
-            if (![NSNullJudge(_LineDataArray[i]) isEqual:@""]) {
-                CGContextAddLineToPoint(context, LineX(i), LineY(_LineDataArray[i]));
+        if (_LineDataArray.count > 0 ) {
+            CGContextMoveToPoint(context, 0, LineY(_LineDataArray[0]));
+            for (int i = 1; i<_LineDataArray.count; i++) {
+                if (![NSNullJudge(_LineDataArray[i]) isEqual:@""]) {
+                    CGContextAddLineToPoint(context, LineX(i), LineY(_LineDataArray[i]));
+                }
             }
+            CGContextDrawPath(context, kCGPathStroke);
         }
-        CGContextDrawPath(context, kCGPathStroke);
     }
 }
 
