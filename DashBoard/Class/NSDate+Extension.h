@@ -41,6 +41,14 @@ typedef enum {
 }timeType;
 
 @interface NSDate (Extension)
+
+/**
+ 获取前三个月的日期
+ */
++ (NSString *)getThreeMonthDate:(NSDate *)currentDate;
+
+
+
 /**
  *  判断某个时间是否为今年
  */

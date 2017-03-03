@@ -57,8 +57,10 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
                 }else{
                     ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
                     NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
-                    int day = (int)[NSDate nowTimeType:LGFday time:Previousdate];
-                    ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:day];
+                    NSString *tmpdate = [NSDate getThreeMonthDate:Previousdate];
+                    ascvc.DayStr = tmpdate;
+//                    int day = (int)[NSDate nowTimeType:LGFday time:Previousdate];
+//                    ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:day];
                 }
 
                 ascvc.SumFlg = @"w";
@@ -158,9 +160,13 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     [self TimeFrameTitleSetValue:Previousdate];
 }
 
--(void)MJGetNewData{
+-(void)MJGetNewData:(NSString *)dateString{
     
-    [self ReloadNewData:[NSDate date] ColorType:NO];
+    if (dateString.length) {
+        _TimeFrameTitle.text = dateString;
+    } else {
+        [self ReloadNewData:[NSDate date] ColorType:NO];
+    }
 }
 
 -(void)SelectDate:(NSDate *)date{

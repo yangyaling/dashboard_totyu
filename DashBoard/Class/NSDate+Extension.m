@@ -11,6 +11,30 @@
 @implementation NSDate (Extension)
 
 
+/**
+   获取前三个月的日期
+ */
++ (NSString *)getThreeMonthDate:(NSDate *)currentDate {
+    
+    
+    NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    
+    [comps setYear:0];
+    
+    [comps setMonth:-3];
+    
+    [comps setDay:0];
+    
+    NSDate *newdate = [calendar dateByAddingComponents:comps toDate:currentDate options:0];
+    
+    return [format stringFromDate:newdate];
+    
+}
+
 ///根据用户输入的时间(dateString)确定当天是星期几,输入的时间格式 yyyy-MM-dd ,如 2015-12-18
 + (NSString *)getTheDayOfTheWeekByDateString:(NSString *)dateString{
     

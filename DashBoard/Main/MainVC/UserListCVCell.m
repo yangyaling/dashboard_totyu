@@ -27,9 +27,6 @@
             _CellBGView.layer.borderWidth = 0.5;
         }
     }
-    
-    
-    
 }
 
 -(void)AlertLabelClick{

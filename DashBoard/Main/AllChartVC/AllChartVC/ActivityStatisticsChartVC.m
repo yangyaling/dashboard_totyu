@@ -40,7 +40,7 @@
 
 -(void)MJHeaderLoadNewData{
     
-    [self.delegate MJGetNewData];
+    [self.delegate MJGetNewData:nil];
 }
 
 -(void)LoadNewData{
@@ -52,7 +52,13 @@
     [[SealAFNetworking NIT] PostWithUrl:LrsuminfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){
         NSDictionary *tmpDic = success;
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            _ChartNum.YValuesArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"dates"]];
+            NSArray *datesArray = [tmpDic valueForKey:@"dates"];
+            _ChartNum.YValuesArray = [NSArray arrayWithArray:datesArray];
+            
+//            if ([_SumFlg isEqualToString:@"w"]) {
+//                [self.delegate MJGetNewData:[NSString stringWithFormat:@"%@~%@",datesArray.firstObject,datesArray.lastObject]];
+//            }
+            
             _DataArray = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
             [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count];
             

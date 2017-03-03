@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol ActivityStatisticsChartVCDelegate <NSObject>
-- (void)MJGetNewData;
+- (void)MJGetNewData:(NSString *)dateString;
 @end
 
 @interface ActivityStatisticsChartVC : UIViewController
