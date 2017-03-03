@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
+@property (nonatomic, strong)  NSArray *CurrentAlertarrays;
 @end
 
 @implementation MainVC
@@ -130,6 +131,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
+            _CurrentAlertarrays = alertarray.copy;
             _AlertBarView.AlertArray = alertarray;
             if (alertarray.count >0) {
                 NSDictionary *alertdict = alertarray[alertarray.count-1];
@@ -138,7 +140,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 }]];
                 [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
             }
-            
+            [self.UserListCV reloadData];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
@@ -309,10 +311,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
             cell.luminance.text = @"暗い";
         }
         
-        if ([DataDict[@"resultname"]isEqualToString:@"異常検知あり"]) {
-            cell.alerttype = @"1";
-        }else{
-            cell.alerttype = @"0";
+        if (_CurrentAlertarrays.count > 0) {
+            cell.alertArray = _CurrentAlertarrays.copy;
+            cell.alerttype = DataDict[@"roomid"];
         }
         return cell;
     }

@@ -11,19 +11,25 @@
 @implementation UserListCVCell
 -(void)setAlerttype:(NSString *)alerttype{
     
+    NSLog(@"_alertArray=========:%@",_alertArray);
     [_alert removeFromSuperview];
     _alerttype = alerttype;
-    if ([_alerttype isEqualToString:@"1"]) {
-        _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(_CellBGView.width/3*2, 2, _CellBGView.width/3, 50)];
-        _alert.delegate = self;
-        [_CellBGView addSubview:_alert];
-        _CellBGView.backgroundColor = SystemColor(0.3);
-        _CellBGView.layer.borderWidth = 0.0;
-    }else{
-        _CellBGView.backgroundColor = [UIColor whiteColor];
-        _CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
-        _CellBGView.layer.borderWidth = 0.5;
+    for (NSDictionary *dic in _alertArray) {
+        if ([dic[@"roomid"] isEqualToString:alerttype]) {
+            _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(_CellBGView.width/3*2, 2, _CellBGView.width/3, 50)];
+            _alert.delegate = self;
+            [_CellBGView addSubview:_alert];
+            _CellBGView.backgroundColor = SystemColor(0.3);
+            _CellBGView.layer.borderWidth = 0.0;
+        }else{
+            _CellBGView.backgroundColor = [UIColor whiteColor];
+            _CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
+            _CellBGView.layer.borderWidth = 0.5;
+        }
     }
+    
+    
+    
 }
 
 -(void)AlertLabelClick{

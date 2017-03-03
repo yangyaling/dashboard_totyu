@@ -21,4 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *luminance;
 @property (nonatomic, copy) NSString *alerttype;
 @property (nonatomic, strong) AlertLabel *alert;
+
+@property (nonatomic, strong) NSArray *alertArray;
+
 @end
