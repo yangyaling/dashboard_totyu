@@ -12,11 +12,6 @@
 
 -(void)setAlerttype:(NSString *)alerttype{
     
-    NSLog(@"_alertArray=========:%@",_alertArray);
-    _CellBGView.backgroundColor = [UIColor whiteColor];
-    _CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
-    _CellBGView.layer.borderWidth = 0.5;
-    
     [_alert removeFromSuperview];
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {

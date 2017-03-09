@@ -112,7 +112,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     TotalRange = 5;
     ScrollPage = TotalRange-1;
     [self ReloadNewData:[NSDate date] ColorType:NO];
-    [self TimeFrameTitleSetValue:_SelectDate];
 }
 
 - (void)didReceiveMemoryWarning {

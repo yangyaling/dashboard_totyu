@@ -22,7 +22,7 @@
         if ([BarData isKindOfClass:[NSDictionary class]]) {
             self.BarDataDict = [NSDictionary dictionaryWithDictionary:BarData];
         }else{
-            self.BarDataArray = [NSArray arrayWithArray:BarData];
+            self.BarDataArray=[NSArray arrayWithArray:[[BarData reverseObjectEnumerator] allObjects]];
         }
     }
     return self;

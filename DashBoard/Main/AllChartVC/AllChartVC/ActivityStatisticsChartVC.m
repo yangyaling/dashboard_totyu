@@ -82,7 +82,7 @@
             
             if (selecttype==1) {
                 for (NSDictionary *DataDict in DataArrayCopy) {
-                    if ([DataDict[@"actionclass"]isEqualToString:@"1"]) {
+                    if (DataDict.count==8) {
                         [_DataArray removeObject:DataDict];
                     }
                 }

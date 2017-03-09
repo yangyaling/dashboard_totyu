@@ -182,16 +182,26 @@ static NSString * const reuseIdentifier = @"MainVCell";
 //    [SystemUserDict setValue:@"0" forKey:@"logintype"];
 //    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
-    NSFileManager *fileMger = [NSFileManager defaultManager];
-    
-    //如果文件路径存在的话
-    if ([fileMger fileExistsAtPath:SYSTEM_USER_DICT]) {
+    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"" message:@"ログアウトします。よろしいですか？" preferredStyle:UIAlertControllerStyleAlert];
+    [testalert addAction:[UIAlertAction actionWithTitle:@"いいえ" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
-        NSError *err;
-        [fileMger removeItemAtPath:SYSTEM_USER_DICT error:&err];
-    }
+    }]];
+    [testalert addAction:[UIAlertAction actionWithTitle:@"はい" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        NSFileManager *fileMger = [NSFileManager defaultManager];
+        //如果文件路径存在的话
+        if ([fileMger fileExistsAtPath:SYSTEM_USER_DICT]) {
+            
+            NSError *err;
+            [fileMger removeItemAtPath:SYSTEM_USER_DICT error:&err];
+        }
+        
+        MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
+    }]];
+    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+
     
-    MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
+    
 }
 /**
  获取新数据
@@ -205,11 +215,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (IBAction)AllAlert:(id)sender {
 
-//    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:@"AlertBarView被点击了" preferredStyle:UIAlertControllerStyleAlert];
-//    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-//        
-//    }]];
-//    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
     
 }
 /**
@@ -316,6 +321,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
         return cell;
     } else {
         UserListCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+        [cell setNeedsLayout];
+        [cell layoutIfNeeded];
+        
+        
         
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
         
@@ -337,6 +346,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
         if (_CurrentAlertarrays.count > 0) {
             cell.alertArray = _CurrentAlertarrays.copy;
             cell.alerttype = DataDict[@"roomid"];
+        }else{
+            cell.CellBGView.backgroundColor = [UIColor whiteColor];
+            cell.CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
+            cell.CellBGView.layer.borderWidth = 0.5;
         }
         return cell;
     }
