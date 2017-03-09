@@ -12,7 +12,7 @@
 /**
  没数据时，提示用标题
  */
--(void)Show:(NSString*)title SuperView:(UIView*)SuperView DataBool:(NSInteger)DataBool{
+-(BOOL)Show:(NSString*)title SuperView:(UIView*)SuperView DataBool:(NSInteger)DataBool{
     [self RemoveFrom:SuperView];
     if (DataBool==0) {
         NoDataLabel *nodatalabel = [[NoDataLabel alloc]initWithFrame:[SuperView isKindOfClass:[UICollectionView class]] ? SuperView.frame : SuperView.bounds];
@@ -20,6 +20,9 @@
         nodatalabel.textColor = [UIColor lightGrayColor];
         nodatalabel.textAlignment = NSTextAlignmentCenter;
         [SuperView addSubview:nodatalabel];
+        return YES;
+    }else{
+        return NO;
     }
 }
 

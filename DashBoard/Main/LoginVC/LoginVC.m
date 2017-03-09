@@ -32,14 +32,14 @@
 
 - (IBAction)Login:(id)sender {
     
-//    if (!_userId.text.length) {
-//        [MBProgressHUD showError:@"ユーザIDを入力してください" toView:self.view];
-//        return;
-//    }
-//    if(!_passWord.text.length){
-//        [MBProgressHUD showError:@"パスワードを入力してください" toView:self.view];
-//        return;
-//    }
+    if (!_userId.text.length) {
+        [MBProgressHUD showError:@"ユーザIDを入力してください" toView:self.view];
+        return;
+    }
+    if(!_passWord.text.length){
+        [MBProgressHUD showError:@"パスワードを入力してください" toView:self.view];
+        return;
+    }
     [self login:_userId.text password:_passWord.text];
 }
 
@@ -47,14 +47,14 @@
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary new];
     [SystemUserDict setValue:userid forKey:@"userid1"];
-    [SystemUserDict setValue:[NSDate needDateStatus:HaveHMSType date:[NSDate date]] forKey:@"newnoticetime"];
+    [SystemUserDict setValue:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returnstring date:[NSDate date]] forKey:@"newnoticetime"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
     NSDictionary *parameter = @{@"userid":userid,@"password":password};
     
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwloginType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
             [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];

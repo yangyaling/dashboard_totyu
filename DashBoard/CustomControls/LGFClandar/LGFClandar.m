@@ -194,7 +194,7 @@
 - (void)getAllDaysWithCalender{
     
     NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:NewDate];
+    NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
     
     NSMutableArray *montharr = [NSMutableArray array];
     for (int i = 0; i<360; i++) {

@@ -20,10 +20,12 @@
 -(void)setDataDict:(NSDictionary *)DataDict{
     
     _DataDict = DataDict;
-    if ([DataDict[@"buttonStatus"] isEqualToString:@"YES"]) {
-        self.Device.backgroundColor = [UIColor lightGrayColor];
+    if ([DataDict[@"actionselect"] isEqualToString:@"YES"]) {
+        [self.Device setTitleColor:SystemColor(1.0) forState:UIControlStateNormal];
+        self.Device.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
     } else {
-        self.Device.backgroundColor = [UIColor whiteColor];
+        [self.Device setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        self.Device.titleLabel.font = [UIFont systemFontOfSize:14];
     }
     [self.Device setTitle:DataDict[@"actionname"] forState:UIControlStateNormal];
     self.ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
@@ -31,17 +33,19 @@
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
     
-    NSData *dataBt = [NITUserDefaults objectForKey:@"actionList"];
-    NSMutableArray *arrayBt = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:dataBt]];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+
+    NSMutableDictionary *dicBt = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
     
-    NSMutableDictionary *dicBt = [NSMutableDictionary dictionaryWithDictionary:arrayBt[_Row]];
     [dicBt setObject:ColorDict[@"actioncolor"] forKey:@"actioncolor"];
-    [arrayBt replaceObjectAtIndex:_Row withObject:dicBt];
-    NSData *tmpdata = [NSKeyedArchiver archivedDataWithRootObject:arrayBt];
-    [NITUserDefaults setObject:tmpdata forKey:@"actionList"];
+    [systemactioninfo replaceObjectAtIndex:_Row withObject:dicBt];
+    
+    [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
     [[SealAFNetworking NIT] PostWithUrl:ZwupdateactioncolorType parameters:ColorDict mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         
         self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
         
@@ -60,70 +64,39 @@
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
 - (IBAction)DeviceSelectButton:(UIButton*)sender {
-//    NSLog(@"------%ld",_Row);
-//    sender.selected = !sender.selected;
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSData *data = [SystemUserDict objectForKey:@"systemactioninfo"];
-    NSMutableDictionary *removedict = [NSMutableDictionary dictionary];
-    NSMutableArray *actioninfoarr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     
-    
-    //color list update
-    NSData *dataBt = [NITUserDefaults objectForKey:@"actionList"];
-    NSMutableArray *arrayBt = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:dataBt]];
-    
-    NSMutableDictionary *dicBt = [NSMutableDictionary dictionaryWithDictionary:arrayBt[_Row]];
-    
-    NSMutableArray *selectBtArray = [NSMutableArray array];
- 
-    NSString *str = dicBt[@"buttonStatus"];
-    
-    if (!str.length) {
-        
-//        [sender setSelected:YES];
-        
-        
-        for (int i = 0; i < arrayBt.count; i++) {
-            NSMutableDictionary *Mdic = [NSMutableDictionary dictionaryWithDictionary:arrayBt[i]];
-            if (i == _Row) {
-                [Mdic setObject:@"YES" forKey:@"buttonStatus"];
-            } else {
-                [Mdic setObject:@"" forKey:@"buttonStatus"];
-            }
-            [selectBtArray addObject:Mdic];
-        }
-        [arrayBt removeAllObjects];
-        arrayBt = selectBtArray.mutableCopy;
-        
-        [actioninfoarr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj[@"actionid"] isEqualToString:_DataDict[@"actionid"]]) {
-                [removedict setValue:@"0" forKey:obj[@"actionid"]];
-            }else{
-                [removedict setValue:@"1" forKey:obj[@"actionid"]];
-            }
-        }];
-    } else {
-        [dicBt setObject:@"" forKey:@"buttonStatus"];
-        [arrayBt replaceObjectAtIndex:_Row withObject:dicBt];
-        NSMutableDictionary *removedict = [NSMutableDictionary dictionaryWithDictionary:SystemUserDict[@"actionremove"]];
-        
-        if (removedict.count > 0) {
-            [removedict removeAllObjects];
-        }
+    NSMutableDictionary *actionselectdict = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
+    if ([actionselectdict[@"actionselect"] boolValue]) {
+        [actionselectdict setValue:@"NO" forKey:@"actionselect"];
+    }else{
+        [actionselectdict setValue:@"YES" forKey:@"actionselect"];
     }
-    // 颜色列表的数据持久化
-    NSData *tmpdata = [NSKeyedArchiver archivedDataWithRootObject:arrayBt];
-    [NITUserDefaults setObject:tmpdata forKey:@"actionList"];
+    [systemactioninfo replaceObjectAtIndex:_Row withObject:actionselectdict];
     
-    //图标的数据持久化
-    [SystemUserDict setObject:removedict forKey:@"actionremove"];
+    [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx!=_Row) {
+             [obj setValue:@"NO" forKey:@"actionselect"];
+            [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
+        }
+    }];
+    
+    [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (idx==_Row) {
+            [obj setValue:@"NO" forKey:@"selecttype"];
+        }else{
+            [obj setValue:actionselectdict[@"actionselect"] forKey:@"selecttype"];
+        }
+        [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
+    }];
+    [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    
-    
+
+    NSLog(@"LGF  :%@",systemactioninfo);
     [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
     [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:[NSString stringWithFormat:@"%ld",_Row] userInfo:nil]];
-    
 }
 
 @end
@@ -147,15 +120,18 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        [self LoadPlaceData];
+        NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+        NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+        if (systemactioninfo.count==0) {
+            [self LoadPlaceData];
+        }
         [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     }
     return self;
 }
 
 -(void)ReloadColor:(id)sender{
-    _ColorSelectionArray = nil;
-//    [self LoadPlaceData];
+
     [self reloadData];
 }
 
@@ -163,11 +139,14 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     
     [MBProgressHUD showMessage:@"" toView:self];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:self success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             NSArray *BuildingArray = [NSArray arrayWithArray:tmpDic[@"buildingInfo"]];
-            [self LoadVzConfigData:BuildingArray[2]];
+            if (BuildingArray.count>0) {
+                [self LoadVzConfigData:BuildingArray[2]];
+            }
+            
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
@@ -181,48 +160,46 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     [MBProgressHUD showMessage:@"" toView:self];
     NSDictionary *parameter = @{@"buildingid":Building[@"buildingid"],@"floorno":Building[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *UserListArray = [NSArray arrayWithArray:tmpDic[@"vzconfiginfo"]];
-            [[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:UserListArray.count];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:UserListArray.count])return;
             
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-//            NSLog(@"%@",SystemUserDict);
-            NSArray *actioninfoarray = [NSArray array];
-            
-            if (UserListArray.count>0) {
-                for (NSDictionary *dict in UserListArray) {
-                    if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]]&&[dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
-                        actioninfoarray = dict[@"actioninfo"];
-
-                        [SystemUserDict setObject:[NSKeyedArchiver archivedDataWithRootObject:actioninfoarray] forKey:@"systemactioninfo"];
-                        [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-                    }
-                }
-                
-                for (NSDictionary *datadict in actioninfoarray) { 
-                    if (![datadict[@"actionclass"]isEqualToString:@"1"]) {
-                        [self.ColorSelectionArray addObject:datadict];
-                    }else{
-                        if ([[NSString stringWithFormat:@"%@",datadict[@"actionexplain"]] isEqualToString:@"4"]) {
-                            NSArray *colorarray = [datadict[@"actioncolor"] componentsSeparatedByString:@"|"];
-                            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-                            [SystemUserDict setValue:colorarray[0]forKey:@"lightcolor"];
-                            [SystemUserDict setValue:colorarray[1] forKey:@"darkcolor"];
-                            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+            for (NSDictionary *dict in UserListArray) {
+                if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]]&&[dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
+                    NSArray *actioninfoarray = [NSArray arrayWithArray:dict[@"actioninfo"]];
+                    
+                    [actioninfoarray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        if (![obj[@"actionclass"]isEqualToString:@"1"]) {
+                            [self.ColorSelectionArray addObject:obj];
+                        }else{
+                            if ([[NSString stringWithFormat:@"%@",obj[@"actionexplain"]] isEqualToString:@"4"]) {
+                                NSArray *colorarray = [obj[@"actioncolor"] componentsSeparatedByString:@"|"];
+                                [SystemUserDict setValue:colorarray[0]forKey:@"lightcolor"];
+                                [SystemUserDict setValue:colorarray[1] forKey:@"darkcolor"];
+                            }
                         }
-                    }
+                    }];
+
+                    
+                    [self.ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        [obj setValue:@"NO" forKey:@"selecttype"];
+                        [obj setValue:@"NO" forKey:@"actionselect"];
+                        [self.ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
+                    }];
+
+                    [SystemUserDict setObject:self.ColorSelectionArray forKey:@"systemactioninfo"];
+                    
+                    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+                    NSLog(@"%@",self.ColorSelectionArray);
                 }
-            }else{
-                self.ColorSelectionArray = nil;
             }
-            NSData *tmpdata = [NSKeyedArchiver archivedDataWithRootObject:self.ColorSelectionArray];
-            [NITUserDefaults setObject:tmpdata forKey:@"actionList"];
-            
+
             [self reloadData];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:[tmpDic[@"errors"] firstObject] SuperView:self DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:self DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
@@ -232,21 +209,25 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSData *data = [NITUserDefaults objectForKey:@"actionList"];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    return array.count;
-//    self.ColorSelectionArray.count;
+
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+    return systemactioninfo.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(self.width,self.height/5);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    NSData *data = [NITUserDefaults objectForKey:@"actionList"];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
-    cell.DataDict = array[indexPath.item];
+
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+    cell.DataDict = systemactioninfo[indexPath.item];
     cell.Row = indexPath.item;
-//    self.ColorSelectionArray[indexPath.item];
+
     return cell;
 }
 

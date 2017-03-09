@@ -31,7 +31,7 @@
 -(void)drawRect:(CGRect)rect{
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSMutableDictionary *removedict = [SystemUserDict objectForKey:@"actionremove"];
+    NSMutableArray *systemactioninfo = [SystemUserDict objectForKey:@"systemactioninfo"];
 
     //获得处理的上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -40,33 +40,60 @@
     if (_BarType==1) {
         if (_BarDataArray) {
             for (NSDictionary *DataDict in _BarDataArray) {
-                if (![[removedict objectForKey:DataDict[@"actionid"]]isEqualToString:@"1"]) {
-                    NSArray *DataArray = DataDict[@"data"];
-                    for (int i = 0; i<DataArray.count; i++) {
-                        [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
-                        CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
-                        CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
-                        CGContextDrawPath(context, kCGPathStroke);
+                for (NSDictionary *removedict in systemactioninfo) {
+                    if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
+                        if (removedict[@"selecttype"]) {
+                            if (![removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                                NSArray *DataArray = DataDict[@"data"];
+                                for (int i = 0; i<DataArray.count; i++) {
+                                    [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
+                                    CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
+                                    CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
+                                    CGContextDrawPath(context, kCGPathStroke);
+                                }
+                            }
+                        }else{
+                            NSArray *DataArray = DataDict[@"data"];
+                            for (int i = 0; i<DataArray.count; i++) {
+                                [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
+                                CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
+                                CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
+                                CGContextDrawPath(context, kCGPathStroke);
+                            }
+                        }
                     }
                 }
             }
         } else {
-            
-            if (![[removedict objectForKey:_BarDataDict[@"actionid"]]isEqualToString:@"1"]) {
-                [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
-                NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
-                for (int i = 0; i<array.count; i++) {
-                    CGContextMoveToPoint(context, BarX(array[i]), self.height);
-                    CGContextAddLineToPoint(context, BarX(array[i]), 0);
-                    CGContextDrawPath(context, kCGPathStroke);
-               }
+            for (NSDictionary *removedict in systemactioninfo) {
+                if ([removedict[@"actionid"] isEqualToString:_BarDataDict[@"actionid"]]) {
+                    if (removedict[@"selecttype"]) {
+                        if (![removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                            [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
+                            NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
+                            for (int i = 0; i<array.count; i++) {
+                                CGContextMoveToPoint(context, BarX(array[i]), self.height);
+                                CGContextAddLineToPoint(context, BarX(array[i]), 0);
+                                CGContextDrawPath(context, kCGPathStroke);
+                            }
+                        }
+                    }else{
+                        [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
+                        NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
+                        for (int i = 0; i<array.count; i++) {
+                            CGContextMoveToPoint(context, BarX(array[i]), self.height);
+                            CGContextAddLineToPoint(context, BarX(array[i]), 0);
+                            CGContextDrawPath(context, kCGPathStroke);
+                        }
+                    }
+                }
             }
         }
-    }else{
+    } else {
         NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
         NSArray *colorarray = [_BarDataDict[@"actioncolor"] componentsSeparatedByString:@"|"];
         for (int i = 0; i<array.count; i++) {
-            if ([array[i] intValue]==0) {
+            if ([array[i] intValue]==1) {
                 [[UIColor colorWithHex:colorarray[0]] setStroke];
             }else{
                 [[UIColor colorWithHex:colorarray[1]] setStroke];

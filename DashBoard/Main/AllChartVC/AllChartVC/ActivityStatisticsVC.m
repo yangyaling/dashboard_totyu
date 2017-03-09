@@ -41,10 +41,10 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
             if (TimeSelectSegIndex==0) {//日
 
                 if (i==0) {
-                    ascvc.DayStr = [NSDate needDateStatus:NotHaveType date:_SelectDate];
+                    ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
                 }else{
                     ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
-                    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+                    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     int week = (int)[NSDate nowTimeType:LGFweek time:Previousdate];
                     ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:week];
                 }
@@ -53,10 +53,10 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
             }else if(TimeSelectSegIndex==1){//周
 
                 if (i==0) {
-                    ascvc.DayStr = [NSDate needDateStatus:NotHaveType date:_SelectDate];
+                    ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
                 }else{
                     ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
-                    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+                    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     NSString *tmpdate = [NSDate getThreeMonthDate:Previousdate];
                     ascvc.DayStr = tmpdate;
 //                    int day = (int)[NSDate nowTimeType:LGFday time:Previousdate];
@@ -68,21 +68,21 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
             }else if(TimeSelectSegIndex==2){//月
                 
                 if (i==0) {
-                    ascvc.DayStr = [NSDate needDateStatus:NotHaveType date:_SelectDate];
+                    ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
                 }else{
                     ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
-                    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
-                    ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:[[NSDate needDateStatus:DDType date:Previousdate] intValue]];
+                    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
+                    ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:[[NSDate NeedDateFormat:@"DD" ReturnType:returnstring date:Previousdate] intValue]];
                 }
                 
                 ascvc.SumFlg = @"m";
             }else if(TimeSelectSegIndex==3){//年 q
                 
                 if (i==0) {
-                    ascvc.DayStr = [NSDate needDateStatus:NotHaveType date:_SelectDate];
+                    ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
                 }else{
                     ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
-                    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+                    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     ascvc.DayStr = [NSDate GetTenYearDate:Previousdate];
                 }
                 
@@ -103,9 +103,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict removeObjectForKey:@"actionremove"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
@@ -115,7 +112,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     TotalRange = 5;
     ScrollPage = TotalRange-1;
     [self ReloadNewData:[NSDate date] ColorType:NO];
-    
     [self TimeFrameTitleSetValue:_SelectDate];
 }
 
@@ -128,7 +124,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
  */
 - (IBAction)DateRetrieval:(id)sender {
     
-    [[LGFClandar Clandar] ShowInView:self Date:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+    [[LGFClandar Clandar] ShowInView:self Date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
 }
 
 - (IBAction)TimeSelect:(UISegmentedControl *)sender {
@@ -143,7 +139,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
         TotalRange = 3;
     }
     [self ReloadNewData:[NSDate date] ColorType:NO];
-    [self TimeFrameTitleSetValue:_SelectDate];
 }
 
 -(void)ReloadColor:(id)sender{
@@ -155,7 +150,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     }
     ActivityStatisticsChartVC *Previousascvc = _controlarr[ScrollPage];
     
-    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
     
     [self TimeFrameTitleSetValue:Previousdate];
 }
@@ -181,7 +176,9 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     _SelectDate = date;
     [self TimeFrameTitleSetValue:_SelectDate];
     [_PageCV reloadData];
-    [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -189,6 +186,10 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     return self.controlarr.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_PageCV.width,_PageCV.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -207,7 +208,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 
     ActivityStatisticsChartVC *Previousascvc = _controlarr[ScrollPage];
     
-    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
     
     [self TimeFrameTitleSetValue:Previousdate];
 }

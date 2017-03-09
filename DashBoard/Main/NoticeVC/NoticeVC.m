@@ -46,18 +46,16 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:nil mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
 
             self.NoticeArray = tmpDic[@"vznoticeinfo"];
-            
+            if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count])return;
             NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
             [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-            
-            [[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count];
-            [_NoticeCollection layoutIfNeeded];
+
             [_NoticeCollection reloadData];
             [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
             NSDictionary *dict = self.NoticeArray[0];
@@ -65,7 +63,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
         }else{
             
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:tmpDic[@"errors"] SuperView:self.view DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
     }defeats:^(NSError *defeats){
     }];

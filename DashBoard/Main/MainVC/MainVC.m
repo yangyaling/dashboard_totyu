@@ -10,6 +10,7 @@
 #import "AlertBar.h"
 #import "UserListCVCell.h"
 #import "UIImageView+WebCache.h"
+#import "NSObject+MJProperty.h"
 
 @interface CollectionCellWhite : UICollectionViewCell
 @end
@@ -24,7 +25,7 @@
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
 @property (weak, nonatomic) IBOutlet UILabel *NowTime;
 @property (weak, nonatomic) IBOutlet UILabel *BuildName;
-@property (weak, nonatomic) IBOutlet UICollectionView *UserListCV;
+@property (weak, nonatomic) IBOutlet NITCollectionView *UserListCV;
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
@@ -49,12 +50,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
     return _BuildingArray;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self loadNewData];
-    
+
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
@@ -73,7 +73,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             self.BuildingArray = tmpDic[@"buildingInfo"];
@@ -86,9 +86,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
             
             _BuildName.text = buildingdict[@"displayname"];
-            _NowTime.text = [NSDate needDateStatus:JapanHMSType date:[NSDate date]];
+            _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
             [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
-            [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:2];
+            [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:60];
             [self LoadCustListData];
             [self LoadAlertData];
         }else{
@@ -106,15 +106,16 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+        
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             self.UserLisrArray = tmpDic[@"custlist"];
-            [[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count])return;
             [self CellHorizontalAlignment];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:[tmpDic[@"errors"] firstObject] SuperView:self.view DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
     }defeats:^(NSError *defeats){
     }];
@@ -127,7 +128,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:parameter mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
@@ -153,7 +154,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSLog(@"%@",SystemUserDict);
     NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             if ([tmpDic[@"vznoticecount"] intValue]==0) {
                 _NoticeNewDataTap.alpha = 0.0;
@@ -171,21 +172,32 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }defeats:^(NSError *defeats){
     }];
 }
+
 /**
  登出
  */
 - (IBAction)Logout:(id)sender {
     
-    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict setValue:@"0" forKey:@"logintype"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-
+//    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+//    [SystemUserDict setValue:@"0" forKey:@"logintype"];
+//    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    
+    NSFileManager *fileMger = [NSFileManager defaultManager];
+    
+    //如果文件路径存在的话
+    if ([fileMger fileExistsAtPath:SYSTEM_USER_DICT]) {
+        
+        NSError *err;
+        [fileMger removeItemAtPath:SYSTEM_USER_DICT error:&err];
+    }
+    
     MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
 }
 /**
  获取新数据
  */
 - (IBAction)LoadNewData:(id)sender {
+    
     [self loadNewData];
 }
 /**
@@ -238,6 +250,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         [SystemUserDict setValue:DataDict[@"roomid"] forKey:@"roomid"];
         [SystemUserDict setValue:DataDict[@"roomname"] forKey:@"roomname"];
         [SystemUserDict setValue:DataDict[@"username0"] forKey:@"username0"];
+        [SystemUserDict removeObjectForKey:@"systemactioninfo"];
         [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     }
 }
@@ -246,7 +259,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)AutoTime{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AutoTime) object:nil];
-    _NowTime.text = [NSDate needDateStatus:JapanHMSType date:[NSDate date]];
+    _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
 }
 /**
@@ -256,9 +269,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AlertMonitor) object:nil];
 
-    [self LoadCustListData];
-    [self LoadAlertData];
-    [self LoadNoticeCount];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    
+    if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
+        [self LoadCustListData];
+        [self LoadAlertData];
+        [self LoadNoticeCount];
+    }
     
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:60];
 }
@@ -275,12 +292,17 @@ static NSString * const reuseIdentifier = @"MainVCell";
     _UserPC.numberOfPages = pageCount/6;
     [_UserListCV registerClass:[CollectionCellWhite class]
     forCellWithReuseIdentifier:@"CellWhite"];
+    
     [_UserListCV reloadData];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
     return pageCount;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_UserListCV.width/3,_UserListCV.height/2);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -294,6 +316,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         return cell;
     } else {
         UserListCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+        
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
         
         [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]] placeholderImage:nil];

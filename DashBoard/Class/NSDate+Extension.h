@@ -23,6 +23,13 @@ typedef enum {
 }DateStatus;
 
 typedef enum {
+    
+    returnstring,
+    returndate
+    
+}ReturnType;
+
+typedef enum {
 
     LGFweekofyear = 10,
     LGFampm = 9,       //上午下午
@@ -81,12 +88,13 @@ typedef enum {
 /**
  *  获取当前时间格式样式
  *
- *  @param type 需要的种类
+ *  @param DateFormat 需要的种类
+ *  @param ReturnType 返回值类型
+ *  @param date 传入时间
  *
  *  @return 字符型格式
  */
-+ (NSString *)needDateStatus:(DateStatus)type date:(NSDate*)date;
-+ (NSDate *)needDateStrStatus:(DateStatus)type datestr:(NSString*)datestr;
++ (id)NeedDateFormat:(NSString*)DateFormat ReturnType:(ReturnType)ReturnType date:(id)date;
 //-----------------------------------------------------------------------------
 /**
  *  单位时间取得

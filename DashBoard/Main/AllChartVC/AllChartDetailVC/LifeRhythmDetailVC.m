@@ -47,15 +47,10 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    [_ColorSelectionCV layoutIfNeeded];
-    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict removeObjectForKey:@"actionremove"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    
     _DarkColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"darkcolor"]];
     _LightColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"lightcolor"]];
     _FloorTitle.text = SystemUserDict[@"displayname"];
@@ -64,7 +59,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     ScrollPage = TotalDay-1;
-    [self ReloadNewData:[NSDate needDateStrStatus:NotHaveType datestr:_SelectDay] ColorType:NO];
+    [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -75,7 +70,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
  */
 - (IBAction)DateRetrieval:(id)sender {
 
-    [[LGFClandar Clandar] ShowInView:self Date:_TimeFrameTitle.text];
+    [[LGFClandar Clandar] ShowInView:self Date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
 }
 
 -(void)ReloadColor:(id)sender{
@@ -83,16 +78,16 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     if (ColorSelectDate) {
         [self ReloadNewData:ColorSelectDate ColorType:YES];
     }else{
-        [self ReloadNewData:[NSDate needDateStrStatus:NotHaveType datestr:_SelectDay] ColorType:YES];
+        [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:YES];
     }
 }
 -(void)MJGetNewData{
-    
+
     [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
 -(void)SelectDate:(NSDate *)date{
-    
+
     ColorSelectDate = date;
     [self ReloadNewData:date ColorType:NO];
 }
@@ -102,14 +97,14 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     self.controlarr = nil;
     _SelectDate = date;
     if (ColorType) {
-//        [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
-        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString: [NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
     } else {
-        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
     }
-    
     [_PageCV reloadData];
-    [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -117,6 +112,10 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 
     return self.controlarr.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_PageCV.width,_PageCV.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,7 +131,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay);
-    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate needDateStatus:NotHaveType date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
+    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
 }
 
 - (void)dealloc{

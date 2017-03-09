@@ -58,7 +58,7 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
+    NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
     NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
     
     if (textField==self.ActionName) {
@@ -77,22 +77,20 @@
         [savedict setValue:textField.text forKey:@"dataexplain1"];
     }
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
-    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:NO];
     [textField resignFirstResponder];
     return YES;
 }
-
- 
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
     
     self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
 
-    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
+    NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
     NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
     [savedict setValue:ColorDict[@"actioncolor"] forKey:@"actioncolor"];
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
-    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:NO];
 }
 @end
 
@@ -140,7 +138,7 @@
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
+    NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
     
     NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
     
@@ -165,7 +163,7 @@
     }
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
     
-    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:NO];
     [textField resignFirstResponder];
     return YES;
 
@@ -176,10 +174,11 @@
     
     self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
 
-    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];    NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
+    NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
+    NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[_Row]];
     [savedict setValue:ColorDict[@"actioncolor"] forKey:@"actioncolor"];
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
-    [[NSKeyedArchiver archivedDataWithRootObject:savearr] writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:NO];
 }
 @end
 
@@ -227,7 +226,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             self.BuildingArray = tmpDic[@"buildingInfo"];
@@ -247,7 +246,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSDictionary *parameter = @{@"buildingid":Building[@"buildingid"],@"floorno":Building[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             
             self.UserListArray = tmpDic[@"vzconfiginfo"];
@@ -264,19 +263,18 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
                 self.VisualSetArray = dict[@"actioninfo"];
                 NSLog(@"%@",self.VisualSetArray);
                 
-                [[NSKeyedArchiver archivedDataWithRootObject:self.VisualSetArray] writeToFile:SaveArrayPath atomically:NO];
+                [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
 
             }else{
                 _SaveButton.alpha = 0.0;
                 self.VisualSetArray = nil;
             }
             [_VisualSetTable reloadData];
-            [_UserListCollection layoutIfNeeded];
             [_UserListCollection reloadData];
             [_UserListCollection selectItemAtIndexPath:[NSIndexPath indexPathForRow:UserListCollectionSelectItem inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:[tmpDic[@"errors"] firstObject] SuperView:self.view DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
     }defeats:^(NSError *defeats){
     }];
@@ -288,11 +286,11 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     NSIndexPath *indexpath = _UserListCollection.indexPathsForSelectedItems.lastObject;
     NSDictionary *DataDict = self.UserListArray[indexpath.item];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSMutableArray *savearr = [NSMutableArray arrayWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:SaveArrayPath]]];
+    NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
     NSDictionary *parameter = @{@"userid1":SystemUserDict[@"userid1"],@"userid0":DataDict[@"userid0"],@"roomid":DataDict[@"roomid"],@"actioninfo":[self ArrayToJson:savearr]};
     
     [[SealAFNetworking NIT] PostWithUrl:ZwgetupdatevzconfiginfoType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
 
             [self LoadVzConfigData:self.BuildingArray[_PlaceDropDown.SelectRow]];
@@ -339,6 +337,10 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     return self.UserListArray.count;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_UserListCollection.width,_UserListCollection.height/4);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSDictionary *DataDict = self.UserListArray[indexPath.item];
@@ -362,6 +364,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     [SystemUserDict setValue:dict[@"userid0"] forKey:@"userid0"];
     [SystemUserDict setValue:dict[@"roomid"] forKey:@"roomid"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
     [_VisualSetTable reloadData];
 }
 

@@ -28,6 +28,7 @@
 		E935E6EE1E5D2CE000C8A181 /* LGFColorSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E935E6ED1E5D2CE000C8A181 /* LGFColorSelectView.m */; };
 		E935E6F21E5D316A00C8A181 /* huaban.png in Resources */ = {isa = PBXBuildFile; fileRef = E935E6F11E5D316A00C8A181 /* huaban.png */; };
 		E935E6F51E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E935E6F41E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m */; };
+		E935E6F81E6D60D200C8A181 /* LGFNullCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = E935E6F71E6D60D200C8A181 /* LGFNullCheck.m */; };
 		E945E38D1E4AEE700089C6C4 /* NoticeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E945E38C1E4AEE700089C6C4 /* NoticeVC.m */; };
 		E95DB8F71E4D5F9C00DF246F /* ColorSelectionCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E95DB8F61E4D5F9C00DF246F /* ColorSelectionCV.m */; };
 		E96167721E52EC7B00578585 /* NoDataLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E96167711E52EC7B00578585 /* NoDataLabel.m */; };
@@ -177,6 +178,8 @@
 		E935E6F11E5D316A00C8A181 /* huaban.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huaban.png; sourceTree = "<group>"; };
 		E935E6F31E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFTableViewAvoidKeyboard.h; sourceTree = "<group>"; };
 		E935E6F41E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFTableViewAvoidKeyboard.m; sourceTree = "<group>"; };
+		E935E6F61E6D60D200C8A181 /* LGFNullCheck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LGFNullCheck.h; path = ../../../Documents/LGFNullCheck.h; sourceTree = "<group>"; };
+		E935E6F71E6D60D200C8A181 /* LGFNullCheck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LGFNullCheck.m; path = ../../../Documents/LGFNullCheck.m; sourceTree = "<group>"; };
 		E945E38B1E4AEE700089C6C4 /* NoticeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVC.h; sourceTree = "<group>"; };
 		E945E38C1E4AEE700089C6C4 /* NoticeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVC.m; sourceTree = "<group>"; };
 		E95DB8F51E4D5F9C00DF246F /* ColorSelectionCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionCV.h; sourceTree = "<group>"; };
@@ -554,6 +557,8 @@
 				E96F86811E34833300C9B81D /* UnderlineView.m */,
 				E96167701E52EC7B00578585 /* NoDataLabel.h */,
 				E96167711E52EC7B00578585 /* NoDataLabel.m */,
+				E935E6F61E6D60D200C8A181 /* LGFNullCheck.h */,
+				E935E6F71E6D60D200C8A181 /* LGFNullCheck.m */,
 			);
 			path = CustomControls;
 			sourceTree = "<group>";
@@ -1091,6 +1096,7 @@
 				E966EB3B1E2DAE5300754B3B /* MBProgressHUD.m in Sources */,
 				E96F86791E320A4D00C9B81D /* LifeRhythmDetailVC.m in Sources */,
 				E966EB5A1E2DAE5300754B3B /* UIView+MJExtension.m in Sources */,
+				E935E6F81E6D60D200C8A181 /* LGFNullCheck.m in Sources */,
 				E935E6071E5C0D7B00C8A181 /* UIImageView+HighlightedWebCache.m in Sources */,
 				E9B8BE2E1E30A5BF00A6DFDA /* NITCollectionView.m in Sources */,
 				E935E6061E5C0D7B00C8A181 /* UIImage+WebP.m in Sources */,

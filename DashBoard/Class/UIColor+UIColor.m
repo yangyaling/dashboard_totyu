@@ -46,8 +46,6 @@
     
     
     const CGFloat *cs=CGColorGetComponents(color.CGColor);
-    
-    
     NSString *r = [NSString stringWithFormat:@"%@",[UIColor ToHex:cs[0]*255]];
     NSString *g = [NSString stringWithFormat:@"%@",[UIColor ToHex:cs[1]*255]];
     NSString *b = [NSString stringWithFormat:@"%@",[UIColor ToHex:cs[2]*255]];

@@ -41,7 +41,7 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
 
@@ -54,6 +54,10 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     
     return self.controlarr.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_collectionView.width,_collectionView.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

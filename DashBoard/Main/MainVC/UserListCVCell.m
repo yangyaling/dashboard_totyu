@@ -9,9 +9,14 @@
 #import "UserListCVCell.h"
 
 @implementation UserListCVCell
+
 -(void)setAlerttype:(NSString *)alerttype{
     
     NSLog(@"_alertArray=========:%@",_alertArray);
+    _CellBGView.backgroundColor = [UIColor whiteColor];
+    _CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
+    _CellBGView.layer.borderWidth = 0.5;
+    
     [_alert removeFromSuperview];
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {
@@ -20,10 +25,6 @@
             _alert.delegate = self;
             [_CellBGView addSubview:_alert];
             _CellBGView.backgroundColor = SystemColor(0.3);
-            _CellBGView.layer.borderWidth = 0.0;
-        }else{
-            _CellBGView.backgroundColor = [UIColor whiteColor];
-            _CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
             _CellBGView.layer.borderWidth = 0.5;
         }
     }

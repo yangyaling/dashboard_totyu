@@ -38,7 +38,7 @@
         for (int i = 0; i<titlearray.count; i++) {
             UILabel *lab = [[UILabel alloc]initWithFrame:PaoMaLabelFrame];
             NSDictionary *alertdict = titlearray[i];
-            lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate needDateStatus:hhmmssType date:[NSDate needDateStrStatus:HaveHMSType datestr:alertdict[@"registdate"]]]];
+            lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:@"HH:mm:ss" ReturnType:returnstring date:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]]]];
             [self labelset:lab];
             [OneShowContentView addSubview:lab];
         }

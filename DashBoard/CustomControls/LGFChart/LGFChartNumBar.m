@@ -39,8 +39,23 @@
     }
 }
 
+-(void)layoutSubviews{
+    if (_numbartype!=190) {
+        [self addnumbarview];
+    }
+}
+
 -(void)setYValuesArray:(NSArray *)YValuesArray{
     _YValuesArray = YValuesArray;
+
+    if (!(_numbartype!=190)) {
+        [self addnumbarview];
+    }
+}
+
+-(void)addnumbarview{
+    [_numbarview removeFromSuperview];
+    
     _numbarview = [[UIView alloc]initWithFrame:_numbartype!=190 ? NumBarRect : NumLineRect];
     
     //添加y轴
@@ -52,6 +67,7 @@
         NumTitle.text = _YValuesArray[i];
         [self addSubview:NumTitle];
     }
+
     [self addSubview:_numbarview];
 }
 

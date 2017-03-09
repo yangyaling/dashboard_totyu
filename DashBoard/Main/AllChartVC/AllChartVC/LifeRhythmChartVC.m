@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *DayTitle;
 @end
 @implementation LifeRhythmChartCell
+
 @end
 
 @interface LifeRhythmChartVC ()
@@ -32,11 +33,12 @@
     return _WeekArray;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     [self LoadNewData];
-
+    
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
     NSLog(@"%@",_DayStr);
@@ -47,9 +49,7 @@
 }
 
 -(void)MJHeaderLoadNewData{
-    
-//    [self LoadNewData];
-    
+
     [self.delegate MJGetNewData];
 }
 
@@ -59,14 +59,15 @@
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:WeeklylrinfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){
-        NSDictionary *tmpDic = success;
+        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
-            [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count];
-            [_ChartCV reloadData];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;   
+            [_ChartCV reloadData];            
+            
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:[tmpDic[@"errors"] firstObject] SuperView:_ChartCV DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
     }];
@@ -79,6 +80,10 @@
     return _DataArray.count;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_ChartCV.width,_ChartCV.height/7);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     LifeRhythmChartCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LifeRhythmChartCell" forIndexPath:indexPath];
@@ -87,6 +92,9 @@
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         cell.WeekTitle.text = self.WeekArray[indexPath.row];
         cell.DayTitle.text = [[DataDict allKeys] firstObject];
+        
+        [cell setNeedsLayout];
+        [cell layoutIfNeeded];
         NSString *SelectDate = [[DataDict allKeys] firstObject];
         NSArray *ActionArray = [NSArray arrayWithArray:DataDict[SelectDate][1]];
         UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DayDataView.bounds BarData:ActionArray BarType:1];

@@ -38,6 +38,8 @@
 
 #import "NITCollectionView.h"
 
+#import "LGFNullCheck.h"
+
 #define TotalDay 7 //可滑动总天数
 #define TotalWeek 5 //可滑动总周数
 

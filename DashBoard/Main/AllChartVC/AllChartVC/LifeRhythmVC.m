@@ -36,12 +36,11 @@ static NSString * const reuseIdentifier = @"PageVCCell";
         NSMutableArray *reverscontrolarr = [NSMutableArray array];
         for (int i = 0; i< TotalWeek; i++) {
             LifeRhythmChartVC *lrcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmChartVCSB"];
-            
             if (i==0) {
-                lrcvc.DayStr = [NSDate needDateStatus:NotHaveType date:_SelectDate];
+                lrcvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
             }else{
                 LifeRhythmChartVC *Previouslrcvc = reverscontrolarr[i-1];
-                NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previouslrcvc.DayStr];
+                NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previouslrcvc.DayStr];
                 int week = (int)[NSDate nowTimeType:LGFweek time:Previousdate];
                 lrcvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:week];
             }
@@ -57,13 +56,10 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict removeObjectForKey:@"actionremove"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
@@ -71,7 +67,6 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     ScrollPage = TotalWeek-1;
     [self ReloadNewData:[NSDate date] ColorType:NO];
-    _DateLabel.text = [NSDate getWeekBeginAndEndWith:[NSDate date]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -82,7 +77,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
  */
 - (IBAction)DateRetrieval:(id)sender {
     
-    [[LGFClandar Clandar] ShowInView:self Date:[NSDate needDateStatus:NotHaveType date:_SelectDate]];
+    [[LGFClandar Clandar] ShowInView:self Date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
 }
 
 -(void)ReloadColor:(id)sender{
@@ -109,9 +104,11 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    [_PageCV reloadData];
-    [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
+    [_PageCV reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    });
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -119,6 +116,10 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
 
     return self.controlarr.count;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_PageCV.width,_PageCV.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -137,7 +138,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     
     LifeRhythmChartVC *Previousascvc = _controlarr[ScrollPage];
     
-    NSDate *Previousdate = [NSDate needDateStrStatus:NotHaveType datestr:Previousascvc.DayStr];
+    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
     
     _DateLabel.text = [NSDate getWeekBeginAndEndWith:Previousdate];
 }

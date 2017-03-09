@@ -42,6 +42,7 @@
                 }
             }
             _YTotalLength = [[maxnumarr valueForKeyPath:@"@max.floatValue"] intValue]*2;
+            if (_YTotalLength==0) _YTotalLength=1;
         }
     }
     return self;

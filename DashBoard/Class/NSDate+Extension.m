@@ -61,52 +61,26 @@
     return ruStr;
 }
 
-+ (NSString *)needDateStatus:(DateStatus)type date:(NSDate*)date
-{
-    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    if (type == HaveHMSType) {
-        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-    } else if (type == NotHaveType) {
-        fmt.dateFormat = @"yyyy-MM-dd";
-    } else if(type == JapanHMSType){
-        fmt.dateFormat = @"yyyy年MM月dd日 HH:mm:ss";
-    }else if(type == JapanMDType){
-        fmt.dateFormat = @"MM月dd日";
-    }else if(type == DDType){
-        fmt.dateFormat = @"DD";
-    }else if(type == YYYYType){
-        fmt.dateFormat = @"yyyy";
-    }else if(type == hhmmssType){
-        fmt.dateFormat = @"HH:mm:ss";
-    }else if(type == JapanHMDType){
-        fmt.dateFormat = @"yyyy年MM月dd日";
-    }
-    return [fmt stringFromDate:date];
-}
++ (id)NeedDateFormat:(NSString*)DateFormat ReturnType:(ReturnType)ReturnType date:(id)date{
 
-+ (NSDate *)needDateStrStatus:(DateStatus)type datestr:(NSString*)datestr
-{
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    if (type == HaveHMSType) {
-        fmt.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-    } else if (type == NotHaveType) {
-        fmt.dateFormat = @"yyyy-MM-dd";
-    } else if(type == JapanHMSType){
-        fmt.dateFormat = @"yyyy年MM月dd日 HH:mm:ss";
-    }else if(type == JapanMDType){
-        fmt.dateFormat = @"MM月dd日";
-    }else if(type == DDType){
-        fmt.dateFormat = @"DD";
-    }else if(type == YYYYType){
-        fmt.dateFormat = @"YYYY";
-    } else if(type == JapanHMDType) {
-        fmt.dateFormat = @"yyyy年MM月dd日";
-    } else {
-        fmt.dateFormat = @"HH:mm:ss";
+    fmt.dateFormat = DateFormat;
+    
+    if ([date isKindOfClass:[NSDate class]]) {
+        
+        if (ReturnType == returnstring) {
+            return [fmt stringFromDate:date];
+        }else{
+            return [fmt dateFromString:[fmt stringFromDate:date]];
+        }
+    }else{
+        if (ReturnType == returnstring) {
+            return [fmt stringFromDate:[fmt dateFromString:date]];
+        }else{
+            return [fmt dateFromString:date];
+        }
     }
-    return [fmt dateFromString:datestr];
 }
-
 
 + (NSString *)SharedToday
 {
@@ -394,123 +368,145 @@
  取得与当前日期差值
  */
 + (NSInteger)getDifferenceByDate:(id)date {
-    
-    NSDate *selectdate;
-    
-    if ([date isKindOfClass:[NSString class]]) {
-        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-        fmt.dateFormat = @"yyyy-MM-dd";
+    if (date) {
+        NSDate *selectdate;
         
-        selectdate = [fmt dateFromString:date];
+        if ([date isKindOfClass:[NSString class]]) {
+            NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+            fmt.dateFormat = @"yyyy-MM-dd";
+            
+            selectdate = [fmt dateFromString:date];
+        }else{
+            
+            selectdate = date;
+            
+        }
+        
+        NSInteger nowtime = [[NSDate date] timeIntervalSince1970];
+        
+        NSInteger selecttime = [selectdate timeIntervalSince1970];
+        
+        NSInteger num = (nowtime - selecttime)/3600/24;
+        
+        return num;
     }else{
-    
-        selectdate = date;
-        
+        return 0;
     }
-    
-    NSInteger nowtime = [[NSDate date] timeIntervalSince1970];
-    
-    NSInteger selecttime = [selectdate timeIntervalSince1970];
-    
-    NSInteger num = (nowtime - selecttime)/3600/24;
-    
-    return num;
 }
 
 + (NSString *)getYear:(NSDate*)date{
-    
-    NSString * yearstr = [NSString stringWithFormat:@"%@年",[NSDate needDateStatus:YYYYType date:date]];
-    return yearstr;
+    if (date) {
+        NSString * yearstr = [NSString stringWithFormat:@"%@年",[NSDate NeedDateFormat:@"yyyy" ReturnType:returnstring date:date]];
+        return yearstr;
+    }else{
+        return @"error";
+    }
 }
 
 + (NSString *)getTenYear:(NSDate*)date{
-    
-    NSString * yearstr = [NSString stringWithFormat:@"%@年",[NSDate needDateStatus:YYYYType date:date]];
-
-    NSString * tenyearstr = [NSString stringWithFormat:@"%@年",[NSDate needDateStatus:YYYYType date:[NSDate needDateStrStatus:NotHaveType datestr:[NSDate GetTenYearDate:date]]]];
- 
-    return [NSString stringWithFormat:@"%@~%@",tenyearstr,yearstr];
+    if (date) {
+        NSString * yearstr = [NSString stringWithFormat:@"%@年",[NSDate NeedDateFormat:@"yyyy" ReturnType:returnstring date:date]];
+        
+        NSString * tenyearstr = [NSString stringWithFormat:@"%@年",[NSDate NeedDateFormat:@"yyyy" ReturnType:returnstring date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:[NSDate GetTenYearDate:date]]]];
+        
+        return [NSString stringWithFormat:@"%@~%@",tenyearstr,yearstr];
+    }else{
+        return @"error";
+    }
 }
 
 + (NSString *)getMonthBeginAndEndWith:(NSDate*)date{
     
-    double interval = 0;
-    NSDate *beginDate = nil;
-    NSDate *endDate = nil;
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    
-    [calendar setFirstWeekday:2];//设定周一为周首日
-    BOOL ok = [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&beginDate interval:&interval forDate:date];
-    //分别修改为 NSDayCalendarUnit NSWeekCalendarUnit NSYearCalendarUnit
-    if (ok) {
-        endDate = [beginDate dateByAddingTimeInterval:interval-1];
-    }else {
-        return @"";
+    if (date) {
+        double interval = 0;
+        NSDate *beginDate = nil;
+        NSDate *endDate = nil;
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        
+        [calendar setFirstWeekday:2];//设定周一为周首日
+        BOOL ok = [calendar rangeOfUnit:NSCalendarUnitMonth startDate:&beginDate interval:&interval forDate:date];
+        //分别修改为 NSDayCalendarUnit NSWeekCalendarUnit NSYearCalendarUnit
+        if (ok) {
+            endDate = [beginDate dateByAddingTimeInterval:interval-1];
+        }else {
+            return @"";
+        }
+        NSDateFormatter *myDateFormatter = [[NSDateFormatter alloc] init];
+        [myDateFormatter setDateFormat:@"MM月dd日"];
+        NSString *beginString = [myDateFormatter stringFromDate:beginDate];
+        NSString *endString = [myDateFormatter stringFromDate:endDate];
+        NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:beginDate];
+        NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:endDate];
+        NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
+        
+        NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",beginString,WeekArray[beginDateWeek-1],endString,WeekArray[endDateWeek-1]];
+        return s;
+    }else{
+        return @"error";
     }
-    NSDateFormatter *myDateFormatter = [[NSDateFormatter alloc] init];
-    [myDateFormatter setDateFormat:@"MM月dd日"];
-    NSString *beginString = [myDateFormatter stringFromDate:beginDate];
-    NSString *endString = [myDateFormatter stringFromDate:endDate];
-    NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:beginDate];
-    NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:endDate];
-    NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
-    
-    NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",beginString,WeekArray[beginDateWeek-1],endString,WeekArray[endDateWeek-1]];
-    return s;
 }
 
 + (NSString *)getWeekBeginAndEndWith:(NSDate*)date{
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    [calendar setFirstWeekday:2];//设定周一为周首日
-    NSDateComponents *comp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday
-                                         fromDate:date];
+    if (date) {
 
-    NSInteger weekDay = [comp weekday];
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        [calendar setFirstWeekday:2];//设定周一为周首日
+        NSDateComponents *comp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday
+                                             fromDate:date];
 
-    NSInteger day = [comp day];
+        NSInteger weekDay = [comp weekday];
 
-    long firstDiff,lastDiff;
-    if (weekDay == 1) {
-        firstDiff = -6;
-        lastDiff = 0;
+        NSInteger day = [comp day];
+
+        long firstDiff,lastDiff;
+        if (weekDay == 1) {
+            firstDiff = -6;
+            lastDiff = 0;
+        }else{
+            firstDiff = [calendar firstWeekday] - weekDay;
+            lastDiff = 8 - weekDay;
+        }
+        
+        // 在当前日期(去掉了时分秒)基础上加上差的天数
+        NSDateComponents *firstDayComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+        [firstDayComp setDay:day + firstDiff];
+        NSDate *firstDayOfWeek= [calendar dateFromComponents:firstDayComp];
+        
+        NSDateComponents *lastDayComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+        [lastDayComp setDay:day + lastDiff];
+        NSDate *lastDayOfWeek= [calendar dateFromComponents:lastDayComp];
+        
+        NSDateFormatter *formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"MM月dd日"];
+        
+        NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:firstDayOfWeek];
+        NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:lastDayOfWeek];
+        NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
+        
+        NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",[formater stringFromDate:firstDayOfWeek],WeekArray[beginDateWeek-1],[formater stringFromDate:lastDayOfWeek],WeekArray[endDateWeek-1]];
+        
+        return s;
     }else{
-        firstDiff = [calendar firstWeekday] - weekDay;
-        lastDiff = 8 - weekDay;
+        return @"error";
     }
-    
-    // 在当前日期(去掉了时分秒)基础上加上差的天数
-    NSDateComponents *firstDayComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-    [firstDayComp setDay:day + firstDiff];
-    NSDate *firstDayOfWeek= [calendar dateFromComponents:firstDayComp];
-    
-    NSDateComponents *lastDayComp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-    [lastDayComp setDay:day + lastDiff];
-    NSDate *lastDayOfWeek= [calendar dateFromComponents:lastDayComp];
-    
-    NSDateFormatter *formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"MM月dd日"];
-    
-    NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:firstDayOfWeek];
-    NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:lastDayOfWeek];
-    NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
-    
-    NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",[formater stringFromDate:firstDayOfWeek],WeekArray[beginDateWeek-1],[formater stringFromDate:lastDayOfWeek],WeekArray[endDateWeek-1]];
-    
-    return s;
 }
 
 + (NSString *)GetTenYearDate:(NSDate*)date{
     
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *comp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
-    
-    [comp setYear:comp.year-10];
-
-    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"yyyy-MM-dd";
-    
-    return [fmt stringFromDate:[calendar dateFromComponents:comp]];
+    if (date) {
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *comp = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+        
+        [comp setYear:comp.year-10];
+        
+        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+        fmt.dateFormat = @"yyyy-MM-dd";
+        
+        return [fmt stringFromDate:[calendar dateFromComponents:comp]];
+    }else{
+        return @"error";
+    }
 }
 
 @end

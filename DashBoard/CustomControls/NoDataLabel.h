@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NoDataLabel : UILabel
--(void)Show:(NSString*)title SuperView:(UIView*)SuperView DataBool:(NSInteger)DataBool;
+-(BOOL)Show:(NSString*)title SuperView:(UIView*)SuperView DataBool:(NSInteger)DataBool;
 @end

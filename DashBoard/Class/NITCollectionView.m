@@ -7,9 +7,12 @@
 //
 
 #import "NITCollectionView.h"
- 
+
 @implementation NITCollectionView
+
+
 -(void)setLayoutType:(NSString *)LayoutType{
+
     UICollectionViewFlowLayout *layout;
     CGSize itemSize;
     if ([LayoutType isEqualToString:@"main"]) {
@@ -24,20 +27,17 @@
         layout = [UICollectionViewFlowLayout new];
         itemSize = CGSizeMake(self.width,(self.height/2)/3);
         layout.footerReferenceSize = CGSizeMake(self.width,self.height/2);
-    }else if([LayoutType isEqualToString:@"clandar"]){
-        layout = [UICollectionViewFlowLayout new];
-        itemSize = CGSizeMake(self.width/7,self.width/7);
-        layout.headerReferenceSize = CGSizeMake(self.width,50);
-        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
     }else{
         layout = [UICollectionViewFlowLayout new];
         itemSize = CGSizeMake(self.width,self.height/[LayoutType intValue]);
     }
-    layout.itemSize = itemSize;
+
     
+    layout.itemSize = itemSize;
     layout.minimumLineSpacing = 0;
     layout.minimumInteritemSpacing = 0;
     self.collectionViewLayout = layout;
+
 }
 
 @end

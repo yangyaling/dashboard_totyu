@@ -11,6 +11,7 @@
 #import "AlertLabel.h"
 
 @interface UserListCVCell : UICollectionViewCell<AlertLabelDelegate>
+
 @property (weak, nonatomic) IBOutlet UIView *CellBGView;
 @property (weak, nonatomic) IBOutlet UILabel *RoomName;
 @property (weak, nonatomic) IBOutlet UILabel *UserName;
