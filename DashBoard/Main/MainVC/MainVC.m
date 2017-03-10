@@ -66,13 +66,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 -(void)DidBecomeActive{
     
-    [self LoadAlertData];
-}
-
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    [self LoadAlertData];
+    [self loadNewData];
 }
 
 - (void)didReceiveMemoryWarning {
