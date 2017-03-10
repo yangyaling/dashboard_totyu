@@ -52,6 +52,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
 
     [self loadNewData];
 
@@ -60,6 +62,17 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
 
     [self CellHorizontalAlignment];
+}
+
+-(void)DidBecomeActive{
+    
+    [self LoadAlertData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self LoadAlertData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -324,7 +337,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
         [cell setNeedsLayout];
         [cell layoutIfNeeded];
         
-        
+        cell.CellBGView.backgroundColor = [UIColor whiteColor];
+        cell.CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
+        cell.CellBGView.layer.borderWidth = 0.5;
         
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
         
@@ -346,11 +361,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
         if (_CurrentAlertarrays.count > 0) {
             cell.alertArray = _CurrentAlertarrays.copy;
             cell.alerttype = DataDict[@"roomid"];
-        }else{
-            cell.CellBGView.backgroundColor = [UIColor whiteColor];
-            cell.CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
-            cell.CellBGView.layer.borderWidth = 0.5;
         }
+        
         return cell;
     }
 }
@@ -359,6 +371,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
     
     int page = scrollView.contentOffset.x / scrollView.width;
     _UserPC.currentPage = page;
+}
+
+-(void)dealloc{
+    [NITNotificationCenter removeObserver:self];
 }
 
 @end

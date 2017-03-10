@@ -20,15 +20,14 @@
             _alert.delegate = self;
             [_CellBGView addSubview:_alert];
             _CellBGView.backgroundColor = SystemColor(0.3);
-            _CellBGView.layer.borderWidth = 0.5;
         }
     }
 }
 
 -(void)AlertLabelClick{
-    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:[NSString stringWithFormat:@"%@はクリックしました，このページは展示されていません",_RoomName.text] preferredStyle:UIAlertControllerStyleAlert];
-    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-    }]];
-    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+//    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:[NSString stringWithFormat:@"%@はクリックしました，このページは展示されていません",_RoomName.text] preferredStyle:UIAlertControllerStyleAlert];
+//    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+//    }]];
+//    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
 }
 @end

@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="d7A-8c-YlY">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="d7A-8c-YlY">
                                 <rect key="frame" x="382" y="319" width="260" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="QBf-MT-8Fp"/>
@@ -32,7 +32,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fxN-P4-4TL">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fxN-P4-4TL">
                                 <rect key="frame" x="382" y="379" width="260" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="260" id="tEc-TC-C8B"/>
@@ -40,7 +40,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zoS-lU-8rc">
                                 <rect key="frame" x="382" y="434" width="260" height="40"/>
@@ -1366,7 +1366,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cXf-h1-GTv" customClass="ColorSelectionCV">
-                                        <rect key="frame" x="542" y="1" width="200" height="133"/>
+                                        <rect key="frame" x="542" y="0.0" width="200" height="134"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="GO7-SE-t7s"/>
@@ -1379,7 +1379,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="65w-2o-a9a" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.600000000000001"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
@@ -1467,7 +1467,7 @@
                                     <constraint firstItem="qTk-k4-J4x" firstAttribute="leading" secondItem="Dc8-XM-IO8" secondAttribute="leading" constant="50" id="Hli-aS-hkz"/>
                                     <constraint firstItem="qTk-k4-J4x" firstAttribute="top" secondItem="BEK-qM-6G1" secondAttribute="bottom" constant="27" id="I8K-iv-UFb"/>
                                     <constraint firstAttribute="bottom" secondItem="227-N6-Hsl" secondAttribute="bottom" constant="33" id="KEK-zq-yDF"/>
-                                    <constraint firstItem="cXf-h1-GTv" firstAttribute="top" secondItem="Dc8-XM-IO8" secondAttribute="top" constant="1" id="PqB-1r-MUy"/>
+                                    <constraint firstItem="cXf-h1-GTv" firstAttribute="top" secondItem="Dc8-XM-IO8" secondAttribute="top" id="PqB-1r-MUy"/>
                                     <constraint firstAttribute="bottom" secondItem="qTk-k4-J4x" secondAttribute="bottom" constant="23" id="QcS-oQ-c4N"/>
                                     <constraint firstItem="7zw-e0-Xni" firstAttribute="leading" secondItem="Dc8-XM-IO8" secondAttribute="leading" constant="20" id="SwT-d3-hFx"/>
                                     <constraint firstItem="cXf-h1-GTv" firstAttribute="leading" secondItem="ARm-Xv-8q4" secondAttribute="trailing" constant="52" id="VNY-lK-EXD"/>
@@ -1621,7 +1621,7 @@
                                         </connections>
                                     </segmentedControl>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bdF-WU-qra" customClass="ColorSelectionCV">
-                                        <rect key="frame" x="542" y="1" width="200" height="133"/>
+                                        <rect key="frame" x="542" y="0.0" width="200" height="134"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="gac-fJ-6of"/>
@@ -1634,7 +1634,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="I7F-2p-fu7" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.600000000000001"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                     <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
@@ -1716,7 +1716,7 @@
                                     <constraint firstItem="mgI-Za-olE" firstAttribute="leading" secondItem="ftS-C5-EeC" secondAttribute="trailing" id="TgX-fo-rlh"/>
                                     <constraint firstAttribute="bottom" secondItem="bdF-WU-qra" secondAttribute="bottom" constant="1" id="U6Y-7g-QJg"/>
                                     <constraint firstItem="bdF-WU-qra" firstAttribute="centerX" secondItem="XmM-mR-nsx" secondAttribute="centerX" constant="130" id="eyG-mX-QbX"/>
-                                    <constraint firstItem="bdF-WU-qra" firstAttribute="top" secondItem="XmM-mR-nsx" secondAttribute="top" constant="1" id="fTw-tJ-WXK"/>
+                                    <constraint firstItem="bdF-WU-qra" firstAttribute="top" secondItem="XmM-mR-nsx" secondAttribute="top" id="fTw-tJ-WXK"/>
                                     <constraint firstAttribute="bottom" secondItem="9vG-ph-wIL" secondAttribute="bottom" constant="42" id="fdt-nm-Hdj"/>
                                     <constraint firstAttribute="trailing" secondItem="fot-Gs-NaD" secondAttribute="trailing" constant="19" id="pma-Xw-5bx"/>
                                     <constraint firstItem="f6d-XL-n4f" firstAttribute="top" secondItem="jh3-Jh-5j6" secondAttribute="bottom" constant="27" id="qKZ-jS-JBo"/>
@@ -1930,6 +1930,11 @@
                                                         <constraint firstAttribute="width" constant="15" id="Gt5-WX-8Hb"/>
                                                         <constraint firstAttribute="height" constant="15" id="ZD5-aA-hx5"/>
                                                     </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                         </view>
@@ -2510,7 +2515,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温度" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQI-SN-Zik">
-                                                    <rect key="frame" x="0.0" y="5" width="62" height="107"/>
+                                                    <rect key="frame" x="0.0" y="5" width="62" height="107.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="62" id="bAI-9e-1ts"/>
                                                     </constraints>

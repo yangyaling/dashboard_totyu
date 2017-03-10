@@ -57,6 +57,8 @@
     lab.textColor = [UIColor whiteColor];
     lab.font = [UIFont boldSystemFontOfSize:20];
     lab.backgroundColor = [UIColor orangeColor];
+    lab.layer.cornerRadius = 5;
+    lab.clipsToBounds = YES;
     lab.opaque = YES;
 }
 
