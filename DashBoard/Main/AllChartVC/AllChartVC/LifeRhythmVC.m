@@ -104,7 +104,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
+    if (!ColorType) _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
@@ -136,7 +136,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalWeek);
     
-    LifeRhythmChartVC *Previousascvc = _controlarr[ScrollPage];
+    LifeRhythmChartVC *Previousascvc = self.controlarr[ScrollPage];
     
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
     

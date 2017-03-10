@@ -96,7 +96,7 @@
 
     NSLog(@"LGF  :%@",systemactioninfo);
     [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:[NSString stringWithFormat:@"%ld",_Row] userInfo:nil]];
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
 }
 
 @end
@@ -120,6 +120,7 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     if (self) {
         self.delegate = self;
         self.dataSource = self;
+
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
         if (systemactioninfo.count==0) {

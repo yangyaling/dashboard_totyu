@@ -147,11 +147,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     }else{
         [self ReloadNewData:[NSDate date] ColorType:YES];
     }
-    ActivityStatisticsChartVC *Previousascvc = _controlarr[ScrollPage];
-    
-    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
-    
-    [self TimeFrameTitleSetValue:Previousdate];
 }
 
 -(void)MJGetNewData:(NSString *)dateString{
@@ -173,7 +168,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    [self TimeFrameTitleSetValue:_SelectDate];
+    if (!ColorType)[self TimeFrameTitleSetValue:_SelectDate];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
@@ -205,7 +200,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     
     ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalRange);
 
-    ActivityStatisticsChartVC *Previousascvc = _controlarr[ScrollPage];
+    ActivityStatisticsChartVC *Previousascvc = self.controlarr[ScrollPage];
     
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
     
