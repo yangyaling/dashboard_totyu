@@ -72,10 +72,10 @@
                             if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
                                 [_DataArray removeObject:DataDict];
                             }
-                            if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
-                                selecttype = 1;
-                            }
                         }
+                    }
+                    if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
+                        selecttype = 1;
                     }
                 }
             }

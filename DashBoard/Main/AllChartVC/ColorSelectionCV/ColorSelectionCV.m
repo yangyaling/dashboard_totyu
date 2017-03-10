@@ -123,7 +123,7 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
         if (systemactioninfo.count==0) {
-            [self LoadPlaceData];
+            [self LoadVzConfigData];
         }
         [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     }
@@ -135,30 +135,11 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     [self reloadData];
 }
 
-- (void)LoadPlaceData{
+- (void)LoadVzConfigData{
     
     [MBProgressHUD showMessage:@"" toView:self];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:self success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            
-            NSArray *BuildingArray = [NSArray arrayWithArray:tmpDic[@"buildingInfo"]];
-            if (BuildingArray.count>0) {
-                [self LoadVzConfigData:BuildingArray[2]];
-            }
-            
-        }else{
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-        }
-    }defeats:^(NSError *defeats){
-        
-    }];
-}
-
-- (void)LoadVzConfigData:(NSDictionary*)Building{
-    
-    [MBProgressHUD showMessage:@"" toView:self];
-    NSDictionary *parameter = @{@"buildingid":Building[@"buildingid"],@"floorno":Building[@"floorno"]};
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
