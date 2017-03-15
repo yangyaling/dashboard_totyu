@@ -140,7 +140,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     [self ReloadNewData:_SelectDate ColorType:YES];
 }
 
--(void)MJGetNewData:(NSString *)dateString{
+-(void)MJGetNewData{
     
     [self ReloadNewData:[NSDate date] ColorType:NO];
 }
