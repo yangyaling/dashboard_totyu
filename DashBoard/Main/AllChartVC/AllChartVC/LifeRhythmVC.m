@@ -54,6 +54,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
+    _DateLabel.text = [NSDate getWeekBeginAndEndWith:[NSDate date]];
 
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     ScrollPage = TotalWeek;
@@ -95,7 +96,6 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    if (!ColorType) _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];

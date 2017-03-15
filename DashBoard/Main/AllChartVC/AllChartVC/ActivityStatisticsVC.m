@@ -106,6 +106,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     _FloorTitle.text = SystemUserDict[@"displayname"];
     _RoomTitle.text = SystemUserDict[@"roomname"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
+    [self TimeFrameTitleSetValue:[NSDate date]];
 
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     TimeSelectSegIndex=0;
@@ -168,7 +169,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     
     self.controlarr = nil;
     _SelectDate = date;
-    if (!ColorType)[self TimeFrameTitleSetValue:_SelectDate];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
@@ -189,6 +189,8 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *view = [self.controlarr[indexPath.item]view];
     view.size = cell.size;
