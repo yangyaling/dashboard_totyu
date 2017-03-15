@@ -97,6 +97,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     
     self.controlarr = nil;
     _SelectDate = date;
+    if(!ColorType)_TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date]];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];

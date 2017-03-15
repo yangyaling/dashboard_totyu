@@ -169,6 +169,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     
     self.controlarr = nil;
     _SelectDate = date;
+    if (!ColorType)[self TimeFrameTitleSetValue:date];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];

@@ -112,6 +112,7 @@
     UIViewController *SuperView = SuperSelf;
     superview = SuperView.view;
 
+    [superview addSubview:self.Cover];
     self.frame = CGRectMake(superview.width, 0, 280, superview.height);
     [self.Cover addSubview:self];
     [self addSubview:self.ClandarCV];
@@ -131,7 +132,6 @@
     if (!_Cover) {
         _Cover = [[UIView alloc]initWithFrame:superview.bounds];
         _Cover.backgroundColor = [UIColor clearColor];
-        [superview addSubview:_Cover];
     }
     return _Cover;
 }

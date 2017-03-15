@@ -83,8 +83,8 @@
                         for (int i = 0; i<array.count; i++) {
                             CGContextMoveToPoint(context, BarX(array[i]), self.height);
                             CGContextAddLineToPoint(context, BarX(array[i]), 0);
+                            CGContextDrawPath(context, kCGPathStroke);
                         }
-                        CGContextDrawPath(context, kCGPathStroke);
                     }
                 }
             }
@@ -100,8 +100,8 @@
             }
             CGContextMoveToPoint(context, i*(self.width/TotalLength), self.height);
             CGContextAddLineToPoint(context, i*(self.width/TotalLength), 0);
+            CGContextDrawPath(context, kCGPathStroke);
         }
-        CGContextDrawPath(context, kCGPathStroke);
     }
     
     //添加辅助线
