@@ -83,8 +83,8 @@
                         for (int i = 0; i<array.count; i++) {
                             CGContextMoveToPoint(context, BarX(array[i]), self.height);
                             CGContextAddLineToPoint(context, BarX(array[i]), 0);
-                            CGContextDrawPath(context, kCGPathStroke);
                         }
+                        CGContextDrawPath(context, kCGPathStroke);
                     }
                 }
             }

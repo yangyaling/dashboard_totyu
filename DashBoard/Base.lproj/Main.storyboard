@@ -1401,7 +1401,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
-                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1835,7 +1835,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="loading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3L8-KT-8L0">
-                                                    <rect key="frame" x="0.0" y="2" width="110" height="96.5"/>
+                                                    <rect key="frame" x="0.0" y="2" width="110" height="86"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="rhK-jU-g5H"/>
                                                     </constraints>
@@ -1844,7 +1844,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="月" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nux-E9-Q4B">
-                                                    <rect key="frame" x="110" y="2" width="40" height="96.5"/>
+                                                    <rect key="frame" x="110" y="2" width="40" height="86"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="Ofl-rJ-T43"/>
                                                     </constraints>
@@ -1853,7 +1853,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QKC-0l-VDH">
-                                                    <rect key="frame" x="145" y="4" width="869" height="92.5"/>
+                                                    <rect key="frame" x="145" y="4" width="849" height="82"/>
                                                     <color key="backgroundColor" red="0.95699179290000003" green="0.95699179290000003" blue="0.95699179290000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                             </subviews>
@@ -2589,7 +2589,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="65" id="rlF-mg-rAc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                             <userDefinedRuntimeAttributes>
