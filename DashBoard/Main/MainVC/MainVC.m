@@ -151,20 +151,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
             if (alertarray.count >0) {
                 NSDictionary *alertdict = alertarray[alertarray.count-1];
                 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
-                    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                    }]];
-    //                AudioServicesPlaySystemSound(1005);
-    //                UIWindow   *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    //                
-    //                alertWindow.rootViewController = [[UIViewController alloc] init];
-    //                alertWindow.windowLevel = UIWindowLevelAlert - 1;
-    //                [alertWindow makeKeyAndVisible];
-    //                NSLog(@"%f",UIWindowLevelAlert);
-                    [MasterKeyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
-                });
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                }]];
+                [MasterKeyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
             }
             [self.UserListCV reloadData];
         }else{
