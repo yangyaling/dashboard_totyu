@@ -48,22 +48,26 @@
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary new];
     [SystemUserDict setValue:userid forKey:@"userid1"];
     [SystemUserDict setValue:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returnstring date:[NSDate date]] forKey:@"newnoticetime"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
-    NSDictionary *parameter = @{@"userid":userid,@"password":password};
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
     
-    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    [[SealAFNetworking NIT] PostWithUrl:ZwloginType parameters:parameter mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
-            [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
-            MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
-        }else{
-            [MBProgressHUD showError:@"登録失败!" toView:self.view];
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-        }
-    }defeats:^(NSError *defeats){
-    }];
+        NSDictionary *parameter = @{@"userid":userid,@"password":password};
+        
+        [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+        [[SealAFNetworking NIT] PostWithUrl:ZwloginType parameters:parameter mjheader:nil superview:self.view success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            if ([tmpDic[@"code"] isEqualToString:@"200"]) {
+                [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
+                [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
+                MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
+            }else{
+                [MBProgressHUD showError:@"登録失败!" toView:self.view];
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
+            }
+        }defeats:^(NSError *defeats){
+        }];
+    }else{
+        [MBProgressHUD showError:@"登録失败!" toView:self.view];
+    }
 }
 @end

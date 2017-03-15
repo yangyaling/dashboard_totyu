@@ -29,8 +29,7 @@
     [self LoadNewData];
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
-    
-//    [NITNotificationCenter addObserver:self selector:@selector(SelectedColor:) name:@"SystemReloadColor" object:nil];
+
 }
 
 -(void)MJHeaderLoadNewData{
@@ -43,9 +42,9 @@
 }
 
 -(void)LoadNewData{
-    
-    NSLog(@"%@",_DayStr);
+
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSLog(@"%@,%@号房间,活动详细传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:LrinfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){

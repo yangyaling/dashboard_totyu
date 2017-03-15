@@ -27,6 +27,9 @@
         layout = [UICollectionViewFlowLayout new];
         itemSize = CGSizeMake(self.width,(self.height/2)/3);
         layout.footerReferenceSize = CGSizeMake(self.width,self.height/2);
+    }else if([LayoutType isEqualToString:@"colorselect"]){
+        layout = [UICollectionViewFlowLayout new];
+        itemSize = CGSizeMake(self.width,self.height/5+(self.height/5*0.1));
     }else{
         layout = [UICollectionViewFlowLayout new];
         itemSize = CGSizeMake(self.width,self.height/[LayoutType intValue]);

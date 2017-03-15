@@ -34,14 +34,13 @@
 }
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad{
     [super viewDidLoad];
     
     [self LoadNewData];
     
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
-    NSLog(@"%@",_DayStr);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,6 +55,7 @@
 -(void)LoadNewData{
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSLog(@"%@,%@号房间,生活一览传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:WeeklylrinfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){
@@ -64,7 +64,6 @@
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;   
             [_ChartCV reloadData];            
-            
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];

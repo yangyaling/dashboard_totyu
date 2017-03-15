@@ -78,6 +78,7 @@
 }
 @property (nonatomic, strong) UIDatePicker *TimeTitlePicker;
 @property (nonatomic, strong) UIView *TimeTitleView;
+@property (nonatomic, strong) UIView *Cover;
 @property (nonatomic, strong) UICollectionView *ClandarCV;
 @property (nonatomic, strong) NSMutableArray *ClandarDataArray;
 @property (nonatomic, strong) NSMutableArray *YearArray;
@@ -99,8 +100,6 @@
 
 - (void)ShowInView:(id)SuperSelf Date:(NSString*)Date{
 
-    [self RemoveAllView];
-    
     NSDate *SelectDate = [self AuToDateFormatter:@"yyyy-MM-dd" object:Date];
     if (SelectDate) {
         NewDate = SelectDate;
@@ -114,15 +113,27 @@
     superview = SuperView.view;
 
     self.frame = CGRectMake(superview.width, 0, 280, superview.height);
-    [superview addSubview:self];
+    [self.Cover addSubview:self];
     [self addSubview:self.ClandarCV];
     [self addSubview:self.TimeTitleView];
     [self.TimeTitleView addSubview:self.TimeTitlePicker];
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.frame = CGRectMake(superview.width-280, 0, 280, superview.height);
+        self.TimeTitleView.alpha = 1.0;
+        self.ClandarCV.alpha = 1.0;
+        self.Cover.alpha = 1.0;
     }];
     [self getAllDaysWithCalender];
     [self ClandarSelectDate:NewDate];
+}
+
+-(UIView *)Cover{
+    if (!_Cover) {
+        _Cover = [[UIView alloc]initWithFrame:superview.bounds];
+        _Cover.backgroundColor = [UIColor clearColor];
+        [superview addSubview:_Cover];
+    }
+    return _Cover;
 }
 
 -(NSMutableArray *)ClandarDataArray{
@@ -279,9 +290,7 @@
     NSMutableArray *arr = dict[@"DayArray"];
     
     [self.TimeTitlePicker setDate:[self AuToDateFormatter:@"yyyy年MM月d日" object:arr[indexPath.item]] animated:YES];
-    NSLog(@"%@",self.TimeTitlePicker.date);
     [self.delegate SelectDate:self.TimeTitlePicker.date];
-//    [self ClandarHidden];
 }
 
 #pragma mark - 触摸
@@ -310,8 +319,11 @@
 
 - (void)ClandarHidden{
     
-    [UIView animateWithDuration:0.2 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         self.frame = CGRectMake(superview.width, 0, 350, superview.height);
+        self.TimeTitleView.alpha = 0.0;
+        self.ClandarCV.alpha = 0.0;
+        self.Cover.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self RemoveAllView];
     }];
@@ -342,10 +354,12 @@
     [self.TimeTitlePicker removeFromSuperview];
     [self.TimeTitleView removeFromSuperview];
     [self.ClandarCV removeFromSuperview];
+    [self.Cover removeFromSuperview];
     [self removeFromSuperview];
     self.ClandarDataArray = nil;
     self.YearArray = nil;
     self.MonthArray = nil;
+    self.Cover = nil;
 }
 
 @end

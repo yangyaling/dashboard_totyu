@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIButton *confirm;
 @property (nonatomic, strong) UIButton *cancel;
 @property (nonatomic, strong) NSDictionary *actiondict;
+@property (nonatomic, strong) UIView *Cover;
 @end
 @implementation LGFColorSelectView
 
@@ -40,7 +41,7 @@
     self.delegate = Super;
 
     self.frame = CGRectMake(WindowView.width/3, WindowView.height/5, WindowView.width/3, WindowView.height/5*3);
-    [WindowView addSubview:self];
+    [self.Cover addSubview:self];
 
     [self addSubview:self.Title];
     
@@ -84,7 +85,6 @@
     
     [self RemoveAllView];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSLog(@"%@",SystemUserDict);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"actionid":self.actiondict[@"actionid"],@"actionexplain":self.actiondict[@"actionexplain"],@"actioncolor":[UIColor hexFromUIColor:self.ResultView.backgroundColor]};
     [self.delegate SelectColor:parameter];
 }
@@ -132,6 +132,15 @@
         _tapGesture =  [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectColorAction:)];
     }
     return _tapGesture;
+}
+
+-(UIView *)Cover{
+    if (!_Cover) {
+        _Cover = [[UIView alloc]initWithFrame:WindowView.bounds];
+        _Cover.backgroundColor = [UIColor clearColor];
+        [WindowView addSubview:_Cover];
+    }
+    return _Cover;
 }
 
 -(UIView *)ResultView{
@@ -193,11 +202,16 @@
 }
 
 -(void)RemoveAllView{
+    [self.Cover removeFromSuperview];
     [self.Title removeFromSuperview];
     [self.ColorImageView removeFromSuperview];
     [self.ResultView removeFromSuperview];
     [self removeFromSuperview];
     self.tapGesture = nil;
+    self.Cover = nil;
+//    self.Title = nil;
+//    self.ColorImageView = nil;
+//    self.ResultView = nil;
 }
 
 

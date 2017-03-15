@@ -1378,17 +1378,19 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="65w-2o-a9a" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LRVCCSCell" id="65w-2o-a9a" customClass="ColorSelectionCVCell">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHm-Sl-9k4">
-                                                            <rect key="frame" x="6" y="3" width="20" height="20"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHm-Sl-9k4">
+                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050393774787" blue="0.90666803657897721" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="22" id="V0H-bM-Pn7"/>
+                                                            </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                     <integer key="value" value="2"/>
@@ -1398,9 +1400,8 @@
                                                                 <action selector="ColorSelectButton:" destination="65w-2o-a9a" eventType="touchUpInside" id="b0h-aH-kbQ"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
-                                                            <rect key="frame" x="32" y="0.0" width="168" height="26"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
+                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1411,6 +1412,15 @@
                                                         </button>
                                                     </subviews>
                                                 </view>
+                                                <constraints>
+                                                    <constraint firstItem="vLm-42-RIc" firstAttribute="top" secondItem="65w-2o-a9a" secondAttribute="top" constant="2" id="26c-20-Dh5"/>
+                                                    <constraint firstAttribute="bottom" secondItem="rHm-Sl-9k4" secondAttribute="bottom" constant="3" id="2Qd-Lg-grU"/>
+                                                    <constraint firstItem="rHm-Sl-9k4" firstAttribute="leading" secondItem="65w-2o-a9a" secondAttribute="leading" constant="3" id="Shq-9v-2ZS"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vLm-42-RIc" secondAttribute="bottom" constant="2" id="bEB-I9-qbZ"/>
+                                                    <constraint firstItem="rHm-Sl-9k4" firstAttribute="top" secondItem="65w-2o-a9a" secondAttribute="top" constant="3" id="e9D-iA-cQp"/>
+                                                    <constraint firstAttribute="trailing" secondItem="vLm-42-RIc" secondAttribute="trailing" id="iVS-E5-BEV"/>
+                                                    <constraint firstItem="vLm-42-RIc" firstAttribute="leading" secondItem="rHm-Sl-9k4" secondAttribute="trailing" constant="5" id="n25-jp-hbg"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="ColorView" destination="rHm-Sl-9k4" id="7gV-8l-fly"/>
                                                     <outlet property="Device" destination="vLm-42-RIc" id="msx-w9-DAF"/>
@@ -1418,7 +1428,8 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="LRVCCSCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ニッセイ太郎さん" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ARm-Xv-8q4">
@@ -1523,6 +1534,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="numbartype">
                                         <integer key="value" value="145"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="TopType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
@@ -1633,17 +1645,19 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="I7F-2p-fu7" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ASVCCSCell" id="I7F-2p-fu7" customClass="ColorSelectionCVCell">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-vI-0b4">
-                                                            <rect key="frame" x="6" y="3" width="20" height="20"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-vI-0b4">
+                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="22" id="7y3-BL-UIs"/>
+                                                            </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                     <integer key="value" value="2"/>
@@ -1653,9 +1667,8 @@
                                                                 <action selector="ColorSelectButton:" destination="I7F-2p-fu7" eventType="touchUpInside" id="KRC-6Q-oFX"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igi-ho-ePh">
-                                                            <rect key="frame" x="32" y="0.0" width="168" height="26"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igi-ho-ePh">
+                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1666,6 +1679,15 @@
                                                         </button>
                                                     </subviews>
                                                 </view>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="igi-ho-ePh" secondAttribute="trailing" id="GQG-Lf-yeC"/>
+                                                    <constraint firstItem="igi-ho-ePh" firstAttribute="top" secondItem="I7F-2p-fu7" secondAttribute="top" constant="2" id="WAA-af-m6M"/>
+                                                    <constraint firstAttribute="bottom" secondItem="igi-ho-ePh" secondAttribute="bottom" constant="2" id="ayw-hd-ELB"/>
+                                                    <constraint firstItem="vC2-vI-0b4" firstAttribute="top" secondItem="I7F-2p-fu7" secondAttribute="top" constant="3" id="cil-Bm-g1L"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vC2-vI-0b4" secondAttribute="bottom" constant="3" id="o5S-yu-AyU"/>
+                                                    <constraint firstItem="igi-ho-ePh" firstAttribute="leading" secondItem="vC2-vI-0b4" secondAttribute="trailing" constant="5" id="um1-1w-lnt"/>
+                                                    <constraint firstItem="vC2-vI-0b4" firstAttribute="leading" secondItem="I7F-2p-fu7" secondAttribute="leading" constant="3" id="upZ-Qy-izw"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="ColorView" destination="vC2-vI-0b4" id="usK-vO-fIn"/>
                                                     <outlet property="Device" destination="igi-ho-ePh" id="3Wc-Ox-BVe"/>
@@ -1673,7 +1695,8 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="ASVCCSCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fot-Gs-NaD">
@@ -1812,7 +1835,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="loading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3L8-KT-8L0">
-                                                    <rect key="frame" x="0.0" y="2" width="110" height="97"/>
+                                                    <rect key="frame" x="0.0" y="2" width="110" height="96.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="110" id="rhK-jU-g5H"/>
                                                     </constraints>
@@ -1821,7 +1844,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="月" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nux-E9-Q4B">
-                                                    <rect key="frame" x="110" y="2" width="40" height="97"/>
+                                                    <rect key="frame" x="110" y="2" width="40" height="96.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="Ofl-rJ-T43"/>
                                                     </constraints>
@@ -1830,7 +1853,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QKC-0l-VDH">
-                                                    <rect key="frame" x="145" y="4" width="869" height="93"/>
+                                                    <rect key="frame" x="145" y="4" width="869" height="92.5"/>
                                                     <color key="backgroundColor" red="0.95699179290000003" green="0.95699179290000003" blue="0.95699179290000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                             </subviews>
@@ -1911,7 +1934,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="トイレ使用" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVS-JK-3TA">
-                                                    <rect key="frame" x="55" y="5" width="132" height="212"/>
+                                                    <rect key="frame" x="55" y="5" width="132" height="211.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="132" id="jmF-0o-9K9"/>
                                                     </constraints>
@@ -1920,7 +1943,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P91-js-Zfa">
-                                                    <rect key="frame" x="190" y="5" width="799" height="212"/>
+                                                    <rect key="frame" x="190" y="5" width="799" height="211.5"/>
                                                     <color key="backgroundColor" red="0.94844933710000001" green="0.94844933710000001" blue="0.94844933710000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaD-UA-K9O">
@@ -1974,6 +1997,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="numbartype">
                                         <integer key="value" value="190"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="TopType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
@@ -2232,6 +2256,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="numbartype">
                                         <integer key="value" value="70"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="TopType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sS7-I4-Ao5" customClass="UnderlineView">
@@ -2302,17 +2327,19 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="GbG-6A-lDI" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LRDVCell" id="GbG-6A-lDI" customClass="ColorSelectionCVCell">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuT-WU-Xig">
-                                                            <rect key="frame" x="6" y="3" width="20" height="20"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuT-WU-Xig">
+                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="22" id="GRq-Mh-cCb"/>
+                                                            </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                     <integer key="value" value="2"/>
@@ -2322,9 +2349,8 @@
                                                                 <action selector="ColorSelectButton:" destination="GbG-6A-lDI" eventType="touchUpInside" id="S43-LO-hQa"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yw0-5m-rpw">
-                                                            <rect key="frame" x="32" y="0.0" width="168" height="26"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yw0-5m-rpw">
+                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2335,6 +2361,15 @@
                                                         </button>
                                                     </subviews>
                                                 </view>
+                                                <constraints>
+                                                    <constraint firstItem="Yw0-5m-rpw" firstAttribute="top" secondItem="GbG-6A-lDI" secondAttribute="top" constant="2" id="66h-pn-Mhu"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Yw0-5m-rpw" secondAttribute="trailing" id="DHI-hV-PhA"/>
+                                                    <constraint firstItem="fuT-WU-Xig" firstAttribute="top" secondItem="GbG-6A-lDI" secondAttribute="top" constant="3" id="Heh-Xo-kiY"/>
+                                                    <constraint firstItem="Yw0-5m-rpw" firstAttribute="leading" secondItem="fuT-WU-Xig" secondAttribute="trailing" constant="5" id="Jqa-bl-yR8"/>
+                                                    <constraint firstAttribute="bottom" secondItem="fuT-WU-Xig" secondAttribute="bottom" constant="3" id="K2w-FG-7W8"/>
+                                                    <constraint firstItem="fuT-WU-Xig" firstAttribute="leading" secondItem="GbG-6A-lDI" secondAttribute="leading" constant="3" id="PEd-t7-5Hc"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Yw0-5m-rpw" secondAttribute="bottom" constant="2" id="aGR-5X-eSD"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="ColorView" destination="fuT-WU-Xig" id="gXU-ch-wNR"/>
                                                     <outlet property="Device" destination="Yw0-5m-rpw" id="yaf-mi-pZZ"/>
@@ -2342,7 +2377,8 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="LRDVCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="idx-yG-Yt4">
@@ -2737,17 +2773,19 @@
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ColorSelectionCVCell" id="bOt-1N-Mgv" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="26.800000000000001"/>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CSDVCCell" id="bOt-1N-Mgv" customClass="ColorSelectionCVCell">
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="27"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIV-NW-5tt">
-                                                            <rect key="frame" x="6" y="3" width="20" height="20"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIV-NW-5tt">
+                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="22" id="Zmf-Uc-lg3"/>
+                                                            </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                     <integer key="value" value="2"/>
@@ -2757,9 +2795,8 @@
                                                                 <action selector="ColorSelectButton:" destination="bOt-1N-Mgv" eventType="touchUpInside" id="RGA-gz-xVS"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sc2-qZ-URT">
-                                                            <rect key="frame" x="32" y="0.0" width="168" height="26"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sc2-qZ-URT">
+                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2770,6 +2807,15 @@
                                                         </button>
                                                     </subviews>
                                                 </view>
+                                                <constraints>
+                                                    <constraint firstItem="Sc2-qZ-URT" firstAttribute="leading" secondItem="tIV-NW-5tt" secondAttribute="trailing" constant="5" id="7yE-36-JGT"/>
+                                                    <constraint firstItem="tIV-NW-5tt" firstAttribute="leading" secondItem="bOt-1N-Mgv" secondAttribute="leading" constant="3" id="Bzg-Ds-nur"/>
+                                                    <constraint firstItem="Sc2-qZ-URT" firstAttribute="top" secondItem="bOt-1N-Mgv" secondAttribute="top" constant="2" id="Jjw-HR-hK8"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Sc2-qZ-URT" secondAttribute="trailing" id="OOU-4Q-pTd"/>
+                                                    <constraint firstAttribute="bottom" secondItem="tIV-NW-5tt" secondAttribute="bottom" constant="3" id="aep-Sa-adD"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Sc2-qZ-URT" secondAttribute="bottom" constant="2" id="cQj-wN-eXd"/>
+                                                    <constraint firstItem="tIV-NW-5tt" firstAttribute="top" secondItem="bOt-1N-Mgv" secondAttribute="top" constant="3" id="jNk-cK-HMl"/>
+                                                </constraints>
                                                 <connections>
                                                     <outlet property="ColorView" destination="tIV-NW-5tt" id="Jt5-eQ-HRr"/>
                                                     <outlet property="Device" destination="Sc2-qZ-URT" id="Ael-ox-h2U"/>
@@ -2777,7 +2823,8 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="CSDVCCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="アロマ館１階" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDy-vE-347">
@@ -2851,6 +2898,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="numbartype">
                                         <integer key="value" value="135"/>
                                     </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="TopType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zfo-54-RzT" customClass="NITCollectionView">

@@ -44,9 +44,9 @@
 }
 
 -(void)LoadNewData{
-    
-    NSLog(@"%@",_DayStr);
+
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSLog(@"%@,%@号房间,活动集计传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr,@"sumflg":_SumFlg};
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:LrsuminfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){

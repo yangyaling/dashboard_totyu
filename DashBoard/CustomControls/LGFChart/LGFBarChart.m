@@ -49,8 +49,8 @@
                                     [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
                                     CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
                                     CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
-                                    CGContextDrawPath(context, kCGPathStroke);
                                 }
+                                CGContextDrawPath(context, kCGPathStroke);
                             }
                         }else{
                             NSArray *DataArray = DataDict[@"data"];
@@ -58,8 +58,8 @@
                                 [[UIColor colorWithHex:DataDict[@"actioncolor"]] setStroke];
                                 CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
                                 CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
-                                CGContextDrawPath(context, kCGPathStroke);
                             }
+                            CGContextDrawPath(context, kCGPathStroke);
                         }
                     }
                 }
@@ -74,8 +74,8 @@
                             for (int i = 0; i<array.count; i++) {
                                 CGContextMoveToPoint(context, BarX(array[i]), self.height);
                                 CGContextAddLineToPoint(context, BarX(array[i]), 0);
-                                CGContextDrawPath(context, kCGPathStroke);
                             }
+                            CGContextDrawPath(context, kCGPathStroke);
                         }
                     }else{
                         [[UIColor colorWithHex:_BarDataDict[@"actioncolor"]] setStroke];
@@ -83,8 +83,8 @@
                         for (int i = 0; i<array.count; i++) {
                             CGContextMoveToPoint(context, BarX(array[i]), self.height);
                             CGContextAddLineToPoint(context, BarX(array[i]), 0);
-                            CGContextDrawPath(context, kCGPathStroke);
                         }
+                        CGContextDrawPath(context, kCGPathStroke);
                     }
                 }
             }
@@ -100,9 +100,22 @@
             }
             CGContextMoveToPoint(context, i*(self.width/TotalLength), self.height);
             CGContextAddLineToPoint(context, i*(self.width/TotalLength), 0);
-            CGContextDrawPath(context, kCGPathStroke);
+        }
+        CGContextDrawPath(context, kCGPathStroke);
+    }
+    
+    //添加辅助线
+    CGContextSetLineWidth(context, 0.1);
+    [[UIColor blackColor] setStroke];
+    CGFloat arr[] = {2,1};
+    CGContextSetLineDash(context, 0, arr, 2);
+    for (int i = 0; i<=24; i++) {
+        if (i>0&&i<24) {
+            CGContextMoveToPoint(context, self.width/24 * i, self.height);
+            CGContextAddLineToPoint(context, self.width/24 * i, 0);
         }
     }
+    CGContextDrawPath(context, kCGPathStroke);
 }
 
 @end

@@ -12,6 +12,7 @@
 @interface ColorSelectionCVCell : UICollectionViewCell<LGFColorSelectViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *ColorView;
 @property (weak, nonatomic) IBOutlet UIButton *Device;
+@property (nonatomic, strong) UICollectionView *SuperCollectionView;
 @property (nonatomic, strong) NSDictionary *DataDict;
 @property (nonatomic, assign) NSInteger Row;
 @end
@@ -35,28 +36,21 @@
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-
     NSMutableDictionary *dicBt = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
-    
     [dicBt setObject:ColorDict[@"actioncolor"] forKey:@"actioncolor"];
     [systemactioninfo replaceObjectAtIndex:_Row withObject:dicBt];
-    
     [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    
-    [[SealAFNetworking NIT] PostWithUrl:ZwupdateactioncolorType parameters:ColorDict mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        
-        self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
-        
-        [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
-        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
-        
-        if ([tmpDic[@"code"] isEqualToString:@"501"]) {
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-        }
-    }defeats:^(NSError *defeats){
-    }];
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        [[SealAFNetworking NIT] PostWithUrl:ZwupdateactioncolorType parameters:ColorDict mjheader:nil superview:nil success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
+            [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
+            if ([tmpDic[@"code"] isEqualToString:@"501"]) {
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
+            }
+        }defeats:^(NSError *defeats){
+        }];
+    }
 }
 
 - (IBAction)ColorSelectButton:(id)sender {
@@ -67,7 +61,6 @@
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-    
     NSMutableDictionary *actionselectdict = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
     if ([actionselectdict[@"actionselect"] boolValue]) {
         [actionselectdict setValue:@"NO" forKey:@"actionselect"];
@@ -75,14 +68,12 @@
         [actionselectdict setValue:@"YES" forKey:@"actionselect"];
     }
     [systemactioninfo replaceObjectAtIndex:_Row withObject:actionselectdict];
-    
     [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (idx!=_Row) {
-             [obj setValue:@"NO" forKey:@"actionselect"];
+            [obj setValue:@"NO" forKey:@"actionselect"];
             [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
         }
     }];
-    
     [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (idx==_Row) {
             [obj setValue:@"NO" forKey:@"selecttype"];
@@ -92,11 +83,9 @@
         [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
     }];
     [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-
-    NSLog(@"LGF  :%@",systemactioninfo);
-    [NITNotificationCenter removeObserver:self name:@"SystemReloadColor" object:nil];
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
+    }
 }
 
 @end
@@ -106,7 +95,7 @@
 @end
 @implementation ColorSelectionCV
 
-static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
+
 
 -(NSMutableArray *)ColorSelectionArray{
     if (!_ColorSelectionArray) {
@@ -120,7 +109,7 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-
+        
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
         if (systemactioninfo.count==0) {
@@ -133,7 +122,9 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
 
 -(void)ReloadColor:(id)sender{
 
-    [self reloadData];
+    [UIView performWithoutAnimation:^{
+        [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    }];
 }
 
 - (void)LoadVzConfigData{
@@ -163,22 +154,21 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
                             }
                         }
                     }];
-
                     
                     [self.ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         [obj setValue:@"NO" forKey:@"selecttype"];
                         [obj setValue:@"NO" forKey:@"actionselect"];
                         [self.ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
                     }];
-
-                    [SystemUserDict setObject:self.ColorSelectionArray forKey:@"systemactioninfo"];
                     
-                    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-                    NSLog(@"%@",self.ColorSelectionArray);
+                    [SystemUserDict setObject:self.ColorSelectionArray forKey:@"systemactioninfo"];
                 }
             }
-
-            [self reloadData];
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                [UIView performWithoutAnimation:^{
+                    [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
+                }];
+            }
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self DataBool:0];
@@ -191,25 +181,29 @@ static NSString * const reuseIdentifier = @"ColorSelectionCVCell";
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-
+    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+
     return systemactioninfo.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.width,self.height/5);
+    
+    return CGSizeMake(self.width,self.height/5+(self.height/5*0.1));
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_CSReuseIdentifier forIndexPath:indexPath];
 
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+    NSLog(@"%@",systemactioninfo[indexPath.item][@"actionname"]);
     cell.DataDict = systemactioninfo[indexPath.item];
     cell.Row = indexPath.item;
-
+    cell.SuperCollectionView = collectionView;
+    
     return cell;
 }
 

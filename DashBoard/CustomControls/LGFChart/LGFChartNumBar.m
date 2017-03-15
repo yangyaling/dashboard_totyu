@@ -15,7 +15,7 @@
 
 #define NumBarRect CGRectMake(_numbartype, 0, self.width-_numbartype-10, self.height)
 
-#define NumLineRect CGRectMake(_numbartype, 0, self.width-_numbartype-34, self.height)
+#define NumLineRect CGRectMake(_numbartype, 0, self.width-_numbartype-35, self.height)
 
 
 #import "LGFChartNumBar.h"
@@ -70,16 +70,5 @@
 
     [self addSubview:_numbarview];
 }
-
--(void)drawRect:(CGRect)rect{
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextMoveToPoint(context, 0 , 0);
-    CGContextAddLineToPoint(context, self.width, 0);
-    CGContextSetLineWidth(context, 1.5);
-    [SystemColor(1.0) setStroke];
-    CGContextDrawPath(context, kCGPathStroke);
-}
-
 
 @end

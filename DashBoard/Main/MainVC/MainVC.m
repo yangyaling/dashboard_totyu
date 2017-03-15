@@ -6,11 +6,14 @@
 //  Copyright © 2017年 NIT. All rights reserved.
 //
 
+#define alertpushnum 60
+
 #import "MainVC.h"
 #import "AlertBar.h"
 #import "UserListCVCell.h"
 #import "UIImageView+WebCache.h"
 #import "NSObject+MJProperty.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface CollectionCellWhite : UICollectionViewCell
 @end
@@ -90,14 +93,14 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [SystemUserDict setValue:buildingdict[@"buildingid"] forKey:@"buildingid"];
             [SystemUserDict setValue:buildingdict[@"floorno"] forKey:@"floorno"];
             [SystemUserDict setValue:buildingdict[@"displayname"] forKey:@"displayname"];
-            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-            
-            _BuildName.text = buildingdict[@"displayname"];
-            _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
-            [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
-            [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:60];
-            [self LoadCustListData];
-            [self LoadAlertData];
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                _BuildName.text = buildingdict[@"displayname"];
+                _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
+                [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
+                [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
+                [self LoadCustListData];
+                [self LoadAlertData];
+            }
         }else{
             
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -119,6 +122,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
             
             self.UserLisrArray = tmpDic[@"custlist"];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count])return;
+            
+            [[SDImageCache sharedImageCache] clearDisk];
+            [[SDImageCache sharedImageCache] clearMemory];
+
             [self CellHorizontalAlignment];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -143,10 +150,21 @@ static NSString * const reuseIdentifier = @"MainVCell";
             _AlertBarView.AlertArray = alertarray;
             if (alertarray.count >0) {
                 NSDictionary *alertdict = alertarray[alertarray.count-1];
-                UIAlertController *testalert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
-                [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                }]];
-                [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                    }]];
+    //                AudioServicesPlaySystemSound(1005);
+    //                UIWindow   *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    //                
+    //                alertWindow.rootViewController = [[UIViewController alloc] init];
+    //                alertWindow.windowLevel = UIWindowLevelAlert - 1;
+    //                [alertWindow makeKeyAndVisible];
+    //                NSLog(@"%f",UIWindowLevelAlert);
+                    [MasterKeyWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+                });
             }
             [self.UserListCV reloadData];
         }else{
@@ -155,10 +173,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }defeats:^(NSError *defeats){
     }];
 }
+
 - (void)LoadNoticeCount{
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSLog(@"%@",SystemUserDict);
     NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
@@ -190,7 +208,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 //    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     
     UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"" message:@"ログアウトします。よろしいですか？" preferredStyle:UIAlertControllerStyleAlert];
-    [testalert addAction:[UIAlertAction actionWithTitle:@"いいえ" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [testalert addAction:[UIAlertAction actionWithTitle:@"いいえ" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         
     }]];
     [testalert addAction:[UIAlertAction actionWithTitle:@"はい" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -206,9 +224,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
         MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
     }]];
     [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
-
-    
-    
 }
 /**
  获取新数据
@@ -247,25 +262,24 @@ static NSString * const reuseIdentifier = @"MainVCell";
  生活リズム
  */
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    [self performSegueWithIdentifier:@"AllChartVCPush" sender:self];
+    NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    [SystemUserDict setValue:DataDict[@"userid0"] forKey:@"userid0"];
+    [SystemUserDict setValue:DataDict[@"roomid"] forKey:@"roomid"];
+    [SystemUserDict setValue:DataDict[@"roomname"] forKey:@"roomname"];
+    [SystemUserDict setValue:DataDict[@"username0"] forKey:@"username0"];
+    [SystemUserDict removeObjectForKey:@"systemactioninfo"];
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        [self performSegueWithIdentifier:@"AllChartVCPush" sender:self];
+    }
 }
 /**
  **************** segue跳转 *****************
  */
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
-    if([segue.identifier isEqualToString:@"AllChartVCPush"]){
-        NSIndexPath *indexPath = _UserListCV.indexPathsForSelectedItems.lastObject;
-        NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
-        NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-        [SystemUserDict setValue:DataDict[@"userid0"] forKey:@"userid0"];
-        [SystemUserDict setValue:DataDict[@"roomid"] forKey:@"roomid"];
-        [SystemUserDict setValue:DataDict[@"roomname"] forKey:@"roomname"];
-        [SystemUserDict setValue:DataDict[@"username0"] forKey:@"username0"];
-        [SystemUserDict removeObjectForKey:@"systemactioninfo"];
-        [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    }
+
 }
+
 /**
  自动时间
  */
@@ -289,7 +303,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         [self LoadNoticeCount];
     }
     
-    [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:60];
+    [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
 }
 #pragma mark - UICollectionView Delegate and DataSource
 
@@ -304,6 +318,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     _UserPC.numberOfPages = pageCount/6;
     [_UserListCV registerClass:[CollectionCellWhite class]
     forCellWithReuseIdentifier:@"CellWhite"];
+    
     
     [_UserListCV reloadData];
 }
@@ -334,16 +349,17 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.CellBGView.backgroundColor = [UIColor whiteColor];
         cell.CellBGView.layer.borderColor = NITColor(220.0, 220.0, 220.0).CGColor;
         cell.CellBGView.layer.borderWidth = 0.5;
+        [cell.alert removeFromSuperview];
         
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
         
-        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]] placeholderImage:nil];
+        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]];
         cell.RoomName.text = DataDict[@"roomname"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];
         cell.UserAge.text = [NSString stringWithFormat:@"%@",DataDict[@"userold"]];
         cell.temperature.text = [NSString stringWithFormat:@"%@%@",DataDict[@"tvalue"],DataDict[@"tunit"]];
-        
+
         NSString *str = DataDict[@"bd"];
         
         if ([str isEqualToString:@"明"]) {

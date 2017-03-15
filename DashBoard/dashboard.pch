@@ -36,12 +36,14 @@
 
 #import "NoDataLabel.h"//没数据提示用标题
 
-#import "NITCollectionView.h"
+#import "NITCollectionView.h"//layout设置
 
 #import "LGFNullCheck.h"
 
+#import "UnderlineView.h"//线条view
+
 #define TotalDay 7 //可滑动总天数
-#define TotalWeek 5 //可滑动总周数
+#define TotalWeek 4 //可滑动总周数
 
 #define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)
 

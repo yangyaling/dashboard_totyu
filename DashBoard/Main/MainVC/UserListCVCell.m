@@ -12,7 +12,7 @@
 
 -(void)setAlerttype:(NSString *)alerttype{
     
-    [_alert removeFromSuperview];
+    
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {
         if ([dic[@"roomid"] isEqualToString:alerttype]) {

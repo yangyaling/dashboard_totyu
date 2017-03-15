@@ -261,8 +261,6 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
                 [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
                 _SaveButton.alpha = 1.0;
                 self.VisualSetArray = dict[@"actioninfo"];
-                NSLog(@"%@",self.VisualSetArray);
-                
                 [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
 
             }else{
@@ -326,7 +324,6 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 
 -(void)nowSelectRow:(NSString *)selecttitle selectrow:(NSInteger)selectrow{
     
-    NSLog(@"%ld",(long)selectrow);
     [self LoadVzConfigData:self.BuildingArray[selectrow]];
 }
 
@@ -346,7 +343,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     NSDictionary *DataDict = self.UserListArray[indexPath.item];
     UserListCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifiercv forIndexPath:indexPath];
     UIView* selectedBGView = [[UIView alloc] initWithFrame:cell.bounds];
-    selectedBGView.backgroundColor = SystemColor(0.3);
+    selectedBGView.backgroundColor = SystemColor(0.8);
     cell.selectedBackgroundView = selectedBGView;
     cell.UserAge.text = [NSString stringWithFormat:@"%@",DataDict[@"userold"]];
     cell.RoomName.text = DataDict[@"roomname"];
@@ -357,6 +354,15 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    UserListCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifiercv forIndexPath:indexPath];
+    
+    for (id obj in cell.subviews) {
+        if ([obj isKindOfClass:[UILabel class]]) {
+            UILabel *title = obj;
+            title.textColor = [UIColor whiteColor];
+        }
+    }
+    
     UserListCollectionSelectItem = indexPath.item;
     NSDictionary *dict = self.UserListArray[indexPath.item];
     self.VisualSetArray = dict[@"actioninfo"];
@@ -364,8 +370,9 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     [SystemUserDict setValue:dict[@"userid0"] forKey:@"userid0"];
     [SystemUserDict setValue:dict[@"roomid"] forKey:@"roomid"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
-    [_VisualSetTable reloadData];
+    if ([self.VisualSetArray writeToFile:SaveArrayPath atomically:NO]) {
+        [_VisualSetTable reloadData];
+    }
 }
 
 #pragma mark - Table view DataSource and Delegate

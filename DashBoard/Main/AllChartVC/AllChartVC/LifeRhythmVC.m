@@ -33,23 +33,14 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 -(NSMutableArray *)controlarr{
     
     if (!_controlarr) {
-        NSMutableArray *reverscontrolarr = [NSMutableArray array];
-        for (int i = 0; i< TotalWeek; i++) {
+        _controlarr = [NSMutableArray array];
+        for (int i = 0; i<= TotalWeek; i++) {
             LifeRhythmChartVC *lrcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmChartVCSB"];
-            if (i==0) {
-                lrcvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
-            }else{
-                LifeRhythmChartVC *Previouslrcvc = reverscontrolarr[i-1];
-                NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previouslrcvc.DayStr];
-                int week = (int)[NSDate nowTimeType:LGFweek time:Previousdate];
-                lrcvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:week];
-            }
-            
+            lrcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalWeek-i)*7];
             lrcvc.delegate = self;
             [self addChildViewController:lrcvc];
-            [reverscontrolarr addObject:lrcvc];
+            [_controlarr addObject:lrcvc];
         }
-        _controlarr = [NSMutableArray arrayWithArray:[[reverscontrolarr reverseObjectEnumerator]allObjects]];
     }
     return _controlarr;
 }
@@ -65,7 +56,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     _UserNameTitle.text = SystemUserDict[@"username0"];
 
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
-    ScrollPage = TotalWeek-1;
+    ScrollPage = TotalWeek;
     [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
@@ -107,7 +98,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
     if (!ColorType) _DateLabel.text = [NSDate getWeekBeginAndEndWith:_SelectDate];
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalWeek inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     });
 }
 
@@ -119,12 +110,15 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
     return CGSizeMake(_PageCV.width,_PageCV.height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *view = [self.controlarr[indexPath.item]view];
     view.size = cell.size;
@@ -134,7 +128,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalWeek);
+    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalWeek+1);
     
     LifeRhythmChartVC *Previousascvc = self.controlarr[ScrollPage];
     

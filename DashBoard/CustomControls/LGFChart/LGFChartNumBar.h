@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 IB_DESIGNABLE
-@interface LGFChartNumBar : UIView
+@interface LGFChartNumBar : UnderlineView
 - (instancetype)initWithCoder:(NSCoder *)aDecoder;
 /**
  设置y轴显示数组

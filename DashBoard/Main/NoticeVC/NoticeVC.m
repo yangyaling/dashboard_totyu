@@ -54,12 +54,14 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
             NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
-            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+            
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
 
-            [_NoticeCollection reloadData];
-            [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-            NSDictionary *dict = self.NoticeArray[0];
-            _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
+                [_NoticeCollection reloadData];
+                [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                NSDictionary *dict = self.NoticeArray[0];
+                _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
+            }
         }else{
             
             NSLog(@"errors: %@",tmpDic[@"errors"]);
