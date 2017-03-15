@@ -42,7 +42,7 @@
 
 #import "UnderlineView.h"//线条view
 
-#define TotalDay 7 //可滑动总天数
+#define TotalDay 6 //可滑动总天数
 #define TotalWeek 4 //可滑动总周数
 
 #define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)

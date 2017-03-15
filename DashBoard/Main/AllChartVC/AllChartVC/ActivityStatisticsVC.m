@@ -15,7 +15,6 @@
     NSInteger TimeSelectSegIndex;
     int TotalRange;
     int ScrollPage;
-    NSDate *ColorSelectDate;
 }
 @property (weak, nonatomic) IBOutlet UILabel *FloorTitle;
 @property (weak, nonatomic) IBOutlet UILabel *RoomTitle;
@@ -36,7 +35,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     
     if (!_controlarr) {
         NSMutableArray *reverscontrolarr = [NSMutableArray array];
-        for (int i = 0; i< TotalRange; i++) {
+        for (int i = 0; i<= TotalRange; i++) {
             ActivityStatisticsChartVC *ascvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsChartVCSB"];   
             if (TimeSelectSegIndex==0) {//日
 
@@ -109,9 +108,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     [self TimeFrameTitleSetValue:[NSDate date]];
 
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
-    TimeSelectSegIndex=0;
-    TotalRange = 5;
-    ScrollPage = TotalRange-1;
+    [self TimeSelect:_TimeSelectSeg];
     [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
@@ -130,49 +127,40 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 - (IBAction)TimeSelect:(UISegmentedControl *)sender {
     TimeSelectSegIndex = sender.selectedSegmentIndex;
     if (TimeSelectSegIndex==0) {//日
-        TotalRange = 5;
-    }else if(TimeSelectSegIndex==1){//周
-        TotalRange = 3;
-    }else if(TimeSelectSegIndex==2){//月
-        TotalRange = 3;
-    }else if(TimeSelectSegIndex==3){//年
-        TotalRange = 3;
+        TotalRange = 4;
+    }else{
+        TotalRange = 2;
     }
+    ScrollPage = TotalRange;
     [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
 -(void)ReloadColor:(id)sender{
     
-    if (ColorSelectDate) {
-        [self ReloadNewData:ColorSelectDate ColorType:YES];
-    }else{
-        [self ReloadNewData:[NSDate date] ColorType:YES];
-    }
+    [self ReloadNewData:_SelectDate ColorType:YES];
 }
 
 -(void)MJGetNewData:(NSString *)dateString{
     
-    if (dateString.length) {
-        _TimeFrameTitle.text = dateString;
-    } else {
-        [self ReloadNewData:[NSDate date] ColorType:NO];
-    }
+    [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
 -(void)SelectDate:(NSDate *)date{
-    
-    ColorSelectDate = date;
+
     [self ReloadNewData:date ColorType:NO];
 }
 
 -(void)ReloadNewData:(NSDate*)date ColorType:(BOOL)ColorType{
     
     self.controlarr = nil;
-    _SelectDate = date;
-    if (!ColorType)[self TimeFrameTitleSetValue:date];
+    if (!ColorType){
+        ScrollPage = TotalRange;
+        _SelectDate = date;
+        [self TimeFrameTitleSetValue:date];
+    }
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalRange-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ColorType ? ScrollPage : TotalRange inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     });
 }
 
@@ -201,24 +189,19 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalRange);
-
+    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalRange+1);
     ActivityStatisticsChartVC *Previousascvc = self.controlarr[ScrollPage];
-    
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
-    
     [self TimeFrameTitleSetValue:Previousdate];
 }
 
 -(void)TimeFrameTitleSetValue:(NSDate*)date{
+    
     if (TimeSelectSegIndex==0) {//日
-        
         _TimeFrameTitle.text = [NSDate getWeekBeginAndEndWith:date];
     }else if(TimeSelectSegIndex==1){//周
-        
         _TimeFrameTitle.text = @"";
     }else if(TimeSelectSegIndex==2){//月
-        
         _TimeFrameTitle.text = [NSDate getYear:date];
     }else if(TimeSelectSegIndex==3){//年
         _TimeFrameTitle.text = [NSDate getTenYear:date];

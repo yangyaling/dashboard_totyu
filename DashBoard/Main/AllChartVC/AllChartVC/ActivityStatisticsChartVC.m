@@ -40,7 +40,7 @@
 
 -(void)MJHeaderLoadNewData{
     
-    [self.delegate MJGetNewData:nil];
+    [self.delegate MJGetNewData];
 }
 
 -(void)LoadNewData{

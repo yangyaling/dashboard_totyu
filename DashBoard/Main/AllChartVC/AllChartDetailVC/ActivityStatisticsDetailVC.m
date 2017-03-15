@@ -12,7 +12,6 @@
 @interface ActivityStatisticsDetailVC ()<LGFClandarDelegate,ActivityStatisticsDetailChartVCDelegate>
 {
     int ScrollPage;
-    NSDate *ColorSelectDate;
 }
 @property (weak, nonatomic) IBOutlet UILabel *FloorTitle;
 @property (weak, nonatomic) IBOutlet UILabel *RoomTitle;
@@ -32,9 +31,9 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
-        for (int i = 0; i< TotalDay; i++) {
+        for (int i = 0; i<= TotalDay; i++) {
             ActivityStatisticsDetailChartVC *asdcvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsDetailChartVCSB"];
-            asdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1) - i];
+            asdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
             asdcvc.delegate = self;
             [self addChildViewController:asdcvc];
             [_controlarr addObject:asdcvc];
@@ -55,7 +54,6 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDay]];
     
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
-    ScrollPage = TotalDay-1;
     [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
 }
 
@@ -72,11 +70,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 
 -(void)ReloadColor:(id)sender{
     
-    if (ColorSelectDate) {
-        [self ReloadNewData:ColorSelectDate ColorType:YES];
-    }else{
-        [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:YES];
-    }
+    [self ReloadNewData:_SelectDate ColorType:YES];
 }
 
 -(void)MJGetNewData{
@@ -86,18 +80,20 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 
 -(void)SelectDate:(NSDate *)date{
 
-    ColorSelectDate = date;
     [self ReloadNewData:date ColorType:NO];
 }
 
 -(void)ReloadNewData:(NSDate*)date ColorType:(BOOL)ColorType{
 
     self.controlarr = nil;
-    _SelectDate = date;
-    if(!ColorType)_TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date]];
+    if(!ColorType){
+        ScrollPage = TotalDay;
+        _SelectDate = date;
+        _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date]];
+    }
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:ColorType ? ScrollPage : TotalDay-1 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ColorType ? ScrollPage : TotalDay inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     });
 }
 
@@ -126,8 +122,8 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay);
-    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:(TotalDay-1)-ScrollPage]]];
+    ScrollPage = (int)(scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%(TotalDay+1);
+    _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:[NSDate SotherDayDate:_SelectDate symbols:LGFMinus dayNum:TotalDay-ScrollPage]]];
 }
 
 - (void)dealloc{
