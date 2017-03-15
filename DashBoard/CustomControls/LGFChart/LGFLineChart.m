@@ -8,7 +8,7 @@
 
 #define SLineY(stri) ((self.height-4)-[(stri) floatValue]*((self.height-4)/_YTotalLength))+2
 
-#define DLineY(stri) (self.height-2) - ((_YMaxLength-[(stri) floatValue]) / (_YTotalLength/(self.height-2))-1)
+#define DLineY(stri) (_YMaxLength-[(stri) floatValue]) / (_YTotalLength/(self.height-2))+1
 
 #define LineX(stri) (stri)*(self.width/_XTotalLength)
 
@@ -24,27 +24,21 @@
         self.backgroundColor = [UIColor clearColor];
         _LineDataDict = [NSDictionary dictionaryWithDictionary:LineDict];
         _LineType = LineType;
-        if (_LineType==2) {
-            NSArray *avgarray = [NSArray arrayWithArray:self.LineDataDict[@"avg"]];
-            _XTotalLength = (int)avgarray.count-1;
-        }else{
-            _LineDataArray = [NSArray arrayWithArray:self.LineDataDict[@"data"]];
-            _XTotalLength = (int)self.LineDataArray.count-1;
-        }
-
-        NSMutableArray *maxnumarr = [NSMutableArray array];
-        for (id vlaue in _LineDataArray) {
-            if (![NSNullJudge(vlaue) isEqual:@""]) {
-                [maxnumarr addObject:vlaue];
-            }
-        }
-        
-        _YTotalLength = [[maxnumarr valueForKeyPath:@"@max.floatValue"] floatValue]-[[maxnumarr valueForKeyPath:@"@min.floatValue"] floatValue];
-        _YMaxLength = [[maxnumarr valueForKeyPath:@"@max.floatValue"] floatValue];
-        _YMinLength = _LineType == 0 ? [[maxnumarr valueForKeyPath:@"@min.floatValue"] floatValue] : 0.0;
-        if (_YTotalLength==0) _YTotalLength=1;
     }
     return self;
+}
+
+-(void)TotalValueCheck:(NSArray*)array{
+    NSMutableArray *maxnumarr = [NSMutableArray array];
+    for (id vlaue in array) {
+        if (![NSNullJudge(vlaue) isEqual:@""]) {
+            [maxnumarr addObject:vlaue];
+        }
+    }
+    _YTotalLength = [[maxnumarr valueForKeyPath:@"@max.floatValue"] floatValue]-[[maxnumarr valueForKeyPath:@"@min.floatValue"] floatValue];
+    _YMaxLength = [[maxnumarr valueForKeyPath:@"@max.floatValue"] floatValue];
+    _YMinLength = _LineType == 0 ? [[maxnumarr valueForKeyPath:@"@min.floatValue"] floatValue] : 0.0;
+    if (_YTotalLength==0) _YTotalLength=1;
 }
 
 
@@ -59,31 +53,41 @@
     [[UIColor colorWithHex:_LineDataDict[@"actioncolor"]] setStroke];
 
     if (_LineType==2) {
-        NSArray *avgarray = [NSArray arrayWithArray:self.LineDataDict[@"avg"]];
-        CGContextMoveToPoint(context, 0, SLineY(avgarray[0]));
+        NSArray *avgarray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
+        _XTotalLength = (int)avgarray.count-1;
+        if ([_LineDataDict[@"actionid"] isEqualToString:@"環境1"]) {
+            _YMaxLength = 50;
+            _YMinLength = 0;
+            _YTotalLength = _YMaxLength-_YMinLength;
+        }else if([_LineDataDict[@"actionid"] isEqualToString:@"環境2"]){
+            _YMaxLength = 100;
+            _YMinLength = 0;
+            _YTotalLength = _YMaxLength-_YMinLength;
+        }
+        CGContextMoveToPoint(context, 0, DLineY(avgarray[0]));
         for (int i = 1; i<avgarray.count; i++) {
             if (![NSNullJudge(avgarray[i]) isEqual:@""]) {
-                CGContextAddLineToPoint(context, LineX(i), SLineY(avgarray[i]));
+                CGContextAddLineToPoint(context, LineX(i), DLineY(avgarray[i]));
             }
         }
         CGContextDrawPath(context, kCGPathStroke);
         
-        NSArray *maxarray = [NSArray arrayWithArray:self.LineDataDict[@"max"]];
-        CGContextMoveToPoint(context, 0, SLineY(maxarray[0]));
+        NSArray *maxarray = [NSArray arrayWithArray:_LineDataDict[@"max"]];
+        CGContextMoveToPoint(context, 0, DLineY(maxarray[0]));
         for (int i = 1; i<maxarray.count; i++) {
             if (![NSNullJudge(maxarray[i]) isEqual:@""]) {
-                CGContextAddLineToPoint(context, LineX(i), SLineY(maxarray[i]));
+                CGContextAddLineToPoint(context, LineX(i), DLineY(maxarray[i]));
                 CGFloat arr[] = {3,1};
                 CGContextSetLineDash(context, 0, arr, 2);
             }
         }
         CGContextDrawPath(context, kCGPathStroke);
         
-        NSArray *minarray = [NSArray arrayWithArray:self.LineDataDict[@"min"]];
-        CGContextMoveToPoint(context, 0, SLineY(minarray[0]));
+        NSArray *minarray = [NSArray arrayWithArray:_LineDataDict[@"min"]];
+        CGContextMoveToPoint(context, 0, DLineY(minarray[0]));
         for (int i = 1; i<minarray.count; i++) {
             if (![NSNullJudge(minarray[i]) isEqual:@""]) {
-                CGContextAddLineToPoint(context, LineX(i), SLineY(minarray[i]));
+                CGContextAddLineToPoint(context, LineX(i), DLineY(minarray[i]));
                 CGFloat arr[] = {3,1};
                 CGContextSetLineDash(context, 0, arr, 2);
             }
@@ -91,11 +95,14 @@
         CGContextDrawPath(context, kCGPathStroke);
         
     }else{
+        _LineDataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
+        _XTotalLength = (int)_LineDataArray.count-1;
+        [self TotalValueCheck:_LineDataArray];
         if (_LineDataArray.count > 0 ) {
-            CGContextMoveToPoint(context, 0, _LineType == 0 ? DLineY(_LineDataArray[0]) : SLineY(_LineDataArray[0]));
+            CGContextMoveToPoint(context, 0, DLineY(_LineDataArray[0]));
             for (int i = 1; i<_LineDataArray.count; i++) {
                 if (![NSNullJudge(_LineDataArray[i]) isEqual:@""]) {
-                    CGContextAddLineToPoint(context, LineX(i), _LineType == 0 ? DLineY(_LineDataArray[i]) : SLineY(_LineDataArray[i]));
+                    CGContextAddLineToPoint(context, LineX(i), DLineY(_LineDataArray[i]));
                 }
             }
             CGContextDrawPath(context, kCGPathStroke);
