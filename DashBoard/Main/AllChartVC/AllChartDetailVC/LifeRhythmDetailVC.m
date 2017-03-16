@@ -36,7 +36,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
         _controlarr = [NSMutableArray array];
         for (int i = 0; i<= TotalDay; i++) {
             LifeRhythmDetailChartVC *lrdcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmDetailChartVCSB"];
-            lrdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalDay) - i];
+            lrdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
             lrdcvc.delegate = self;
             [self addChildViewController:lrdcvc];
             [_controlarr addObject:lrdcvc];
@@ -104,7 +104,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     [_PageCV reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
         //PageCV reloadData完毕 滚动到指定页
-        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ColorType ? ScrollPage : TotalDay inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
     });
 }
 

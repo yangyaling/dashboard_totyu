@@ -121,7 +121,7 @@
         }
     }
     CGContextDrawPath(context, kCGPathStroke);
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Helvetica-Bold" size:9], NSFontAttributeName, [UIColor redColor], NSForegroundColorAttributeName, nil];
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Helvetica-Bold" size:9], NSFontAttributeName, [UIColor blackColor], NSForegroundColorAttributeName, nil];
     NSDictionary *NumAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"DBLCDTempBlack" size:10], NSFontAttributeName, [UIColor blackColor], NSForegroundColorAttributeName, nil];
     //添加x轴
     [@"MAX：" drawInRect:CGRectMake(2, self.height/2-10, 30, 10) withAttributes:attrs];
@@ -129,15 +129,5 @@
     [@"MIN：" drawInRect:CGRectMake(2, self.height/2, 30, 10) withAttributes:attrs];
     [[NSString stringWithFormat:@"%0.2f",_YMinLength] drawInRect:CGRectMake(32, self.height/2+1, 100, 10) withAttributes:NumAttrs];
 }
-
-//-(UIImage*)convertViewToImage:(UIView*)view{
-//    
-//    CGSize barview = view.bounds.size;
-//    UIGraphicsBeginImageContextWithOptions(barview, NO, [UIScreen mainScreen].scale);
-//    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage*image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    return image;
-//}
 
 @end
