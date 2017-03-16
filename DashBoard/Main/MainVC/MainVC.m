@@ -134,8 +134,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
             _CurrentAlertarrays = alertarray.copy;
             _AlertBarView.AlertArray = alertarray;
             if (alertarray.count >0) {
-                AudioServicesPlaySystemSound(1005);
+                //播放系统声音
+//                AudioServicesPlaySystemSound(1005);
+                //弹出alert框之前先dismiss
                 [_UserAlert dismissViewControllerAnimated:YES completion:nil];
+                //在KeyWindow上弹出alert框(每个页面都能看到)
                 NSDictionary *alertdict = alertarray[alertarray.count-1];
                 _UserAlert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
                 [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
