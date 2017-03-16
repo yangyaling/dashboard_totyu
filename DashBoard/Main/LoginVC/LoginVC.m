@@ -30,6 +30,15 @@
     [super didReceiveMemoryWarning];
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField*)textField{
+    if (textField ==_userId) {
+        [_passWord becomeFirstResponder];
+    }else{
+        [self.view endEditing:YES];
+    }
+    return YES;
+}
+
 - (IBAction)Login:(id)sender {
     
     if (!_userId.text.length) {

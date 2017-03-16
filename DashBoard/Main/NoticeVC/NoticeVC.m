@@ -35,7 +35,6 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     [self loadNewData];
 }
 
@@ -43,18 +42,15 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
  发送请求获取新数据
  */
 - (void)loadNewData{
-    
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:nil mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-
             self.NoticeArray = tmpDic[@"vznoticeinfo"];
             if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count])return;
             NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
-            
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
 
                 [_NoticeCollection reloadData];
@@ -63,7 +59,6 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
                 _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
             }
         }else{
-            
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
@@ -73,18 +68,15 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark UICollectionView Delegate and DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
     return self.NoticeArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     NSDictionary *DataDict = self.NoticeArray[indexPath.item];
     NoticeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     UIView* selectedBGView = [[UIView alloc] initWithFrame:cell.bounds];
@@ -96,7 +88,6 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     NSDictionary *dict = self.NoticeArray[indexPath.row];
     _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
 }

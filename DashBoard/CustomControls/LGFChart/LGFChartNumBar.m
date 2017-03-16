@@ -33,7 +33,6 @@
 
 -(void)setNumbartype:(int)numbartype{
     _numbartype = numbartype;
-
     if (_numbartype!=190) {
         self.YValuesArray = @[@"0時",@"1時",@"2時",@"3時",@"4時",@"5時",@"6時",@"7時",@"8時",@"9時",@"10時",@"11時",@"12時",@"13時",@"14時",@"15時",@"16時",@"17時",@"18時",@"19時",@"20時",@"21時",@"22時",@"23時"];//默认y轴数组
     }
@@ -47,7 +46,6 @@
 
 -(void)setYValuesArray:(NSArray *)YValuesArray{
     _YValuesArray = YValuesArray;
-
     if (!(_numbartype!=190)) {
         [self addnumbarview];
     }
@@ -55,9 +53,7 @@
 
 -(void)addnumbarview{
     [_numbarview removeFromSuperview];
-    
     _numbarview = [[UIView alloc]initWithFrame:_numbartype!=190 ? NumBarRect : NumLineRect];
-    
     //添加y轴
     for (int i = 0; i<_YValuesArray.count; i++) {
         UILabel *NumTitle = [[UILabel alloc]initWithFrame:_numbartype!=190 ?BarYValueFrame : LineYValueFrame];
@@ -67,7 +63,6 @@
         NumTitle.text = _YValuesArray[i];
         [self addSubview:NumTitle];
     }
-
     [self addSubview:_numbarview];
 }
 

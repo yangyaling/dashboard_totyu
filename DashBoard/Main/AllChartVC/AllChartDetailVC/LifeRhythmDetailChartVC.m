@@ -34,7 +34,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self LoadNewData];
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
@@ -45,12 +44,10 @@
 }
 
 -(void)MJHeaderLoadNewData{
-    
     [self.delegate MJGetNewData];
 }
 
 -(void)LoadNewData{
-
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSLog(@"%@,%@号房间,生活详细传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
@@ -74,7 +71,6 @@
 #pragma mark - UICollectionViewDataSource And Delegate
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-    
     NSString *reuseIdentifier = @"LifeRhythmChartDetailReusableView";
     LifeRhythmChartDetailReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind :kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     view.OneDayAllDataChart.alpha = 1.0;
@@ -95,7 +91,6 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     return _DataArray.count;
 }
 
@@ -108,7 +103,6 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     LifeRhythmChartDetailCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LifeRhythmChartDetailCell" forIndexPath:indexPath];
     NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
     cell.DeciceName.text = DataDict[@"actionname"];
@@ -126,7 +120,6 @@
 }
 
 - (void)dealloc{
-    
     [NITNotificationCenter removeObserver:self];
 }
 @end

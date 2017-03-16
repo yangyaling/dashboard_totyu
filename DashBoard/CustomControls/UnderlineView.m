@@ -10,8 +10,7 @@
 
 @implementation UnderlineView
 
--(void)drawRect:(CGRect)rect{
-    
+-(void)drawRect:(CGRect)rect{    
     if (_TopType) {
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextMoveToPoint(context, 0 , 0);

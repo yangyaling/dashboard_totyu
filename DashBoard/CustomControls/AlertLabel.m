@@ -13,7 +13,6 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        
         self.opaque = NO;
         self.layer.masksToBounds = NO;
         self.layer.shouldRasterize = YES;
@@ -28,32 +27,10 @@
 }
 
 -(void)setTouchDown:(UIButton*)button{
-    
     [self.delegate AlertLabelClick];
 }
 
-//- (void)doAnimation{
-//    
-//    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-//        self.alpha = 0.4;
-//        self.transform =  CGAffineTransformMakeScale(1.3, 1.3);
-//    } completion:^(BOOL finished) {
-//        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-//            self.alpha = 0.8;
-//            self.transform =  CGAffineTransformMakeScale(1.0, 1.0);
-//        }completion:^(BOOL finished) {
-//            [self.layer removeAllAnimations];
-//            [self doAnimation];
-//        }];
-//    }];
-//}
-//
-//-(void)layoutSubviews{
-//    [self doAnimation];
-//}
-
 -(void)drawRect:(CGRect)rect{
-    
     //获得处理的上下文
     CGContextRef contextUp = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(contextUp, 0, rect.size.height);
@@ -67,7 +44,6 @@
 }
 
 -(void)drawAlertPoint:(CGContextRef)context{
-    
     CGContextMoveToPoint(context, self.width/20 , self.height/2);
     CGContextAddLineToPoint(context, self.width/20*3, self.height/10*4);
     CGContextAddLineToPoint(context, self.width/20*2, self.height/10*3);
@@ -86,7 +62,6 @@
     CGContextAddLineToPoint(context, self.width/20*17, self.height/10*4);
     CGContextAddLineToPoint(context, self.width/20*19, self.height/2);
     CGContextClosePath(context);
-    
     [[UIColor redColor] setFill];
     //设置绘图方式并绘图stroke描边 fill填充
     CGContextDrawPath(context, kCGPathFill);

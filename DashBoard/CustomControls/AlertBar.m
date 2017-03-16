@@ -21,19 +21,16 @@
 }
 
 -(void)setBorderColor:(UIColor *)BorderColor{
-    
     _BorderColor = BorderColor;
     self.layer.borderColor = _BorderColor.CGColor;
 }
 
 -(void)setCornerRadius:(CGFloat)CornerRadius{
-    
     _CornerRadius =CornerRadius;
     self.layer.cornerRadius = _CornerRadius;
 }
 
 -(void)setBorderWidth:(CGFloat)BorderWidth{
-    
     _BorderWidth = BorderWidth;
     self.layer.borderWidth = _BorderWidth;
 }
@@ -44,7 +41,6 @@
 }
 
 - (void)commonInit{
-
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.AlertLabel = nil;
     self.NoAlert = nil;

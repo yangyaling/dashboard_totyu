@@ -19,7 +19,6 @@
 @implementation ColorSelectionCVCell
 
 -(void)setDataDict:(NSDictionary *)DataDict{
-    
     _DataDict = DataDict;
     if ([DataDict[@"actionselect"] isEqualToString:@"YES"]) {
         [self.Device setTitleColor:SystemColor(1.0) forState:UIControlStateNormal];
@@ -33,7 +32,6 @@
 }
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
-    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     NSMutableDictionary *dicBt = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
@@ -54,11 +52,9 @@
 }
 
 - (IBAction)ColorSelectButton:(id)sender {
-    
     [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
 }
 - (IBAction)DeviceSelectButton:(UIButton*)sender {
-    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     NSMutableDictionary *actionselectdict = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
@@ -91,11 +87,8 @@
 @end
 
 @interface ColorSelectionCV ()<UICollectionViewDelegate,UICollectionViewDataSource>
-
 @end
 @implementation ColorSelectionCV
-
-
 
 -(NSMutableArray *)ColorSelectionArray{
     if (!_ColorSelectionArray) {
@@ -109,7 +102,6 @@
     if (self) {
         self.delegate = self;
         self.dataSource = self;
-        
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
         if (systemactioninfo.count==0) {
@@ -121,14 +113,12 @@
 }
 
 -(void)ReloadColor:(id)sender{
-
     [UIView performWithoutAnimation:^{
         [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
     }];
 }
 
 - (void)LoadVzConfigData{
-    
     [MBProgressHUD showMessage:@"" toView:self];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
@@ -137,12 +127,10 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *UserListArray = [NSArray arrayWithArray:tmpDic[@"vzconfiginfo"]];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:UserListArray.count])return;
-            
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             for (NSDictionary *dict in UserListArray) {
                 if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]]&&[dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
                     NSArray *actioninfoarray = [NSArray arrayWithArray:dict[@"actioninfo"]];
-                    
                     [actioninfoarray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         if (![obj[@"actionclass"]isEqualToString:@"1"]) {
                             [self.ColorSelectionArray addObject:obj];
@@ -154,13 +142,11 @@
                             }
                         }
                     }];
-                    
                     [self.ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         [obj setValue:@"NO" forKey:@"selecttype"];
                         [obj setValue:@"NO" forKey:@"actionselect"];
                         [self.ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
                     }];
-                    
                     [SystemUserDict setObject:self.ColorSelectionArray forKey:@"systemactioninfo"];
                 }
             }
@@ -181,34 +167,26 @@
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-
     return systemactioninfo.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     return CGSizeMake(self.width,self.height/5+(self.height/5*0.1));
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_CSReuseIdentifier forIndexPath:indexPath];
-
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-    NSLog(@"%@",systemactioninfo[indexPath.item][@"actionname"]);
     cell.DataDict = systemactioninfo[indexPath.item];
     cell.Row = indexPath.item;
     cell.SuperCollectionView = collectionView;
-    
     return cell;
 }
 
 - (void)dealloc{
-    
     [NITNotificationCenter removeObserver:self];
 }
 

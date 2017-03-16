@@ -12,7 +12,6 @@
 
 -(void)setAlerttype:(NSString *)alerttype{
     
-    
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {
         if ([dic[@"roomid"] isEqualToString:alerttype]) {

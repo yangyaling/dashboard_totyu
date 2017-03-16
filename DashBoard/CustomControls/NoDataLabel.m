@@ -26,7 +26,7 @@
     }
 }
 
--(void)RemoveFrom:(UIView*)SuperView{
+-(void)RemoveFrom:(UIView*)SuperView{    
     for (UIView *view in SuperView.subviews) {
         if ([view isKindOfClass:[NoDataLabel class]]) {
             [view removeFromSuperview];

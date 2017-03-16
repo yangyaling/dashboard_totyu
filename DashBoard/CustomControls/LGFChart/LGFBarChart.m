@@ -32,7 +32,6 @@
     
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [SystemUserDict objectForKey:@"systemactioninfo"];
-
     //获得处理的上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
     //设置线条粗细宽度
@@ -103,7 +102,6 @@
             CGContextDrawPath(context, kCGPathStroke);
         }
     }
-    
     //添加辅助线
     CGContextSetLineWidth(context, 0.1);
     [[UIColor blackColor] setStroke];

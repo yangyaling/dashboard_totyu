@@ -43,15 +43,12 @@
 
 
 -(void)drawRect:(CGRect)rect{
-
     //获得处理的上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
     //设置线条粗细宽度
     CGContextSetLineWidth(context, LineWidth);
-
     //设置颜色
     [[UIColor colorWithHex:_LineDataDict[@"actioncolor"]] setStroke];
-
     if (_LineType==2) {
         NSArray *avgarray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
         _XTotalLength = (int)avgarray.count-1;
@@ -71,7 +68,6 @@
             }
         }
         CGContextDrawPath(context, kCGPathStroke);
-        
         NSArray *maxarray = [NSArray arrayWithArray:_LineDataDict[@"max"]];
         CGContextMoveToPoint(context, 0, DLineY(maxarray[0]));
         for (int i = 1; i<maxarray.count; i++) {
@@ -93,7 +89,6 @@
             }
         }
         CGContextDrawPath(context, kCGPathStroke);
-        
     }else{
         _LineDataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
         _XTotalLength = (int)_LineDataArray.count-1;
@@ -108,7 +103,6 @@
             CGContextDrawPath(context, kCGPathStroke);
         }
     }
-    
     //添加辅助线
     CGContextSetLineWidth(context, 0.1);
     [[UIColor blackColor] setStroke];
@@ -127,13 +121,11 @@
         }
     }
     CGContextDrawPath(context, kCGPathStroke);
-    
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Helvetica-Bold" size:9], NSFontAttributeName, [UIColor redColor], NSForegroundColorAttributeName, nil];
     NSDictionary *NumAttrs = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"DBLCDTempBlack" size:10], NSFontAttributeName, [UIColor blackColor], NSForegroundColorAttributeName, nil];
     //添加x轴
     [@"MAX：" drawInRect:CGRectMake(2, self.height/2-10, 30, 10) withAttributes:attrs];
     [[NSString stringWithFormat:@"%0.2f",_YMaxLength] drawInRect:CGRectMake(32, self.height/2-9, 100, 10) withAttributes:NumAttrs];
-    
     [@"MIN：" drawInRect:CGRectMake(2, self.height/2, 30, 10) withAttributes:attrs];
     [[NSString stringWithFormat:@"%0.2f",_YMinLength] drawInRect:CGRectMake(32, self.height/2+1, 100, 10) withAttributes:NumAttrs];
 }

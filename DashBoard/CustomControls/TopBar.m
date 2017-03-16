@@ -57,7 +57,6 @@
 
 
 - (void)commonInit{
- 
     _ButtonArray = [NSMutableArray array];
     for (int i = 0; i<_TitleArray.count; i++) {
         UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/_TitleArray.count*i, 0, self.width/_TitleArray.count, self.height-3)];

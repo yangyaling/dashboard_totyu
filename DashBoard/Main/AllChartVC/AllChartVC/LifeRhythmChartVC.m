@@ -36,9 +36,7 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
     [self LoadNewData];
-    
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
 }
@@ -48,12 +46,10 @@
 }
 
 -(void)MJHeaderLoadNewData{
-
     [self.delegate MJGetNewData];
 }
 
 -(void)LoadNewData{
-    
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSLog(@"%@,%@号房间,生活一览传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
@@ -75,7 +71,6 @@
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     return _DataArray.count;
 }
 
@@ -84,14 +79,11 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     LifeRhythmChartCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LifeRhythmChartCell" forIndexPath:indexPath];
     if ([_DataArray[indexPath.item]isKindOfClass:[NSDictionary class]]||[_DataArray[indexPath.item]isKindOfClass:[NSMutableDictionary class]]) {
-        
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         cell.WeekTitle.text = self.WeekArray[indexPath.row];
         cell.DayTitle.text = [[DataDict allKeys] firstObject];
-        
         [cell setNeedsLayout];
         [cell layoutIfNeeded];
         NSString *SelectDate = [[DataDict allKeys] firstObject];
@@ -107,14 +99,12 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     [self performSegueWithIdentifier:@"AllChartDetailVCPush" sender:self];
 }
 
 #pragma mark - Navigation
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    
     if([segue.identifier isEqualToString:@"AllChartDetailVCPush"]){
         //传感器数据图表
         AllChartDetailVC *advc = segue.destinationViewController;
@@ -125,7 +115,4 @@
         advc.Weekdate = _WeekArray[indexPath.item];
     }
 }
-
-
-
 @end

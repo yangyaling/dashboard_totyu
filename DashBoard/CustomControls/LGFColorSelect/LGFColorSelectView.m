@@ -22,7 +22,6 @@
 
 +(LGFColorSelectView *)ColorSelect{
     static LGFColorSelectView*ColorSelect = nil;
-    
     if (!ColorSelect) {
         ColorSelect = [[LGFColorSelectView alloc]init];
         ColorSelect.backgroundColor = [UIColor whiteColor];
@@ -35,29 +34,24 @@
 }
 
 - (void)ShowInView:(id)Super Data:(NSDictionary*)actiondict{
-    
-    self.actiondict = actiondict;
-    
-    self.delegate = Super;
-
+    self.actiondict = actiondict;//数据源
+    self.delegate = Super;//添加代理
+    [self AddChildSubview];
+    self.Title.text = self.actiondict[@"actionname"];
+    [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
+}
+/**
+ 添加子控件
+ */
+-(void)AddChildSubview{
     self.frame = CGRectMake(WindowView.width/3, WindowView.height/5, WindowView.width/3, WindowView.height/5*3);
     [self.Cover addSubview:self];
-
     [self addSubview:self.Title];
-    
     [self addSubview:self.confirm];
-    
     [self addSubview:self.cancel];
-    
     [self addSubview:self.ColorImageView];
-    
     [self addSubview:self.ResultView];
-    
     [self.ColorImageView addGestureRecognizer:self.tapGesture];
-    
-    self.Title.text = self.actiondict[@"actionname"];
-    
-    [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
 }
 
 //选择颜色
@@ -82,7 +76,6 @@
 
 //确认选择
 - (void)confirmedit{
-    
     [self RemoveAllView];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"actionid":self.actiondict[@"actionid"],@"actionexplain":self.actiondict[@"actionexplain"],@"actioncolor":[UIColor hexFromUIColor:self.ResultView.backgroundColor]};
@@ -95,7 +88,6 @@
 }
 
 - (UIColor *)colorAtPixel:(CGPoint)point ColorImage:(UIImageView*)image{
-
     if (!CGRectContainsPoint(CGRectMake(0.0f, 0.0f, image.size.width, image.size.height), point)) {
         return nil;
     }
@@ -209,9 +201,6 @@
     [self removeFromSuperview];
     self.tapGesture = nil;
     self.Cover = nil;
-//    self.Title = nil;
-//    self.ColorImageView = nil;
-//    self.ResultView = nil;
 }
 
 

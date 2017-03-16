@@ -217,13 +217,14 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    //UserListCollection 设置默认选中
     UserListCollectionSelectItem = 0;
     [self LoadPlaceData];
 }
-
+/**
+ 取得楼层数据
+ */
 - (void)LoadPlaceData{
-    
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
@@ -240,19 +241,17 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     }defeats:^(NSError *defeats){
     }];
 }
-
+/**
+ 取得user数据
+ */
 - (void)LoadVzConfigData:(NSDictionary*)Building{
-    
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSDictionary *parameter = @{@"buildingid":Building[@"buildingid"],@"floorno":Building[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            
             self.UserListArray = tmpDic[@"vzconfiginfo"];
-            
             [[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserListArray.count];
-
             if (self.UserListArray.count>0) {
                 NSDictionary *dict = self.UserListArray[UserListCollectionSelectItem];
                 NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
@@ -269,7 +268,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
             }
             [_VisualSetTable reloadData];
             [_UserListCollection reloadData];
-            [_UserListCollection selectItemAtIndexPath:[NSIndexPath indexPathForRow:UserListCollectionSelectItem inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+            [_UserListCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:UserListCollectionSelectItem inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
@@ -277,23 +276,21 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     }defeats:^(NSError *defeats){
     }];
 }
-
+/**
+ 保存更新可视化设定
+ */
 - (IBAction)SaveData:(id)sender {
-    
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSIndexPath *indexpath = _UserListCollection.indexPathsForSelectedItems.lastObject;
     NSDictionary *DataDict = self.UserListArray[indexpath.item];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
     NSDictionary *parameter = @{@"userid1":SystemUserDict[@"userid1"],@"userid0":DataDict[@"userid0"],@"roomid":DataDict[@"roomid"],@"actioninfo":[self ArrayToJson:savearr]};
-    
     [[SealAFNetworking NIT] PostWithUrl:ZwgetupdatevzconfiginfoType parameters:parameter mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-
             [self LoadVzConfigData:self.BuildingArray[_PlaceDropDown.SelectRow]];
 //            [MBProgressHUD showSuccess:@"成功" toView:self.view];
-            
         }else{
             NSLog(@"errors: %@",tmpDic[@"errors"]);
 //            [MBProgressHUD showError:@"失败" toView:self.view];
@@ -302,14 +299,10 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
         NSLog(@"errors");
     }];
 }
-
-
-
 /**
  *  数组转json
  */
 -(NSString*)ArrayToJson:(NSMutableArray*)array{
-    
     NSMutableArray *scenariodtlinfo = [NSMutableArray arrayWithArray:array];
     NSData * jsondata = [NSJSONSerialization dataWithJSONObject:scenariodtlinfo
                                                         options:NSJSONWritingPrettyPrinted
@@ -321,16 +314,16 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
+/**
+ 楼层下拉框 代理
+ */
 -(void)nowSelectRow:(NSString *)selecttitle selectrow:(NSInteger)selectrow{
-    
     [self LoadVzConfigData:self.BuildingArray[selectrow]];
 }
 
 #pragma mark UICollectionView Delegate and DataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
     return self.UserListArray.count;
 }
 
@@ -339,7 +332,6 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     NSDictionary *DataDict = self.UserListArray[indexPath.item];
     UserListCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifiercv forIndexPath:indexPath];
     UIView* selectedBGView = [[UIView alloc] initWithFrame:cell.bounds];
@@ -353,16 +345,13 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
     UserListCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifiercv forIndexPath:indexPath];
-    
     for (id obj in cell.subviews) {
         if ([obj isKindOfClass:[UILabel class]]) {
             UILabel *title = obj;
             title.textColor = [UIColor whiteColor];
         }
     }
-    
     UserListCollectionSelectItem = indexPath.item;
     NSDictionary *dict = self.UserListArray[indexPath.item];
     self.VisualSetArray = dict[@"actioninfo"];
@@ -378,12 +367,10 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 #pragma mark - Table view DataSource and Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
     return self.VisualSetArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     NSDictionary *DataDict = self.VisualSetArray[indexPath.item];
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]]isEqualToString:@"6"]) {
         return 90;
@@ -393,9 +380,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     NSDictionary *DataDict = self.VisualSetArray[indexPath.item];
-    
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]]isEqualToString:@"6"]) {
         VisualSetTwoTableCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifiertbvtwo forIndexPath:indexPath];
         cell.Row = indexPath.row;

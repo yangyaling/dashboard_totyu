@@ -20,13 +20,14 @@
 static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
-    
     [self.collectionView layoutIfNeeded];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
 }
 
+/**
+ 视图控制器数组
+ */
 -(NSMutableArray *)controlarr{
-    
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
         LifeRhythmVC *lrvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmVCSB"];
@@ -41,7 +42,6 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
 
@@ -52,7 +52,6 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 #pragma mark - UICollectionViewDataSource And Delegate
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     return self.controlarr.count;
 }
 
@@ -61,7 +60,6 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *view = [self.controlarr[indexPath.item]view];
@@ -71,7 +69,6 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    
     int page = (int) (scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%self.controlarr.count;
     _SelectViewSeg.selectedSegmentIndex = page;
 }

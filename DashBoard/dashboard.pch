@@ -47,6 +47,10 @@
 
 #define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)
 
+// 获取方法耗时时间
+#define TICK   CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
+#define TOCK   NSLog(@"Time: %f", CFAbsoluteTimeGetCurrent() - start)
+
 //登录者参数
 #define SYSTEM_USER_DICT [NITFilePath stringByAppendingPathComponent:@"SYSTEMUSERDICT.plist"]
 

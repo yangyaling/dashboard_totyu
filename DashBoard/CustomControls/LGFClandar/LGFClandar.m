@@ -81,14 +81,11 @@
 @property (nonatomic, strong) UIView *Cover;
 @property (nonatomic, strong) UICollectionView *ClandarCV;
 @property (nonatomic, strong) NSMutableArray *ClandarDataArray;
-@property (nonatomic, strong) NSMutableArray *YearArray;
-@property (nonatomic, strong) NSMutableArray *MonthArray;
 @end
 @implementation LGFClandar
 
 +(LGFClandar *)Clandar{
     static LGFClandar*Clandar = nil;
-    
     if (!Clandar) {
         Clandar = [[LGFClandar alloc]init];
         Clandar.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -99,26 +96,17 @@
 }
 
 - (void)ShowInView:(id)SuperSelf Date:(NSString*)Date{
-
     NSDate *SelectDate = [self AuToDateFormatter:@"yyyy-MM-dd" object:Date];
     if (SelectDate) {
         NewDate = SelectDate;
     }else{
         NewDate = [NSDate date];
     }
-    
     self.delegate = SuperSelf;
-    
     UIViewController *SuperView = SuperSelf;
     superview = SuperView.view;
-
-    [superview addSubview:self.Cover];
-    self.frame = CGRectMake(superview.width, 0, 280, superview.height);
-    [self.Cover addSubview:self];
-    [self addSubview:self.ClandarCV];
-    [self addSubview:self.TimeTitleView];
-    [self.TimeTitleView addSubview:self.TimeTitlePicker];
-    [UIView animateWithDuration:0.3 animations:^{
+    [self AddChildSubview];
+    [UIView animateWithDuration:0.2 animations:^{
         self.frame = CGRectMake(superview.width-280, 0, 280, superview.height);
         self.TimeTitleView.alpha = 1.0;
         self.ClandarCV.alpha = 1.0;
@@ -126,6 +114,18 @@
     }];
     [self getAllDaysWithCalender];
     [self ClandarSelectDate:NewDate];
+}
+
+/**
+ 添加子控件
+ */
+-(void)AddChildSubview{
+    [superview addSubview:self.Cover];
+    self.frame = CGRectMake(superview.width, 0, 280, superview.height);
+    [self.Cover addSubview:self];
+    [self addSubview:self.ClandarCV];
+    [self addSubview:self.TimeTitleView];
+    [self.TimeTitleView addSubview:self.TimeTitlePicker];
 }
 
 -(UIView *)Cover{
@@ -139,6 +139,33 @@
 -(NSMutableArray *)ClandarDataArray{
     if (!_ClandarDataArray) {
         _ClandarDataArray = [NSMutableArray array];
+        NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
+        NSMutableArray *montharr = [NSMutableArray array];
+        for (int i = 0; i<360; i++) {
+            NSDate *lastMonth = [calendar dateFromComponents:comps];
+            NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
+            [montharr addObject:str];
+            [comps setMonth:([comps month] - 1)];
+        }
+        for (int i = 0; i<montharr.count; i++) {
+            NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:montharr[i]];
+            NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
+            NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate:MonthDate];
+            NSMutableArray *DayArray = [NSMutableArray array];
+            NSMutableArray *DayNumArray = [NSMutableArray array];
+            for (int d = 1; d < range.length+week; d++) {
+                if (d<week) {
+                    [DayNumArray addObject:@""];
+                    [DayArray addObject:@""];
+                }else{
+                    [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d-(week-1)]];
+                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",montharr[i],d-(week-1)]];
+                }
+            }
+            NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":montharr[i]};
+            [_ClandarDataArray addObject:MonthDict];
+        }
     }
     return _ClandarDataArray;
 }
@@ -148,7 +175,8 @@
         _TimeTitlePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, -10, self.TimeTitleView.width, self.TimeTitleView.height+20)];
         _TimeTitlePicker.datePickerMode = UIDatePickerModeDate;
         _TimeTitlePicker.maximumDate = [NSDate date];
-        _TimeTitlePicker.minimumDate = [self AuToDateFormatter:@"yyyy年MM月" object:self.ClandarDataArray.lastObject[@"MonthNum"]];
+        NSArray *EndDayArray = [NSArray arrayWithArray:self.ClandarDataArray.lastObject[@"DayArray"]];
+        _TimeTitlePicker.minimumDate = [self AuToDateFormatter:@"yyyy年MM月dd日" object:EndDayArray.lastObject];
         [_TimeTitlePicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
     }
     return _TimeTitlePicker;
@@ -174,6 +202,8 @@
         [_ClandarCV registerClass:[ClandarDayCell class]forCellWithReuseIdentifier:@"ClandarDayCell"];
         [_ClandarCV registerClass:[ClandarMonthReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ClandarMonthReusableView"];
         _ClandarCV.showsVerticalScrollIndicator = NO;
+        _ClandarCV.prefetchingEnabled = YES;
+        _ClandarCV.bounces = NO;
         _ClandarCV.backgroundColor = [UIColor whiteColor];
         _ClandarCV.dataSource = self;
         _ClandarCV.delegate = self;
@@ -203,41 +233,10 @@
 }
 
 - (void)getAllDaysWithCalender{
-    
-    NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
-    
-    NSMutableArray *montharr = [NSMutableArray array];
-    for (int i = 0; i<360; i++) {
-        NSDate *lastMonth = [calendar dateFromComponents:comps];
-        NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
-        [montharr addObject:str];
-        [comps setMonth:([comps month] - 1)];
-    }
-    
-    for (int i = 0; i<montharr.count; i++) {
-        NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:montharr[i]];
-        NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
-        NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate:MonthDate];
-        NSMutableArray *DayArray = [NSMutableArray array];
-        NSMutableArray *DayNumArray = [NSMutableArray array];
-        for (int d = 1; d < range.length+week; d++) {
-            if (d<week) {
-                [DayNumArray addObject:@""];
-                [DayArray addObject:@""];
-            }else{
-                [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d-(week-1)]];
-                [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",montharr[i],d-(week-1)]];
-            }
-        }
-        NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":montharr[i]};
-        [self.ClandarDataArray addObject:MonthDict];
-    }
     [self.ClandarCV reloadData];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
-    
     NSString *reuseIdentifier = @"ClandarMonthReusableView";
     ClandarMonthReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind :kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     NSDictionary *dict = self.ClandarDataArray[indexPath.section];
@@ -250,14 +249,12 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    
     NSDictionary *dict = self.ClandarDataArray[section];
     NSMutableArray *daynumarr = dict[@"DayNumArray"];
     return daynumarr.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     ClandarDayCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ClandarDayCell" forIndexPath:indexPath];
     UIView* selectedBGView = [[UIView alloc] initWithFrame:cell.bounds];
     selectedBGView.backgroundColor = [UIColor yellowColor];
@@ -266,9 +263,7 @@
     NSDictionary *dict = self.ClandarDataArray[indexPath.section];
     NSMutableArray *daynumarr = dict[@"DayNumArray"];
     NSMutableArray *dayarr = dict[@"DayArray"];
-    
     cell.DayNum.text = daynumarr[indexPath.item];
-    
     if ([cell.DayNum.text isEqualToString:@""]) {
         cell.alpha = 0.0;
         cell.userInteractionEnabled = NO;
@@ -281,14 +276,12 @@
             cell.userInteractionEnabled = YES;
         }
     }
-    
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dict = self.ClandarDataArray[indexPath.section];
     NSMutableArray *arr = dict[@"DayArray"];
-    
     [self.TimeTitlePicker setDate:[self AuToDateFormatter:@"yyyy年MM月d日" object:arr[indexPath.item]] animated:YES];
     [self.delegate SelectDate:self.TimeTitlePicker.date];
 }
@@ -298,7 +291,6 @@
  *  子控件超出父控件fram依旧响应点击事件
  */
 -(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    
     UIView *hitView = [super hitTest:point withEvent:event];
     if (hitView == self){
         [self ClandarHidden];
@@ -311,15 +303,13 @@
  *  点击非本控件收起菜单
  */
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
-    
     return YES;
 }
 
 #pragma mark - 触摸
 
 - (void)ClandarHidden{
-    
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.frame = CGRectMake(superview.width, 0, 350, superview.height);
         self.TimeTitleView.alpha = 0.0;
         self.ClandarCV.alpha = 0.0;
@@ -329,8 +319,7 @@
     }];
 }
 
-- (int)getDifferenceByDate:(NSString *)date {
-    
+- (int)getDifferenceByDate:(NSString *)date {    
     NSDate *selectdate = [self AuToDateFormatter:@"yyyy年MM月d日" object:date];
     int nowtime = [[NSDate date] timeIntervalSince1970];
     int selecttime = [selectdate timeIntervalSince1970];
@@ -356,9 +345,6 @@
     [self.ClandarCV removeFromSuperview];
     [self.Cover removeFromSuperview];
     [self removeFromSuperview];
-    self.ClandarDataArray = nil;
-    self.YearArray = nil;
-    self.MonthArray = nil;
     self.Cover = nil;
 }
 
