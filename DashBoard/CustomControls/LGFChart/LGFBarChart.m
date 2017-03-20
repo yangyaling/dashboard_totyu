@@ -17,6 +17,9 @@
 -(instancetype)initWithFrame:(CGRect)frame BarData:(id)BarData BarType:(int)BarType{
     self = [super initWithFrame:frame];
     if (self) {
+        UILongPressGestureRecognizer *longPressPR = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressAction:)];
+        longPressPR.minimumPressDuration = 0.3;
+        [self addGestureRecognizer:longPressPR];
         self.backgroundColor = [UIColor clearColor];
         self.BarType = BarType;
         if ([BarData isKindOfClass:[NSDictionary class]]) {
@@ -96,63 +99,59 @@
         }
     }
 }
-///**
-// 触摸查看值
-// */
-//-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-//    NSSet *allTouches = [event allTouches];    //返回与当前接收者有关的所有的触摸对象
-//    UITouch *touch = [allTouches anyObject];   //视图中的所有对象
-//    CGPoint point = [touch locationInView:[touch view]]; //返回触摸点在视图中的当前坐标
-//    int x = point.x;
-//    
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
-//    [_DataLine removeFromSuperview];
-//    _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
-//    _DataLine.backgroundColor = SystemColor(1.0);
-//    [self addSubview:_DataLine];
-//    [self DataLineTitle:[self timeFormatted:86400/(self.width/x)]];
-//}
-//-(void)DataLineTitle:(NSString*)DataLineTitleText{
-//    
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLineTitle) object:nil];
-//    [_DataLineTitle removeFromSuperview];
-//    CGSize size=[DataLineTitleText sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
-//    _DataLineTitle = [[UILabel alloc]initWithFrame:CGRectMake(self.width / 2 - ((size.width+20) / 2), self.height / 2 - 10, size.width+20, 20)];
-//    _DataLineTitle.text = DataLineTitleText;
-//    _DataLineTitle.backgroundColor = SystemColor(1.0);
-//    _DataLineTitle.textColor = [UIColor whiteColor];
-//    _DataLineTitle.textAlignment = NSTextAlignmentCenter;
-//    _DataLineTitle.font = [UIFont systemFontOfSize:12];
-//    _DataLineTitle.clipsToBounds = YES;
-//    _DataLineTitle.layer.cornerRadius = 3.0;
-//    [self addSubview:_DataLineTitle];
-//}
-//
-//-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    
-//    [self performSelector:@selector(RemoveDataLine) withObject:nil afterDelay:0.2];
-//    [self performSelector:@selector(RemoveDataLineTitle) withObject:nil afterDelay:1];
-//    NSLog(@"取消触摸");
-//}
-//
-//-(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    [_DataLine removeFromSuperview];
-//    [_DataLineTitle removeFromSuperview];
-//    NSLog(@"取消取消");
-//}
-//
-//-(void)RemoveDataLineTitle{
-//    [_DataLineTitle removeFromSuperview];
-//}
-//
-//-(void)RemoveDataLine{
-//    [_DataLine removeFromSuperview];
-//}
-//
-//- (NSString *)timeFormatted:(int)totalSeconds{
-//    int seconds = totalSeconds % 60;
-//    int minutes = (totalSeconds / 60) % 60;
-//    int hours = totalSeconds / 3600;
-//    return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
-//}
+/**
+ 长按查看值
+ */
+- (void)longPressAction:(UILongPressGestureRecognizer *)sender{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [sender locationInView:self]; //返回触摸点在视图中的当前坐标
+        int x = point.x;
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
+        [_DataLine removeFromSuperview];
+        _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
+        _DataLine.backgroundColor = [UIColor blackColor];
+        [self addSubview:_DataLine];
+        [self DataLineTitle:[self timeFormatted:86400/(self.width/x)]];
+    }else if(sender.state == UIGestureRecognizerStateEnded) {
+        [self performSelector:@selector(RemoveDataLine) withObject:nil afterDelay:0.2];
+        [self performSelector:@selector(RemoveDataLineTitle) withObject:nil afterDelay:1];
+        NSLog(@"取消触摸");
+    }else if(sender.state == UIGestureRecognizerStateCancelled) {
+        [_DataLine removeFromSuperview];
+        [_DataLineTitle removeFromSuperview];
+        NSLog(@"取消取消");
+    }
+}
+
+-(void)DataLineTitle:(NSString*)DataLineTitleText{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLineTitle) object:nil];
+    [_DataLineTitle removeFromSuperview];
+    CGSize size=[DataLineTitleText sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:12]}];
+    _DataLineTitle = [[UILabel alloc]initWithFrame:CGRectMake(self.width / 2 - ((size.width+20) / 2), self.height / 2 - 10, size.width+20, 20)];
+    _DataLineTitle.text = DataLineTitleText;
+    _DataLineTitle.backgroundColor = [UIColor whiteColor];
+    _DataLineTitle.textColor = SystemColor(1.0);
+    _DataLineTitle.textAlignment = NSTextAlignmentCenter;
+    _DataLineTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
+    _DataLineTitle.layer.borderWidth = 0.5;
+    _DataLineTitle.layer.borderColor = SystemColor(1.0).CGColor;
+    _DataLineTitle.clipsToBounds = YES;
+    _DataLineTitle.layer.cornerRadius = _DataLineTitle.height/2;
+    [self addSubview:_DataLineTitle];
+}
+
+-(void)RemoveDataLineTitle{
+    [_DataLineTitle removeFromSuperview];
+}
+
+-(void)RemoveDataLine{
+    [_DataLine removeFromSuperview];
+}
+
+- (NSString *)timeFormatted:(int)totalSeconds{
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds / 60) % 60;
+    int hours = totalSeconds / 3600;
+    return [NSString stringWithFormat:@"%02d時%02d分%02d秒",hours, minutes, seconds];
+}
 @end

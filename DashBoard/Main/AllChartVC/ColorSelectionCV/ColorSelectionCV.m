@@ -12,7 +12,6 @@
 @interface ColorSelectionCVCell : UICollectionViewCell<LGFColorSelectViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *ColorView;
 @property (weak, nonatomic) IBOutlet UIButton *Device;
-@property (nonatomic, strong) UICollectionView *SuperCollectionView;
 @property (nonatomic, strong) NSDictionary *DataDict;
 @property (nonatomic, assign) NSInteger Row;
 @end
@@ -182,7 +181,6 @@
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     cell.DataDict = systemactioninfo[indexPath.item];
     cell.Row = indexPath.item;
-    cell.SuperCollectionView = collectionView;
     return cell;
 }
 

@@ -6,7 +6,7 @@
 //  Copyright © 2017年 NIT. All rights reserved.
 //
 
-#define DLineY(stri) (_YMaxLength - [(stri) floatValue]) / (_YTotalLength/(self.height - 2)) + 1
+#define DLineY(stri) (_YMaxLength - [(stri) floatValue]) / (_YTotalLength/(self.height - 1)) + 0.5
 
 #define LineX(stri) (stri) * (self.width / _XTotalLength)
 
@@ -19,6 +19,9 @@
 -(instancetype)initWithFrame:(CGRect)frame LineDict:(NSDictionary *)LineDict LineType:(LineType)LineType{
     self = [super initWithFrame:frame];
     if (self) {
+        UILongPressGestureRecognizer *longPressPR = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressAction:)];
+        longPressPR.minimumPressDuration = 0.3;
+        [self addGestureRecognizer:longPressPR];
         self.backgroundColor = [UIColor clearColor];
         _LineDataDict = [NSDictionary dictionaryWithDictionary:LineDict];
         _LineType = LineType;
@@ -52,6 +55,9 @@
         _YMinLength = [[numarr valueForKeyPath:@"@min.floatValue"] floatValue];
     }
     _YTotalLength = _YMaxLength - _YMinLength;
+    if (_YTotalLength == 0) {
+        _YTotalLength = _YMaxLength;
+    }
     return numarr;
 }
 
@@ -72,7 +78,6 @@
     }
     
     [self AddAuxiliaryLine:context];
-
     [self AddMaxMinLabel];
 }
 
@@ -129,63 +134,63 @@
     CGContextDrawPath(context, kCGPathStroke);
 }
 /**
- 触摸查看值
+ 长按查看值
  */
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    NSSet *allTouches = [event allTouches];    //返回与当前接收者有关的所有的触摸对象
-    UITouch *touch = [allTouches anyObject];   //视图中的所有对象
-    CGPoint point = [touch locationInView:[touch view]]; //返回触摸点在视图中的当前坐标
-    int x = point.x;
-    int row = (_XTotalLength + 1)/self.width * x;
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
-    [_DataLine removeFromSuperview];
-
-    if (![_LineDataDict[@"data"][row] isEqualToString:@""] && ![_LineDataDict[@"avg"][row] isEqualToString:@""]) {
+- (void)longPressAction:(UILongPressGestureRecognizer *)sender{
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [sender locationInView:self];
+        int x = point.x;
+        int row = (_XTotalLength + 1)/self.width * x;
         
-        if (_LineType == EnvironmentList) {
-            _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
-        } else {
-            _DataLine = [[UIView alloc]initWithFrame:CGRectMake((self.width / _XTotalLength) * row - 0.5, 0, 1, self.height)];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
+        [_DataLine removeFromSuperview];
+        
+        if (![_LineDataDict[@"data"][row] isEqualToString:@""] && ![_LineDataDict[@"avg"][row] isEqualToString:@""]) {
+            
+            if (_LineType == EnvironmentList) {
+                _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
+            } else {
+                _DataLine = [[UIView alloc]initWithFrame:CGRectMake((self.width / _XTotalLength) * row - 0.5, 0, 1, self.height)];
+            }
+            _DataLine.backgroundColor = [UIColor blackColor];
+            [self addSubview:_DataLine];
+            
+            if (_LineType == EnvironmentSet) {
+                [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
+            } else {
+                if (_LineType == ActivitySet) {
+                    [self DataLineTitle:[NSString stringWithFormat:@"%@",_LineDataDict[@"data"][row]]];
+                }else{
+                    [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
+                }
+            }
         }
-        _DataLine.backgroundColor = SystemColor(1.0);
-        [self addSubview:_DataLine];
-
-        if (_LineType == EnvironmentSet) {
-            [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
-        } else {
-            [self DataLineTitle:[NSString stringWithFormat:@"%@",_LineDataDict[@"data"][row]]];
-        }
+    }else if(sender.state == UIGestureRecognizerStateEnded) {
+        [self performSelector:@selector(RemoveDataLine) withObject:nil afterDelay:0.2];
+        [self performSelector:@selector(RemoveDataLineTitle) withObject:nil afterDelay:1.5];
+        NSLog(@"取消触摸");
+    }else if(sender.state == UIGestureRecognizerStateCancelled) {
+        [_DataLine removeFromSuperview];
+        [_DataLineTitle removeFromSuperview];
+        NSLog(@"取消取消");
     }
 }
 
 -(void)DataLineTitle:(NSString*)DataLineTitleText{
-    
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLineTitle) object:nil];
     [_DataLineTitle removeFromSuperview];
-    CGSize size=[DataLineTitleText sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12]}];
+    CGSize size=[DataLineTitleText sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"Helvetica-Bold" size:12]}];
     _DataLineTitle = [[UILabel alloc]initWithFrame:CGRectMake(self.width / 2 - ((size.width+20) / 2), self.height / 2 - 10, size.width+20, 20)];
     _DataLineTitle.text = DataLineTitleText;
-    _DataLineTitle.backgroundColor = SystemColor(1.0);
-    _DataLineTitle.textColor = [UIColor whiteColor];
+    _DataLineTitle.backgroundColor = [UIColor whiteColor];
+    _DataLineTitle.textColor = SystemColor(1.0);
     _DataLineTitle.textAlignment = NSTextAlignmentCenter;
-    _DataLineTitle.font = [UIFont systemFontOfSize:12];
+    _DataLineTitle.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
+    _DataLineTitle.layer.borderWidth = 0.5;
+    _DataLineTitle.layer.borderColor = SystemColor(1.0).CGColor;
     _DataLineTitle.clipsToBounds = YES;
-    _DataLineTitle.layer.cornerRadius = 3.0;
+    _DataLineTitle.layer.cornerRadius = _DataLineTitle.height/2;
     [self addSubview:_DataLineTitle];
-}
-
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-
-    [self performSelector:@selector(RemoveDataLine) withObject:nil afterDelay:0.2];
-    [self performSelector:@selector(RemoveDataLineTitle) withObject:nil afterDelay:1];
-    NSLog(@"取消触摸");
-}
-
--(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-    [_DataLine removeFromSuperview];
-    [_DataLineTitle removeFromSuperview];
-    NSLog(@"取消取消");
 }
 
 -(void)RemoveDataLineTitle{
@@ -200,6 +205,6 @@
     int seconds = totalSeconds % 60;
     int minutes = (totalSeconds / 60) % 60;
     int hours = totalSeconds / 3600;
-    return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
+    return [NSString stringWithFormat:@"%02d時%02d分%02d秒",hours, minutes, seconds];
 }
 @end
