@@ -145,7 +145,7 @@
     underLineView.hidden = (_barStyle == TYPagerBarStyleNoneView);
     if (_barStyle != TYPagerBarStyleCoverView) {
         [_collectionViewBar addSubview:underLineView];
-    }else{
+    } else {
         underLineView.layer.zPosition = -1;
         [_collectionViewBar insertSubview:underLineView atIndex:0];
     }

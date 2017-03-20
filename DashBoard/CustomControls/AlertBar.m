@@ -46,22 +46,22 @@
     self.NoAlert = nil;
     self.paoma = nil;
     [self addSubview:self.AlertLabel];
-    if (_AlertArray.count==0||!_AlertArray) {
+    if (_AlertArray.count == 0 || !_AlertArray) {
         [self addSubview:self.NoAlert];
-    }else{
+    } else {
         [self addSubview:self.paoma];
     }
 }
 
 -(UILabel *)AlertLabel{
     if (!_AlertLabel) {
-        _AlertLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.width/4, self.height)];
+        _AlertLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.width / 4, self.height)];
         _AlertLabel.textAlignment = NSTextAlignmentCenter;
         _AlertLabel.text = [NSString stringWithFormat:@"アラート情報 %ld 件",_AlertArray.count];
         _AlertLabel.font = [UIFont boldSystemFontOfSize:25];
         if (_AlertArray.count==0) {
             _AlertLabel.textColor = [UIColor whiteColor];
-        }else{
+        } else {
             _AlertLabel.textColor = [UIColor redColor];
         }
     }
@@ -70,7 +70,7 @@
 
 -(UILabel *)NoAlert{
     if (!_NoAlert) {
-        _NoAlert = [[UILabel alloc]initWithFrame:CGRectMake(self.AlertLabel.width, _BorderWidth, self.width-self.AlertLabel.width-_BorderWidth, self.height-_BorderWidth*2)];
+        _NoAlert = [[UILabel alloc]initWithFrame:CGRectMake(self.AlertLabel.width, _BorderWidth, self.width - self.AlertLabel.width - _BorderWidth, self.height - _BorderWidth * 2)];
         _NoAlert.clipsToBounds = YES;
         _NoAlert.backgroundColor = [UIColor whiteColor];
         _NoAlert.layer.cornerRadius = _CornerRadius;
@@ -84,7 +84,7 @@
 
 -(LGFPaoMaView *)paoma{
     if (!_paoma) {
-        _paoma = [[LGFPaoMaView alloc]initWithFrame:CGRectMake(self.AlertLabel.width, _BorderWidth, self.width-self.AlertLabel.width-_BorderWidth, self.height-_BorderWidth*2) withTitleArray:_AlertArray];
+        _paoma = [[LGFPaoMaView alloc]initWithFrame:CGRectMake(self.AlertLabel.width, _BorderWidth, self.width-self.AlertLabel.width - _BorderWidth, self.height - _BorderWidth * 2) withTitleArray:_AlertArray];
         _paoma.backgroundColor = [UIColor whiteColor];
         _paoma.layer.cornerRadius = _CornerRadius;
     }

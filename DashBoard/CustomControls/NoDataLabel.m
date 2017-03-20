@@ -14,14 +14,14 @@
  */
 -(BOOL)Show:(NSString*)title SuperView:(UIView*)SuperView DataBool:(NSInteger)DataBool{
     [self RemoveFrom:SuperView];
-    if (DataBool==0) {
+    if (DataBool == 0) {
         NoDataLabel *nodatalabel = [[NoDataLabel alloc]initWithFrame:[SuperView isKindOfClass:[UICollectionView class]] ? SuperView.frame : SuperView.bounds];
         nodatalabel.text = title;
         nodatalabel.textColor = [UIColor lightGrayColor];
         nodatalabel.textAlignment = NSTextAlignmentCenter;
         [SuperView addSubview:nodatalabel];
         return YES;
-    }else{
+    } else {
         return NO;
     }
 }

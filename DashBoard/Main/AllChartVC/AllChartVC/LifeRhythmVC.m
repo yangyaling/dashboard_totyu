@@ -34,9 +34,9 @@ static NSString * const reuseIdentifier = @"PageVCCell";
 -(NSMutableArray *)controlarr{
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
-        for (int i = 0; i<= TotalWeek; i++) {
+        for (int i = 0; i <= TotalWeek; i++) {
             LifeRhythmChartVC *lrcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmChartVCSB"];
-            lrcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalWeek-i)*7];
+            lrcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalWeek - i) * 7];
             lrcvc.delegate = self;
             [self addChildViewController:lrcvc];
             [_controlarr addObject:lrcvc];

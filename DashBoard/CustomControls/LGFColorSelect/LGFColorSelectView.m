@@ -44,7 +44,7 @@
  添加子控件
  */
 -(void)AddChildSubview{
-    self.frame = CGRectMake(WindowView.width/3, WindowView.height/5, WindowView.width/3, WindowView.height/5*3);
+    self.frame = CGRectMake(WindowView.width / 3, WindowView.height / 5, WindowView.width / 3, WindowView.height/5*3);
     [self.Cover addSubview:self];
     [self addSubview:self.Title];
     [self addSubview:self.confirm];
@@ -137,7 +137,7 @@
 
 -(UIView *)ResultView{
     if (!_ResultView) {
-        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.width/4*3, self.height/16, self.height/8, self.height/8)];
+        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.width / 4 * 3, self.height / 16, self.height / 8, self.height / 8)];
         _ResultView.backgroundColor = [UIColor whiteColor];
         _ResultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ResultView.layer.borderWidth = 0.5;
@@ -148,7 +148,7 @@
 
 -(UILabel *)Title{
     if (!_Title) {
-        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.height/16, self.width/4*3, self.height/8)];
+        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.height / 16, self.width / 4 * 3, self.height / 8)];
         _Title.font = [UIFont systemFontOfSize:30];
         _Title.textAlignment = NSTextAlignmentCenter;
     }
@@ -157,7 +157,7 @@
 
 -(UIImageView *)ColorImageView{
     if (!_ColorImageView) {
-        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.height/4, self.width-20, self.height/4*3-50)];
+        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.height / 4, self.width - 20, self.height / 4 * 3 - 50)];
         [_ColorImageView setImage:[UIImage imageNamed:@"huaban.png"]];
         _ColorImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ColorImageView.layer.borderWidth = 0.5;
@@ -168,7 +168,7 @@
 
 -(UIButton *)confirm{
     if (!_confirm) {
-        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10+(self.width-20)/2, self.height-50, (self.width-20)/2, 50)];
+        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10 + (self.width - 20) / 2, self.height - 50, (self.width - 20) / 2, 50)];
         [_confirm setTitle:@"確認" forState:UIControlStateNormal];
         [_confirm setTitleColor:NITColor(30, 150, 250) forState:UIControlStateNormal];
         [_confirm addTarget:self action:@selector(confirmedit) forControlEvents:UIControlEventTouchUpInside];
@@ -178,7 +178,7 @@
 
 -(UIButton *)cancel{
     if (!_cancel) {
-        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.height-50, (self.width-20)/2, 50)];
+        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.height - 50, (self.width - 20) / 2, 50)];
         [_cancel setTitle:@"キャンセル" forState:UIControlStateNormal];
         [_cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [_cancel addTarget:self action:@selector(canceledit) forControlEvents:UIControlEventTouchUpInside];

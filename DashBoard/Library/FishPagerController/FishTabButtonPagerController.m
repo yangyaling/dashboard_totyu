@@ -190,7 +190,7 @@
         [UIView animateWithDuration:self.animateDuration animations:^{
             [self transitionFromCell:(FishTabTitleViewCell *)fromCell toCell:(FishTabTitleViewCell *)toCell];
         }];
-    }else{
+    } else {
         [self transitionFromCell:fromCell toCell:toCell];
     }
 }

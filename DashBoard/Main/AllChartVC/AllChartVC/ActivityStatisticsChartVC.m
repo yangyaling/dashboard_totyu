@@ -70,15 +70,15 @@
                     }
                 }
             }
-            if (selecttype==1) {
+            if (selecttype == 1) {
                 for (NSDictionary *DataDict in DataArrayCopy) {
-                    if (DataDict.count==8) {
+                    if (DataDict.count == 8) {
                         [_DataArray removeObject:DataDict];
                     }
                 }
             }
             [_ChartCV reloadData];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
@@ -93,7 +93,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(_ChartCV.width,_ChartCV.height/3);
+    return CGSizeMake(_ChartCV.width,_ChartCV.height / 3);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,7 +103,7 @@
     cell.DeviceColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
     [cell setNeedsLayout];
     [cell layoutIfNeeded];
-    UIView *ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:[[NSString stringWithFormat:@"%@",DataDict[@"actionsummary"]] isEqualToString:@"1"] ? 1 : 2];
+    UIView *ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:[[NSString stringWithFormat:@"%@",DataDict[@"actionsummary"]] isEqualToString:@"1"] ? ActivitySet : EnvironmentSet];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];
     return cell;

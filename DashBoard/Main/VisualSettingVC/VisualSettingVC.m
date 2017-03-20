@@ -40,7 +40,7 @@
     if ([DataDict[@"actionclass"]isEqualToString:@"1"]) {
         self.ColorView.backgroundColor = [UIColor clearColor];
         self.ColorView.userInteractionEnabled = NO;
-    }else{
+    } else {
         self.ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
         self.ColorView.userInteractionEnabled = YES;
     }
@@ -117,7 +117,7 @@
     if ([DataDict[@"actionclass"]isEqualToString:@"1"]) {
         self.ColorView.backgroundColor = [UIColor clearColor];
         self.ColorView.userInteractionEnabled = NO;
-    }else{
+    } else {
         self.ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
         self.ColorView.userInteractionEnabled = YES;
     }
@@ -235,7 +235,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
             _PlaceDropDown.delegate = self;
             _PlaceDropDown.DefaultTitle = self.BuildingArray[0][@"displayname"];
             _PlaceDropDown.DataArray = self.BuildingArray;
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
     }defeats:^(NSError *defeats){
@@ -262,14 +262,14 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
                 self.VisualSetArray = dict[@"actioninfo"];
                 [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
 
-            }else{
+            } else {
                 _SaveButton.alpha = 0.0;
                 self.VisualSetArray = nil;
             }
             [_VisualSetTable reloadData];
             [_UserListCollection reloadData];
             [_UserListCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:UserListCollectionSelectItem inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
@@ -291,7 +291,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             [self LoadVzConfigData:self.BuildingArray[_PlaceDropDown.SelectRow]];
 //            [MBProgressHUD showSuccess:@"成功" toView:self.view];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
 //            [MBProgressHUD showError:@"失败" toView:self.view];
         }
@@ -374,7 +374,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
     NSDictionary *DataDict = self.VisualSetArray[indexPath.item];
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]]isEqualToString:@"6"]) {
         return 90;
-    }else{
+    } else {
         return 50;
     }
 }
@@ -386,7 +386,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
         cell.Row = indexPath.row;
         cell.DataDict = DataDict;
         return cell;
-    }else{
+    } else {
         VisualSetOneTableCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifiertbvone forIndexPath:indexPath];
         cell.Row = indexPath.row;
         cell.DataDict = DataDict;

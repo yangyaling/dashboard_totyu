@@ -34,7 +34,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 -(NSMutableArray *)controlarr{
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
-        for (int i = 0; i<= TotalDay; i++) {
+        for (int i = 0; i <= TotalDay; i++) {
             LifeRhythmDetailChartVC *lrdcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmDetailChartVCSB"];
             lrdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
             lrdcvc.delegate = self;

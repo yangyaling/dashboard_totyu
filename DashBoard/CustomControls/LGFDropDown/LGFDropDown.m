@@ -157,7 +157,7 @@
     
     if(SelectTitle&&![SelectTitle isEqualToString:EMPTY]){
         _mainTitleLabel.text = SelectTitle;
-    }else{
+    } else {
         _mainTitleLabel.text = _DefaultTitle;
     }
 }
@@ -200,7 +200,7 @@
     
     if (child) {
         rowcount = _ChildDataArray.count;
-    }else{
+    } else {
         rowcount = _DataArray.count;
     }
     
@@ -226,7 +226,7 @@
     if (child) {
         [self cellboolchild:_ChildDataArray[indexPath.row] cell:cell];
 
-    }else{
+    } else {
         NSDictionary *dict = _DataArray[indexPath.row];
         [self cellboolchild:dict[@"displayname"] cell:cell];
     }
@@ -240,7 +240,7 @@
     //判断是否有子菜单
     if (child) {
         [self boolchild:_ChildDataArray[indexPath.row] type:0];
-    }else{
+    } else {
         _SelectRow = indexPath.row;
         NSDictionary *dict = _DataArray[indexPath.row];
         [self boolchild:dict[@"displayname"] type:1];
@@ -259,7 +259,7 @@
         _mainTitleLabel.textColor = _TextColor;
         if(SelectTitle&&![SelectTitle isEqualToString:EMPTY]){
             _mainTitleLabel.text = SelectTitle;
-        }else{
+        } else {
             _mainTitleLabel.text = _DefaultTitle;
         }
         _mainTitleLabel.clipsToBounds = YES;
@@ -331,11 +331,11 @@
         return _buttonview;
     }else if(tablebool){
         return _dropdowntableview;
-    }else{
+    } else {
         UIView *hitView = [super hitTest:point withEvent:event];
         if (hitView == self){
             return nil;
-        }else{
+        } else {
             return [super hitTest:point withEvent:event];
         }
     }
@@ -372,13 +372,13 @@
         select = NO;
         if (type==2) {
             SelectTitle = title;
-        }else{
+        } else {
             [self selectDropDown:title];
         }
     }else if([title isKindOfClass:[NSMutableDictionary class]]||[title isKindOfClass:[NSDictionary class]]){//有子菜单
         if (type==2) {
             SelectTitle = [[title allKeys] firstObject];
-        }else{
+        } else {
             _ChildDataArray = [NSMutableArray arrayWithArray:[title valueForKey:[[title allKeys] firstObject]]];
             if (type==1)child = YES;
             [self doDropDown];
@@ -407,7 +407,7 @@
     NSIndexSet * sectionindexset=[[NSIndexSet alloc]initWithIndex:0];
     if (child) {
         [self.dropdowntableview reloadSections:sectionindexset withRowAnimation:UITableViewRowAnimationLeft];
-    }else{
+    } else {
         [self.dropdowntableview reloadData];
     }
     

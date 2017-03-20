@@ -32,7 +32,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 -(NSMutableArray *)controlarr{
     if (!_controlarr) {
         _controlarr = [NSMutableArray array];
-        for (int i = 0; i<= TotalDay; i++) {
+        for (int i = 0; i <= TotalDay; i++) {
             ActivityStatisticsDetailChartVC *asdcvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsDetailChartVCSB"];
             asdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
             asdcvc.delegate = self;

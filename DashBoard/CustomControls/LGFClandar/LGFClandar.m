@@ -99,7 +99,7 @@
     NSDate *SelectDate = [self AuToDateFormatter:@"yyyy-MM-dd" object:Date];
     if (SelectDate) {
         NewDate = SelectDate;
-    }else{
+    } else {
         NewDate = [NSDate date];
     }
     self.delegate = SuperSelf;
@@ -135,20 +135,22 @@
     }
     return _Cover;
 }
-
+/**
+ 取得三十年日期
+ */
 -(NSMutableArray *)ClandarDataArray{
     if (!_ClandarDataArray) {
         _ClandarDataArray = [NSMutableArray array];
         NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
         NSMutableArray *montharr = [NSMutableArray array];
-        for (int i = 0; i<360; i++) {
+        for (int i = 0; i < 360; i++) {
             NSDate *lastMonth = [calendar dateFromComponents:comps];
             NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
             [montharr addObject:str];
             [comps setMonth:([comps month] - 1)];
         }
-        for (int i = 0; i<montharr.count; i++) {
+        for (int i = 0; i < montharr.count; i++) {
             NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:montharr[i]];
             NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
             NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate:MonthDate];
@@ -158,9 +160,9 @@
                 if (d<week) {
                     [DayNumArray addObject:@""];
                     [DayArray addObject:@""];
-                }else{
-                    [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d-(week-1)]];
-                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",montharr[i],d-(week-1)]];
+                } else {
+                    [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d - (week - 1)]];
+                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",montharr[i],d - (week - 1)]];
                 }
             }
             NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":montharr[i]};
@@ -196,9 +198,9 @@
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
-        _ClandarCV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 35, 280, WindowView.height-149) collectionViewLayout:layout];
-        layout.itemSize = CGSizeMake(_ClandarCV.width/7, _ClandarCV.width/7);
-        layout.headerReferenceSize = CGSizeMake(_ClandarCV.width,50);
+        _ClandarCV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 35, 280, WindowView.height - 149) collectionViewLayout:layout];
+        layout.itemSize = CGSizeMake(_ClandarCV.width / 7, _ClandarCV.width / 7);
+        layout.headerReferenceSize = CGSizeMake(_ClandarCV.width, 50);
         [_ClandarCV registerClass:[ClandarDayCell class]forCellWithReuseIdentifier:@"ClandarDayCell"];
         [_ClandarCV registerClass:[ClandarMonthReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ClandarMonthReusableView"];
         _ClandarCV.showsVerticalScrollIndicator = NO;
@@ -267,11 +269,11 @@
     if ([cell.DayNum.text isEqualToString:@""]) {
         cell.alpha = 0.0;
         cell.userInteractionEnabled = NO;
-    }else{
-        if ([self getDifferenceByDate:dayarr[indexPath.item]]<=0&&![dayarr[indexPath.item] isEqualToString:[self AuToDateFormatter:@"yyyy年MM月d日" object:[NSDate date]]]) {
+    } else {
+        if ([self getDifferenceByDate:dayarr[indexPath.item]] <= 0 && ![dayarr[indexPath.item] isEqualToString:[self AuToDateFormatter:@"yyyy年MM月d日" object:[NSDate date]]]) {
             cell.alpha = 0.3;
             cell.userInteractionEnabled = NO;
-        }else{
+        } else {
             cell.alpha = 1.0;
             cell.userInteractionEnabled = YES;
         }
@@ -295,7 +297,7 @@
     if (hitView == self){
         [self ClandarHidden];
         return nil;
-    }else{
+    } else {
         return [super hitTest:point withEvent:event];
     }
 }
@@ -323,7 +325,7 @@
     NSDate *selectdate = [self AuToDateFormatter:@"yyyy年MM月d日" object:date];
     int nowtime = [[NSDate date] timeIntervalSince1970];
     int selecttime = [selectdate timeIntervalSince1970];
-    int num = (nowtime - selecttime)/3600/24;
+    int num = (nowtime - selecttime) / 3600 / 24;
     return num;
 }
 
@@ -333,7 +335,7 @@
     id NewObject;
     if ([object isKindOfClass:[NSString class]]) {
         NewObject = [formatter dateFromString:object];
-    }else{
+    } else {
         NewObject = [formatter stringFromDate:object];
     }
     return NewObject;

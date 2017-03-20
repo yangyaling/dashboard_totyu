@@ -32,7 +32,7 @@
     
     if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
         [self ShowMain];
-    }else{
+    } else {
         [self ShowLogin];
     }
     return YES;

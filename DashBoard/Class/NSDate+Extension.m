@@ -70,13 +70,13 @@
         
         if (ReturnType == returnstring) {
             return [fmt stringFromDate:date];
-        }else{
+        } else {
             return [fmt dateFromString:[fmt stringFromDate:date]];
         }
-    }else{
+    } else {
         if (ReturnType == returnstring) {
             return [fmt stringFromDate:[fmt dateFromString:date]];
-        }else{
+        } else {
             return [fmt dateFromString:date];
         }
     }
@@ -225,7 +225,7 @@
         case 6:
             if (week==1) {
                 return 7;
-            }else{
+            } else {
                 return week-1;
             }
             break;
@@ -376,7 +376,7 @@
             fmt.dateFormat = @"yyyy-MM-dd";
             
             selectdate = [fmt dateFromString:date];
-        }else{
+        } else {
             
             selectdate = date;
             
@@ -389,7 +389,7 @@
         NSInteger num = (nowtime - selecttime)/3600/24;
         
         return num;
-    }else{
+    } else {
         return 0;
     }
 }
@@ -398,7 +398,7 @@
     if (date) {
         NSString * yearstr = [NSString stringWithFormat:@"%@年",[NSDate NeedDateFormat:@"yyyy" ReturnType:returnstring date:date]];
         return yearstr;
-    }else{
+    } else {
         return @"error";
     }
 }
@@ -410,7 +410,7 @@
         NSString * tenyearstr = [NSString stringWithFormat:@"%@年",[NSDate NeedDateFormat:@"yyyy" ReturnType:returnstring date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:[NSDate GetTenYearDate:date]]]];
         
         return [NSString stringWithFormat:@"%@~%@",tenyearstr,yearstr];
-    }else{
+    } else {
         return @"error";
     }
 }
@@ -441,7 +441,7 @@
         
         NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",beginString,WeekArray[beginDateWeek-1],endString,WeekArray[endDateWeek-1]];
         return s;
-    }else{
+    } else {
         return @"error";
     }
 }
@@ -463,7 +463,7 @@
         if (weekDay == 1) {
             firstDiff = -6;
             lastDiff = 0;
-        }else{
+        } else {
             firstDiff = [calendar firstWeekday] - weekDay;
             lastDiff = 8 - weekDay;
         }
@@ -487,7 +487,7 @@
         NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",[formater stringFromDate:firstDayOfWeek],WeekArray[beginDateWeek-1],[formater stringFromDate:lastDayOfWeek],WeekArray[endDateWeek-1]];
         
         return s;
-    }else{
+    } else {
         return @"error";
     }
 }
@@ -504,7 +504,7 @@
         fmt.dateFormat = @"yyyy-MM-dd";
         
         return [fmt stringFromDate:[calendar dateFromComponents:comp]];
-    }else{
+    } else {
         return @"error";
     }
 }

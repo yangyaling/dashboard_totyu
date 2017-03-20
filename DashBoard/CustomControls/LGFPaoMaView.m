@@ -8,9 +8,9 @@
 
 #define xisnshigeshu 3
 
-#define PaoMaLabelFrame CGRectMake(self.width/xisnshigeshu*i+5, 5, self.width/xisnshigeshu-10, self.height-10)
+#define PaoMaLabelFrame CGRectMake(self.width/xisnshigeshu * i + 5, 5, self.width/xisnshigeshu - 10, self.height - 10)
 
-#define currentFrame CGRectMake(0, 0, self.width/xisnshigeshu*titlearray.count, self.height)
+#define currentFrame CGRectMake(0, 0, self.width / xisnshigeshu*titlearray.count, self.height)
 
 #import "LGFPaoMaView.h"
 @interface LGFPaoMaView ()
@@ -29,7 +29,7 @@
         self.clipsToBounds = YES;
         time = titlearray.count*2;
         OneShowContentView = [[UIView alloc]initWithFrame:currentFrame];
-        for (int i = 0; i<titlearray.count; i++) {
+        for (int i = 0; i < titlearray.count; i++) {
             UILabel *lab = [[UILabel alloc]initWithFrame:PaoMaLabelFrame];
             NSDictionary *alertdict = titlearray[i];
             lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:@"HH:mm:ss" ReturnType:returnstring date:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]]]];
@@ -37,7 +37,7 @@
             [OneShowContentView addSubview:lab];
         }
         [self addSubview: OneShowContentView];        
-        if (OneShowContentView.width>self.width) {
+        if (OneShowContentView.width > self.width) {
             [self doAnimation];
         }
     }
@@ -60,7 +60,7 @@
     [UIView setAnimationRepeatCount:LONG_MAX];
     [UIView setAnimationRepeatAutoreverses:YES];
     [UIView setAnimationCurve:UIViewAnimationCurveLinear];
-    OneShowContentView.transform = CGAffineTransformMakeTranslation(-(OneShowContentView.width-self.width), 0);
+    OneShowContentView.transform = CGAffineTransformMakeTranslation(-(OneShowContentView.width - self.width), 0);
     [UIView commitAnimations];
 }
 

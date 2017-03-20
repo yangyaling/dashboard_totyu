@@ -38,41 +38,41 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
         NSMutableArray *reverscontrolarr = [NSMutableArray array];
         for (int i = 0; i<= TotalRange; i++) {
             ActivityStatisticsChartVC *ascvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsChartVCSB"];   
-            if (TimeSelectSegIndex==0) {//日
-                if (i==0) {
+            if (TimeSelectSegIndex == 0) {//日
+                if (i == 0) {
                     ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
-                }else{
-                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
+                } else {
+                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i - 1];
                     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     int week = (int)[NSDate nowTimeType:LGFweek time:Previousdate];
                     ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:week];
                 }
                 ascvc.SumFlg = @"d";
                     
-            }else if(TimeSelectSegIndex==1){//周
-                if (i==0) {
+            }else if(TimeSelectSegIndex == 1){//周
+                if (i == 0) {
                     ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
-                }else{
-                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
+                } else {
+                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i - 1];
                     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     NSString *tmpdate = [NSDate getThreeMonthDate:Previousdate];
                     ascvc.DayStr = tmpdate;
                 }
                 ascvc.SumFlg = @"w";
-            }else if(TimeSelectSegIndex==2){//月
-                if (i==0) {
+            }else if(TimeSelectSegIndex == 2){//月
+                if (i == 0) {
                     ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
-                }else{
-                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
+                } else {
+                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i - 1];
                     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     ascvc.DayStr = [NSDate SotherDay:Previousdate symbols:LGFMinus dayNum:[[NSDate NeedDateFormat:@"DD" ReturnType:returnstring date:Previousdate] intValue]];
                 }
                 ascvc.SumFlg = @"m";
-            }else if(TimeSelectSegIndex==3){//年 q
-                if (i==0) {
+            }else if(TimeSelectSegIndex == 3){//年 q
+                if (i == 0) {
                     ascvc.DayStr = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate];
-                }else{
-                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i-1];
+                } else {
+                    ActivityStatisticsChartVC *Previousascvc = reverscontrolarr[i - 1];
                     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:Previousascvc.DayStr];
                     ascvc.DayStr = [NSDate GetTenYearDate:Previousdate];
                 }
@@ -118,9 +118,9 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
  */
 - (IBAction)TimeSelect:(UISegmentedControl *)sender {
     TimeSelectSegIndex = sender.selectedSegmentIndex;
-    if (TimeSelectSegIndex==0) {//日
+    if (TimeSelectSegIndex == 0) {//日
         TotalRange = 4;
-    }else{
+    } else {
         TotalRange = 2;
     }
     ScrollPage = TotalRange;
@@ -196,13 +196,13 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 }
 
 -(void)TimeFrameTitleSetValue:(NSDate*)date{
-    if (TimeSelectSegIndex==0) {//日
+    if (TimeSelectSegIndex == 0) {//日
         _TimeFrameTitle.text = [NSDate getWeekBeginAndEndWith:date];
-    }else if(TimeSelectSegIndex==1){//周
+    }else if(TimeSelectSegIndex == 1){//周
         _TimeFrameTitle.text = @"";
-    }else if(TimeSelectSegIndex==2){//月
+    }else if(TimeSelectSegIndex == 2){//月
         _TimeFrameTitle.text = [NSDate getYear:date];
-    }else if(TimeSelectSegIndex==3){//年
+    }else if(TimeSelectSegIndex == 3){//年
         _TimeFrameTitle.text = [NSDate getTenYear:date];
     }
 }

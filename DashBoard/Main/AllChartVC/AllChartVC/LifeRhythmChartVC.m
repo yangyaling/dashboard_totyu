@@ -60,7 +60,7 @@
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;   
             [_ChartCV reloadData];            
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
@@ -75,12 +75,12 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(_ChartCV.width,_ChartCV.height/7);
+    return CGSizeMake(_ChartCV.width,_ChartCV.height / 7);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LifeRhythmChartCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"LifeRhythmChartCell" forIndexPath:indexPath];
-    if ([_DataArray[indexPath.item]isKindOfClass:[NSDictionary class]]||[_DataArray[indexPath.item]isKindOfClass:[NSMutableDictionary class]]) {
+    if ([_DataArray[indexPath.item]isKindOfClass:[NSDictionary class]] || [_DataArray[indexPath.item]isKindOfClass:[NSMutableDictionary class]]) {
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         cell.WeekTitle.text = self.WeekArray[indexPath.row];
         cell.DayTitle.text = [[DataDict allKeys] firstObject];
@@ -91,10 +91,9 @@
         UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DayDataView.bounds BarData:ActionArray BarType:1];
         [cell.DayDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [cell.DayDataView addSubview:ChartView];
-    }else{
+    } else {
         cell.alpha = 0.0;
     }
-    
     return cell;
 }
 

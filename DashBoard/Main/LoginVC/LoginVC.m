@@ -33,7 +33,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField*)textField{
     if (textField ==_userId) {
         [_passWord becomeFirstResponder];
-    }else{
+    } else {
         [self.view endEditing:YES];
     }
     return YES;
@@ -69,13 +69,13 @@
                 [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
                 [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
                 MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
-            }else{
+            } else {
                 [MBProgressHUD showError:@"登録失败!" toView:self.view];
                 NSLog(@"errors: %@",tmpDic[@"errors"]);
             }
         }defeats:^(NSError *defeats){
         }];
-    }else{
+    } else {
         [MBProgressHUD showError:@"登録失败!" toView:self.view];
     }
 }

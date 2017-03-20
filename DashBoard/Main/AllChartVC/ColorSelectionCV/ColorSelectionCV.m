@@ -60,7 +60,7 @@
     NSMutableDictionary *actionselectdict = [NSMutableDictionary dictionaryWithDictionary:systemactioninfo[_Row]];
     if ([actionselectdict[@"actionselect"] boolValue]) {
         [actionselectdict setValue:@"NO" forKey:@"actionselect"];
-    }else{
+    } else {
         [actionselectdict setValue:@"YES" forKey:@"actionselect"];
     }
     [systemactioninfo replaceObjectAtIndex:_Row withObject:actionselectdict];
@@ -73,7 +73,7 @@
     [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (idx==_Row) {
             [obj setValue:@"NO" forKey:@"selecttype"];
-        }else{
+        } else {
             [obj setValue:actionselectdict[@"actionselect"] forKey:@"selecttype"];
         }
         [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
@@ -104,7 +104,7 @@
         self.dataSource = self;
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-        if (systemactioninfo.count==0) {
+        if (systemactioninfo.count == 0) {
             [self LoadVzConfigData];
         }
         [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
@@ -129,12 +129,12 @@
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:UserListArray.count])return;
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             for (NSDictionary *dict in UserListArray) {
-                if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]]&&[dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
+                if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]] && [dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
                     NSArray *actioninfoarray = [NSArray arrayWithArray:dict[@"actioninfo"]];
                     [actioninfoarray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         if (![obj[@"actionclass"]isEqualToString:@"1"]) {
                             [self.ColorSelectionArray addObject:obj];
-                        }else{
+                        } else {
                             if ([[NSString stringWithFormat:@"%@",obj[@"actionexplain"]] isEqualToString:@"4"]) {
                                 NSArray *colorarray = [obj[@"actioncolor"] componentsSeparatedByString:@"|"];
                                 [SystemUserDict setValue:colorarray[0]forKey:@"lightcolor"];
@@ -155,7 +155,7 @@
                     [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
                 }];
             }
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self DataBool:0];
         }
@@ -173,7 +173,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.width,self.height/5+(self.height/5*0.1));
+    return CGSizeMake(self.width,self.height / 5 + (self.height / 5 * 0.1));
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

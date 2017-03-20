@@ -78,7 +78,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  发送请求获取新数据
  */
 - (void)loadNewData{
-    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+    [MBProgressHUD showMessage:@"後ほど..." toView:self.UserListCV];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
@@ -94,7 +94,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 [self LoadCustListData];
                 [self LoadAlertData];
             }
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
     }defeats:^(NSError *defeats){
@@ -106,7 +106,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (void)LoadCustListData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:parameter mjheader:nil superview:self.view success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:parameter mjheader:nil superview:self.UserListCV success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.UserLisrArray = tmpDic[@"custlist"];
@@ -114,7 +114,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [[SDImageCache sharedImageCache] clearDisk];
             [[SDImageCache sharedImageCache] clearMemory];
             [self CellHorizontalAlignment];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
@@ -133,20 +133,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
             _CurrentAlertarrays = alertarray.copy;
             _AlertBarView.AlertArray = alertarray;
-            if (alertarray.count >0) {
+            if (alertarray.count > 0) {
                 //播放系统声音
 //                AudioServicesPlaySystemSound(1005);
                 //弹出alert框之前先dismiss
                 [_UserAlert dismissViewControllerAnimated:YES completion:nil];
                 //在KeyWindow上弹出alert框(每个页面都能看到)
-                NSDictionary *alertdict = alertarray[alertarray.count-1];
+                NSDictionary *alertdict = alertarray[alertarray.count - 1];
                 _UserAlert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
                 [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 }]];
                 [MasterKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
             }
             [self.UserListCV reloadData];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
     }defeats:^(NSError *defeats){
@@ -156,20 +156,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (void)LoadNoticeCount{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:self.view success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:self.UserListCV success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            if ([tmpDic[@"vznoticecount"] intValue]==0) {
+            if ([tmpDic[@"vznoticecount"] intValue] == 0) {
                 _NoticeNewDataTap.alpha = 0.0;
-            }else{
+            } else {
                 _NoticeNewDataTap.alpha = 1.0;
-                if ([tmpDic[@"vznoticecount"] intValue]>99) {
+                if ([tmpDic[@"vznoticecount"] intValue] > 99) {
                     _NoticeNewDataTap.text = @"99+";
-                }else{
+                } else {
                     _NoticeNewDataTap.text = [NSString stringWithFormat:@"%@",tmpDic[@"vznoticecount"]];
                 }
             }
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
     }defeats:^(NSError *defeats){
@@ -289,7 +289,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 -(void)CellHorizontalAlignment{
     pageCount = self.UserLisrArray.count;
     while (pageCount % 6 != 0) ++pageCount;
-    _UserPC.numberOfPages = pageCount/6;
+    _UserPC.numberOfPages = pageCount / 6;
     [_UserListCV registerClass:[CollectionCellWhite class]
     forCellWithReuseIdentifier:@"CellWhite"];
     [_UserListCV reloadData];
@@ -300,7 +300,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(_UserListCV.width/3,_UserListCV.height/2);
+    return CGSizeMake(_UserListCV.width / 3,_UserListCV.height / 2);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

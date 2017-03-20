@@ -125,7 +125,7 @@
         if(completionBlock){
             completionBlock(0,0);
         }
-    }else{
+    } else {
         // Starts prefetching from the very first image on the list with the max allowed concurrency
         NSUInteger listCount = self.prefetchURLs.count;
         for (NSUInteger i = 0; i < self.maxConcurrentDownloads && self.requestedCount < listCount; i++) {

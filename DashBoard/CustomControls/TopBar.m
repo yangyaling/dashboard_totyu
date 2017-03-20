@@ -58,19 +58,19 @@
 
 - (void)commonInit{
     _ButtonArray = [NSMutableArray array];
-    for (int i = 0; i<_TitleArray.count; i++) {
-        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/_TitleArray.count*i, 0, self.width/_TitleArray.count, self.height-3)];
+    for (int i = 0; i < _TitleArray.count; i++) {
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/_TitleArray.count * i, 0, self.width / _TitleArray.count, self.height - 3)];
         button.tag = i;
         [button setTitle:_TitleArray[i] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(TouchDown:) forControlEvents:UIControlEventTouchDown];
-        if (i==0) {//默认选中第一个
-            _UnderLine = [[UIView alloc]initWithFrame:CGRectMake(button.x, self.height-2, button.width, 2)];
+        if (i == 0) {//默认选中第一个
+            _UnderLine = [[UIView alloc]initWithFrame:CGRectMake(button.x, self.height - 2, button.width, 2)];
             _UnderLine.backgroundColor = _SelectLineColor;
             [self addSubview:_UnderLine];
             button.titleLabel.font = [UIFont systemFontOfSize:_SelectFont];
             [button setTitleColor:_SelectTitleColor forState:UIControlStateNormal];
             [self.delegate selectview:button.tag];
-        }else{
+        } else {
             button.titleLabel.font = [UIFont systemFontOfSize:_NormalFont];
             [button setTitleColor:_NormalTitleColor forState:UIControlStateNormal];
         }
@@ -88,7 +88,7 @@
     button.titleLabel.font = [UIFont systemFontOfSize:_SelectFont];
     [button setTitleColor:_SelectTitleColor forState:UIControlStateNormal];
     [UIView animateWithDuration:0.2 animations:^{
-        _UnderLine.frame = CGRectMake(button.x, self.height-2, button.frame.size.width, 2);
+        _UnderLine.frame = CGRectMake(button.x, self.height - 2, button.frame.size.width, 2);
     }];
     [self.delegate selectview:button.tag];
 }

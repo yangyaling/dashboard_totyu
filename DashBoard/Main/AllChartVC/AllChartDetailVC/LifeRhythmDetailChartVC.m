@@ -58,9 +58,9 @@
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
             _DataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][0]];
             _OneDataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count==0&&_OneDataArray.count==0 ? 0 : 1])return;    
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count == 0 && _OneDataArray.count == 0 ? 0 : 1])return;    
             [_ChartCV reloadData];
-        }else{
+        } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
@@ -75,14 +75,14 @@
     LifeRhythmChartDetailReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind :kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     view.OneDayAllDataChart.alpha = 1.0;
     view.OneDayLabel.alpha = 1.0;
-    if (_OneDataArray.count>0) {
+    if (_OneDataArray.count > 0) {
         [view.OneDayAllDataChart.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         UIView *ChartView = [[LGFBarChart alloc]initWithFrame:view.OneDayAllDataChart.bounds BarData:_OneDataArray BarType:1];
         [view.OneDayAllDataChart addSubview:ChartView];
-    }else{
-        if (_DataArray.count>0) {
+    } else {
+        if (_DataArray.count > 0) {
             [[NoDataLabel alloc] Show:@"データがない" SuperView:view.OneDayAllDataChart  DataBool:0];
-        }else{
+        } else {
             view.OneDayAllDataChart.alpha = 0.0;
             view.OneDayLabel.alpha = 0.0;
         }
@@ -95,11 +95,11 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
-    return CGSizeMake(_ChartCV.width,_ChartCV.height/2);
+    return CGSizeMake(_ChartCV.width,_ChartCV.height / 2);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(_ChartCV.width,(_ChartCV.height/2)/3);
+    return CGSizeMake(_ChartCV.width,(_ChartCV.height / 2) / 3);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -111,8 +111,8 @@
     UIView *ChartView;
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]] isEqualToString:@"4"]) {
         ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:2];
-    }else{
-        ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:0];
+    } else {
+        ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:EnvironmentList];
     }
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];

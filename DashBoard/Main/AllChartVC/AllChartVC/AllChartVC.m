@@ -21,7 +21,7 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
     [self.collectionView layoutIfNeeded];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
 }
 
 /**
@@ -69,7 +69,7 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    int page = (int) (scrollView.contentOffset.x/scrollView.frame.size.width+0.5)%self.controlarr.count;
+    int page = scrollView.contentOffset.x / scrollView.width;
     _SelectViewSeg.selectedSegmentIndex = page;
 }
 
