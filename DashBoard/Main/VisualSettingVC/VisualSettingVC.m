@@ -261,7 +261,6 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
                 _SaveButton.alpha = 1.0;
                 self.VisualSetArray = dict[@"actioninfo"];
                 [self.VisualSetArray writeToFile:SaveArrayPath atomically:NO];
-
             } else {
                 _SaveButton.alpha = 0.0;
                 self.VisualSetArray = nil;

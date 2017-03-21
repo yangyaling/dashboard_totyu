@@ -172,7 +172,11 @@
                         [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
                     }
                 }
+            }else{
+                [self DataLineTitle:@"データがない"];
             }
+        }else{
+            [self DataLineTitle:@"データがない"];
         }
     }else if(sender.state == UIGestureRecognizerStateEnded) {
         [self performSelector:@selector(RemoveDataLine) withObject:nil afterDelay:0.2];
