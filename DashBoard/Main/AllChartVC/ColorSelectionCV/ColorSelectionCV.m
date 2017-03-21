@@ -169,7 +169,6 @@
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     [[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:systemactioninfo.count];
-    NSLog(@"111");
     return systemactioninfo.count;
 }
 
