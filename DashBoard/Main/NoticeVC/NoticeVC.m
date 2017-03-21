@@ -52,7 +52,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                [_NoticeCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
+                [_NoticeCollection reloadData];
                 [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                 NSDictionary *dict = self.NoticeArray[0];
                 _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];

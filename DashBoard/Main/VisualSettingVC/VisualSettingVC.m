@@ -267,7 +267,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
                 self.VisualSetArray = nil;
             }
             [_VisualSetTable reloadData];
-            [_UserListCollection reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            [_UserListCollection reloadData];
             [_UserListCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:UserListCollectionSelectItem inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);

@@ -63,7 +63,7 @@
                     }
                 }
             }
-            [_ChartCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];

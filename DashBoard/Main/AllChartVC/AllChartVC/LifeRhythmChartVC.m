@@ -59,7 +59,7 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;   
-            [_ChartCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
