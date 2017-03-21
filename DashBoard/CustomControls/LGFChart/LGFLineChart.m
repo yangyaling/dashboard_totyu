@@ -145,34 +145,33 @@
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
         [_DataLine removeFromSuperview];
 
-        if (![_LineDataDict[@"data"][row] isEqualToString:@""] && ![_LineDataDict[@"avg"][row] isEqualToString:@""]) {
-            if (_LineType == EnvironmentList) {
-                _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
-            } else {
-                _DataLine = [[UIView alloc]initWithFrame:CGRectMake((self.width / _XTotalLength) * row - 0.5, 0, 1, self.height)];
-            }
-            _DataLine.backgroundColor = [UIColor blackColor];
-            [self addSubview:_DataLine];
-            
-            if (_LineType == EnvironmentSet) {
-                NSArray *AVGDataArray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
-                if (AVGDataArray.count > 0) {
+        if (_LineType == EnvironmentList) {
+            _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
+        } else {
+            _DataLine = [[UIView alloc]initWithFrame:CGRectMake((self.width / _XTotalLength) * row - 0.5, 0, 1, self.height)];
+        }
+        _DataLine.backgroundColor = [UIColor blackColor];
+        [self addSubview:_DataLine];
+        
+        NSArray *DataArray;
+        
+        if (_LineType == EnvironmentSet) {
+            DataArray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
+        } else {
+            DataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
+        }
+
+        if (DataArray.count > 0) {
+            if (![DataArray[row] isEqualToString:@""]) {
+                if (_LineType == EnvironmentSet) {
                     [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
-                }else{
-                    [self DataLineTitle:@""];
-                }
-            } else {
-                NSArray *DataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
-                if (DataArray.count > 0) {
+                } else {
                     if (_LineType == ActivitySet) {
                         [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];
                     }else{
                         [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
                     }
-                }else{
-                    [self DataLineTitle:@""];
                 }
-                
             }
         }
     }else if(sender.state == UIGestureRecognizerStateEnded) {
