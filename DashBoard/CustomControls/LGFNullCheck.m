@@ -20,7 +20,6 @@
         return [self CheckArrayNSnull:nullobject];
     }
 }
-
 /**
  去除字典内nsnull
  */

@@ -145,7 +145,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 }]];
                 [MasterKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
             }
-            [self.UserListCV reloadData];
+            [_UserListCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
@@ -292,7 +292,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     _UserPC.numberOfPages = pageCount / 6;
     [_UserListCV registerClass:[CollectionCellWhite class]
     forCellWithReuseIdentifier:@"CellWhite"];
-    [_UserListCV reloadData];
+    [_UserListCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

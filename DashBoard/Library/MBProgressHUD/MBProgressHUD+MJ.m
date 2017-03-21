@@ -6,6 +6,7 @@
 //
 
 #import "MBProgressHUD+MJ.h"
+#import "UIImage+GIF.h"
 
 @implementation MBProgressHUD (MJ)
 #pragma mark 显示信息
@@ -16,9 +17,15 @@
     
     hud.labelText = text;
     
-    // 设置图片
-    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
+    hud.color = [UIColor whiteColor];
     
+    hud.labelColor = [UIColor blackColor];
+    
+    hud.labelFont = [UIFont systemFontOfSize:20];
+    
+//    // 设置图片
+//    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
+//    
     // 再设置模式
     hud.mode = MBProgressHUDModeText;
     
@@ -26,7 +33,7 @@
     hud.removeFromSuperViewOnHide = YES;
     
     // 1秒之后再消失
-    [hud hide:YES afterDelay:1.2];
+    [hud hide:YES afterDelay:2.0];
 }
 
 #pragma mark 显示错误信息
@@ -46,14 +53,21 @@
     
     hud.labelText = message;
     
-    hud.color = [UIColor lightGrayColor];
+    hud.mode = MBProgressHUDModeCustomView;
     
-    hud.labelColor = [UIColor whiteColor];
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage sd_animatedGIFNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", @"hud"]]];
+    
+    hud.color = [UIColor whiteColor];
+    
+    hud.labelColor = [UIColor blackColor];
+    
+    hud.labelFont = [UIFont systemFontOfSize:20];
     
     // 隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     // YES代表需要蒙版效果
     hud.dimBackground = NO;
+    
     return hud;
 }
 

@@ -11,7 +11,11 @@
 @implementation UIColor (UIColor)
 + (UIColor*) colorWithHex:(NSString*)hexValue alpha:(CGFloat)alphaValue{
     
-    if (![hexValue isEqualToString:@""]) {
+    if (hexValue.length == 6) {
+        hexValue = [NSString stringWithFormat:@"%@0",hexValue];
+    }
+    
+    if (![hexValue isEqualToString:@""] && hexValue.length == 7) {
 
         NSString *hexstr = [[hexValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
         if ([hexstr hasPrefix:@"#"])

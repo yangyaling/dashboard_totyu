@@ -144,9 +144,8 @@
         
         [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(RemoveDataLine) object:nil];
         [_DataLine removeFromSuperview];
-        
+
         if (![_LineDataDict[@"data"][row] isEqualToString:@""] && ![_LineDataDict[@"avg"][row] isEqualToString:@""]) {
-            
             if (_LineType == EnvironmentList) {
                 _DataLine = [[UIView alloc]initWithFrame:CGRectMake(x, 0, 1, self.height)];
             } else {

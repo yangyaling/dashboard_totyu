@@ -51,15 +51,15 @@
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSLog(@"%@,%@号房间,生活详细传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr};
-    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    [[SealAFNetworking NIT] PostWithUrl:LrinfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){
+    [MBProgressHUD showMessage:@"後ほど..." toView:_ChartCV];
+    [[SealAFNetworking NIT] PostWithUrl:LrinfoType parameters:parameter mjheader:_ChartCV.mj_header superview:_ChartCV success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
             _DataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][0]];
             _OneDataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count == 0 && _OneDataArray.count == 0 ? 0 : 1])return;    
-            [_ChartCV reloadData];
+            [_ChartCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
@@ -73,6 +73,8 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     NSString *reuseIdentifier = @"LifeRhythmChartDetailReusableView";
     LifeRhythmChartDetailReusableView *view =  [collectionView dequeueReusableSupplementaryViewOfKind :kind withReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
     view.OneDayAllDataChart.alpha = 1.0;
     view.OneDayLabel.alpha = 1.0;
     if (_OneDataArray.count > 0) {

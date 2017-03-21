@@ -95,6 +95,7 @@
             if (selfview) {
                 [self RequestEnd:selfview mjheader:mjheader];
                 [MBProgressHUD showError:@"タイムアウト" toView:selfview];
+                [[NoDataLabel alloc] Show:@"タイムアウト" SuperView:selfview DataBool:0];
             }
             defeats(error);
        }

@@ -118,7 +118,7 @@
 }
 
 - (void)LoadVzConfigData{
-    [MBProgressHUD showMessage:@"" toView:self];
+    [MBProgressHUD showMessage:@"後ほど..." toView:self];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self success:^(id success){
@@ -168,6 +168,8 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+    [[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:systemactioninfo.count];
+    NSLog(@"111");
     return systemactioninfo.count;
 }
 

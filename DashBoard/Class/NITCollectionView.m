@@ -17,7 +17,7 @@
     CGSize itemSize;
     if ([LayoutType isEqualToString:@"main"]) {
         layout = [LWLCollectionViewHorizontalLayout new];
-        itemSize = CGSizeMake(self.width/3,self.height/2);
+        itemSize = CGSizeMake(self.width / 3,self.height / 2);
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     }else if([LayoutType isEqualToString:@"paging"]){
         layout = [UICollectionViewFlowLayout new];
@@ -25,11 +25,11 @@
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     }else if([LayoutType isEqualToString:@"reusablecv"]){
         layout = [UICollectionViewFlowLayout new];
-        itemSize = CGSizeMake(self.width,(self.height/2)/3);
-        layout.footerReferenceSize = CGSizeMake(self.width,self.height/2);
+        itemSize = CGSizeMake(self.width,(self.height / 2) / 3);
+        layout.footerReferenceSize = CGSizeMake(self.width,self.height / 2);
     }else if([LayoutType isEqualToString:@"colorselect"]){
         layout = [UICollectionViewFlowLayout new];
-        itemSize = CGSizeMake(self.width,self.height/5+(self.height/5*0.1));
+        itemSize = CGSizeMake(self.width,self.height / 5 + (self.height / 5 * 0.1));
     } else {
         layout = [UICollectionViewFlowLayout new];
         itemSize = CGSizeMake(self.width,self.height/[LayoutType intValue]);

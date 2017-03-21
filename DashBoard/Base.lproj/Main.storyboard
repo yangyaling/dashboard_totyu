@@ -1422,7 +1422,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHm-Sl-9k4">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050393774787" blue="0.90666803657897721" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="V0H-bM-Pn7"/>
@@ -1437,7 +1437,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1707,7 +1707,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-vI-0b4">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="7y3-BL-UIs"/>
@@ -1722,7 +1722,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igi-ho-ePh">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2410,7 +2410,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuT-WU-Xig">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="GRq-Mh-cCb"/>
@@ -2425,7 +2425,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yw0-5m-rpw">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2626,7 +2626,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温度" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQI-SN-Zik">
-                                                    <rect key="frame" x="0.0" y="5" width="62" height="107.5"/>
+                                                    <rect key="frame" x="0.0" y="5" width="62" height="107"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="62" id="bAI-9e-1ts"/>
                                                     </constraints>
@@ -2805,7 +2805,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CfT-1Q-rYz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4868.5546875" y="791.40625"/>
+            <point key="canvasLocation" x="4869" y="763"/>
         </scene>
         <!--Activity Statistics DetailVC-->
         <scene sceneID="TMK-5o-kY0">
@@ -2862,7 +2862,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIV-NW-5tt">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23.5"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="Zmf-Uc-lg3"/>
@@ -2877,7 +2877,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sc2-qZ-URT">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25.5"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -3048,7 +3048,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h8i-k0-XfU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4216" y="791"/>
+            <point key="canvasLocation" x="4216" y="763"/>
         </scene>
     </scenes>
 </document>

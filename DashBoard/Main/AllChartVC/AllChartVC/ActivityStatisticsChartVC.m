@@ -44,8 +44,8 @@
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSLog(@"%@,%@号房间,活动集计传入日期：%@",SystemUserDict[@"userid0"],SystemUserDict[@"roomid"],_DayStr);
     NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"basedate":_DayStr,@"sumflg":_SumFlg};
-    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    [[SealAFNetworking NIT] PostWithUrl:LrsuminfoType parameters:parameter mjheader:_ChartCV.mj_header superview:self.view success:^(id success){
+    [MBProgressHUD showMessage:@"後ほど..." toView:_ChartCV];
+    [[SealAFNetworking NIT] PostWithUrl:LrsuminfoType parameters:parameter mjheader:_ChartCV.mj_header superview:_ChartCV success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *datesArray = [tmpDic valueForKey:@"dates"];
@@ -77,7 +77,7 @@
                     }
                 }
             }
-            [_ChartCV reloadData];
+            [_ChartCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];

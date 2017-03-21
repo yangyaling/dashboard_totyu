@@ -180,6 +180,7 @@
 		E935E6F11E5D316A00C8A181 /* huaban.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huaban.png; sourceTree = "<group>"; };
 		E935E6F31E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFTableViewAvoidKeyboard.h; sourceTree = "<group>"; };
 		E935E6F41E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFTableViewAvoidKeyboard.m; sourceTree = "<group>"; };
+		E93BDF631E7FAA6A0063B1B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E945E38B1E4AEE700089C6C4 /* NoticeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVC.h; sourceTree = "<group>"; };
 		E945E38C1E4AEE700089C6C4 /* NoticeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVC.m; sourceTree = "<group>"; };
 		E95DB8F51E4D5F9C00DF246F /* ColorSelectionCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionCV.h; sourceTree = "<group>"; };
@@ -433,6 +434,14 @@
 			path = LGFColorSelect;
 			sourceTree = "<group>";
 		};
+		E93BDF621E7FAA6A0063B1B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E93BDF631E7FAA6A0063B1B9 /* QuartzCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E95DB8F41E4D5F6800DF246F /* ColorSelectionCV */ = {
 			isa = PBXGroup;
 			children = (
@@ -458,6 +467,7 @@
 				E966EA561E2DADCF00754B3B /* DashBoardTests */,
 				E966EA611E2DADCF00754B3B /* DashBoardUITests */,
 				E966EA3B1E2DADCE00754B3B /* Products */,
+				E93BDF621E7FAA6A0063B1B9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

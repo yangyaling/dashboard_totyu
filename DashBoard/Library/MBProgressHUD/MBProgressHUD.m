@@ -341,7 +341,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	// Fade out
 	if (animated && showStarted) {
 		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.30];
+		[UIView setAnimationDuration:0.10];
 		[UIView setAnimationDelegate:self];
 		[UIView setAnimationDidStopSelector:@selector(animationFinished:finished:context:)];
 		// 0.02 prevents the hud from passing through touches during the animation the hud will get completely hidden
