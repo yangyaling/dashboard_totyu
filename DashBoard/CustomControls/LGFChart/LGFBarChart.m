@@ -86,15 +86,19 @@
  */
 -(void)DrawChartBar:(CGContextRef)context BarDict:(NSDictionary*)BarDict SYSInfo:(NSMutableArray*)SYSInfo{
     [[UIColor colorWithHex:BarDict[@"actioncolor"]] setStroke];
-    for (NSDictionary *removedict in SYSInfo) {
-        if ([removedict[@"actionid"] isEqualToString:BarDict[@"actionid"]]) {
-            if (![removedict[@"selecttype"] isEqualToString:@"YES"]) {
-                NSArray *DataArray = BarDict[@"data"];
-                for (int i = 0; i < DataArray.count; i++) {
-                    CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
-                    CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
+    if (SYSInfo.count > 0) {
+        for (NSDictionary *removedict in SYSInfo) {
+            if ([removedict[@"actionid"] isEqualToString:BarDict[@"actionid"]]) {
+                if (![removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                    NSArray *DataArray = BarDict[@"data"];
+                    if (DataArray.count > 0) {
+                        for (int i = 0; i < DataArray.count; i++) {
+                            CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
+                            CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
+                        }
+                        CGContextDrawPath(context, kCGPathStroke);
+                    }
                 }
-                CGContextDrawPath(context, kCGPathStroke);
             }
         }
     }

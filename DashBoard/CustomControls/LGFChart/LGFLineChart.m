@@ -155,13 +155,24 @@
             [self addSubview:_DataLine];
             
             if (_LineType == EnvironmentSet) {
-                [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
-            } else {
-                if (_LineType == ActivitySet) {
-                    [self DataLineTitle:[NSString stringWithFormat:@"%@",_LineDataDict[@"data"][row]]];
+                NSArray *AVGDataArray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
+                if (AVGDataArray.count > 0) {
+                    [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
                 }else{
-                    [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
+                    [self DataLineTitle:@""];
                 }
+            } else {
+                NSArray *DataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
+                if (DataArray.count > 0) {
+                    if (_LineType == ActivitySet) {
+                        [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];
+                    }else{
+                        [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
+                    }
+                }else{
+                    [self DataLineTitle:@""];
+                }
+                
             }
         }
     }else if(sender.state == UIGestureRecognizerStateEnded) {
