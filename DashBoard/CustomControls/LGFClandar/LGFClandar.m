@@ -72,66 +72,61 @@
 @end
 
 @interface LGFClandar ()<UICollectionViewDelegate,UICollectionViewDataSource>
-{
-    NSDate *NewDate;
-    UIView *superview;
-}
 @property (nonatomic, strong) UIDatePicker *TimeTitlePicker;
 @property (nonatomic, strong) UIView *TimeTitleView;
 @property (nonatomic, strong) UIView *Cover;
 @property (nonatomic, strong) UICollectionView *ClandarCV;
 @property (nonatomic, strong) NSMutableArray *ClandarDataArray;
+@property (nonatomic, strong) NSDate *NewDate;
 @end
 @implementation LGFClandar
 
-+(LGFClandar *)Clandar{
++(LGFClandar *)Clandar:(id)Super SelectDate:(NSString*)SelectDate{
     static LGFClandar*Clandar = nil;
     if (!Clandar) {
         Clandar = [[LGFClandar alloc]init];
-        Clandar.layer.shadowColor = [UIColor blackColor].CGColor;
-        Clandar.layer.shadowOffset = CGSizeMake(1,1);
-        Clandar.layer.shadowOpacity = 0.3;
+        Clandar.backgroundColor = [UIColor clearColor];
     }
+    NSDate *SDate = [Clandar AuToDateFormatter:@"yyyy-MM-dd" object:SelectDate];
+    if (SelectDate) {
+        Clandar.NewDate = SDate;
+    } else {
+        Clandar.NewDate = [NSDate date];
+    }
+    Clandar.delegate = Super;
+    UIViewController *SuperView = Super;
+    Clandar.frame = SuperView.view.bounds;
+    [SuperView.view addSubview:Clandar];
+    [Clandar ShowInView];
     return Clandar;
 }
 
-- (void)ShowInView:(id)SuperSelf Date:(NSString*)Date{
-    NSDate *SelectDate = [self AuToDateFormatter:@"yyyy-MM-dd" object:Date];
-    if (SelectDate) {
-        NewDate = SelectDate;
-    } else {
-        NewDate = [NSDate date];
-    }
-    self.delegate = SuperSelf;
-    UIViewController *SuperView = SuperSelf;
-    superview = SuperView.view;
+- (void)ShowInView{
     [self AddChildSubview];
     [UIView animateWithDuration:0.2 animations:^{
-        self.frame = CGRectMake(superview.width-280, 0, 280, superview.height);
-        self.TimeTitleView.alpha = 1.0;
-        self.ClandarCV.alpha = 1.0;
+        self.Cover.frame = CGRectMake(self.width-280, 0, 280, self.height);
         self.Cover.alpha = 1.0;
     }];
     [self getAllDaysWithCalender];
-    [self ClandarSelectDate:NewDate];
+    [self ClandarSelectDate:_NewDate];
 }
 
 /**
  添加子控件
  */
 -(void)AddChildSubview{
-    [superview addSubview:self.Cover];
-    self.frame = CGRectMake(superview.width, 0, 280, superview.height);
-    [self.Cover addSubview:self];
-    [self addSubview:self.ClandarCV];
-    [self addSubview:self.TimeTitleView];
+    [self addSubview:self.Cover];
+    [self.Cover addSubview:self.ClandarCV];
+    [self.Cover addSubview:self.TimeTitleView];
     [self.TimeTitleView addSubview:self.TimeTitlePicker];
 }
 
 -(UIView *)Cover{
     if (!_Cover) {
-        _Cover = [[UIView alloc]initWithFrame:superview.bounds];
-        _Cover.backgroundColor = [UIColor clearColor];
+        _Cover = [[UIView alloc]initWithFrame:CGRectMake(self.width, 0, 280, self.height)];
+        _Cover.layer.shadowColor = [UIColor blackColor].CGColor;
+        _Cover.layer.shadowOffset = CGSizeMake(1,1);
+        _Cover.layer.shadowOpacity = 0.3;
     }
     return _Cover;
 }
@@ -186,7 +181,7 @@
 
 -(UIView *)TimeTitleView{
     if (!_TimeTitleView) {
-        _TimeTitleView = [[UnderlineView alloc]initWithFrame:CGRectMake(0, 0, 280, 35)];
+        _TimeTitleView = [[UnderlineView alloc]initWithFrame:CGRectMake(0, 0, self.Cover.width, 35)];
         _TimeTitleView.backgroundColor = [UIColor whiteColor];
     }
     return _TimeTitleView;
@@ -198,7 +193,7 @@
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
-        _ClandarCV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 35, 280, WindowView.height - 149) collectionViewLayout:layout];
+        _ClandarCV = [[UICollectionView alloc]initWithFrame:CGRectMake(0, self.TimeTitleView.height, self.Cover.width, self.Cover.height - self.TimeTitleView.height) collectionViewLayout:layout];
         layout.itemSize = CGSizeMake(_ClandarCV.width / 7, _ClandarCV.width / 7);
         layout.headerReferenceSize = CGSizeMake(_ClandarCV.width, 50);
         [_ClandarCV registerClass:[ClandarDayCell class]forCellWithReuseIdentifier:@"ClandarDayCell"];
@@ -289,39 +284,25 @@
 }
 
 #pragma mark - 触摸
-/**
- *  子控件超出父控件fram依旧响应点击事件
- */
--(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    UIView *hitView = [super hitTest:point withEvent:event];
-    if (hitView == self){
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    CGPoint point = [touches.anyObject locationInView:self];
+    CGPoint SelfLocation = [self convertPoint:point toView:self];
+    if ([self pointInside:SelfLocation withEvent:event]) {
         [self ClandarHidden];
-        return nil;
-    } else {
-        return [super hitTest:point withEvent:event];
     }
 }
-/**
- *  点击非本控件收起菜单
- */
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
-    return YES;
-}
-
-#pragma mark - 触摸
 
 - (void)ClandarHidden{
     [UIView animateWithDuration:0.2 animations:^{
-        self.frame = CGRectMake(superview.width, 0, 350, superview.height);
-        self.TimeTitleView.alpha = 0.0;
-        self.ClandarCV.alpha = 0.0;
+        self.Cover.frame = CGRectMake(self.width, 0, 350, self.height);
         self.Cover.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self RemoveAllView];
     }];
 }
 
-- (int)getDifferenceByDate:(NSString *)date {    
+- (int)getDifferenceByDate:(NSString *)date {
     NSDate *selectdate = [self AuToDateFormatter:@"yyyy年MM月d日" object:date];
     int nowtime = [[NSDate date] timeIntervalSince1970];
     int selecttime = [selectdate timeIntervalSince1970];
@@ -342,12 +323,12 @@
 }
 
 -(void)RemoveAllView{
-    [self.TimeTitlePicker removeFromSuperview];
-    [self.TimeTitleView removeFromSuperview];
-    [self.ClandarCV removeFromSuperview];
-    [self.Cover removeFromSuperview];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self removeFromSuperview];
-    self.Cover = nil;
+}
+
+- (void)dealloc{
+    [self RemoveAllView];
 }
 
 @end

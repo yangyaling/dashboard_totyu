@@ -395,9 +395,9 @@
                                 </connections>
                             </collectionView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="oRg-ks-mkq">
-                                <rect key="frame" x="493" y="731" width="39" height="37"/>
+                                <rect key="frame" x="492.5" y="731" width="39" height="37"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="QVX-Tv-kvf"/>
+                                    <constraint firstAttribute="width" constant="39" id="51K-Pt-29i"/>
                                 </constraints>
                                 <color key="pageIndicatorTintColor" red="0.88014914769999997" green="0.88014914769999997" blue="0.88014914769999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="currentPageIndicatorTintColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -405,7 +405,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="oRg-ks-mkq" secondAttribute="trailing" constant="472" id="GVj-6X-NRj"/>
                             <constraint firstAttribute="trailing" secondItem="uSL-vL-21R" secondAttribute="trailing" id="Get-es-2Uz"/>
                             <constraint firstAttribute="trailing" secondItem="XYP-1a-KSr" secondAttribute="trailing" id="K5a-WV-3V2"/>
                             <constraint firstItem="pW2-Rz-QcH" firstAttribute="top" secondItem="shU-qV-KcI" secondAttribute="bottom" constant="6" id="KUK-Zc-UGS"/>
@@ -414,13 +413,13 @@
                             <constraint firstItem="XYP-1a-KSr" firstAttribute="leading" secondItem="wrS-15-Q92" secondAttribute="leading" id="RaF-Wk-mRu"/>
                             <constraint firstItem="shU-qV-KcI" firstAttribute="top" secondItem="A52-NS-UOX" secondAttribute="bottom" id="Vhx-kq-tMN"/>
                             <constraint firstItem="7iH-Vg-s1f" firstAttribute="top" secondItem="uSL-vL-21R" secondAttribute="bottom" id="VtG-PK-T0d"/>
-                            <constraint firstItem="7iH-Vg-s1f" firstAttribute="top" secondItem="oRg-ks-mkq" secondAttribute="bottom" id="XdG-xH-17M"/>
+                            <constraint firstItem="7iH-Vg-s1f" firstAttribute="top" secondItem="oRg-ks-mkq" secondAttribute="bottom" id="ZOW-dg-O7Y"/>
                             <constraint firstItem="XYP-1a-KSr" firstAttribute="top" secondItem="shU-qV-KcI" secondAttribute="bottom" constant="6" id="azn-Hx-GeR"/>
                             <constraint firstItem="shU-qV-KcI" firstAttribute="leading" secondItem="wrS-15-Q92" secondAttribute="leading" id="gyu-ud-2yD"/>
                             <constraint firstItem="uSL-vL-21R" firstAttribute="top" secondItem="XYP-1a-KSr" secondAttribute="bottom" constant="8" id="hDY-lS-KhK"/>
                             <constraint firstItem="uSL-vL-21R" firstAttribute="leading" secondItem="wrS-15-Q92" secondAttribute="leading" id="iE1-gE-4oR"/>
                             <constraint firstAttribute="trailing" secondItem="pW2-Rz-QcH" secondAttribute="trailing" constant="3" id="lWg-UV-RMY"/>
-                            <constraint firstItem="oRg-ks-mkq" firstAttribute="leading" secondItem="wrS-15-Q92" secondAttribute="leadingMargin" constant="473" id="wKe-i7-QvX"/>
+                            <constraint firstItem="oRg-ks-mkq" firstAttribute="centerX" secondItem="wrS-15-Q92" secondAttribute="centerX" id="sHw-VP-FQd"/>
                         </constraints>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="subviews">
@@ -454,7 +453,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnK-hD-oCy">
-                                        <rect key="frame" x="0.0" y="1" width="130" height="30"/>
+                                        <rect key="frame" x="0.0" y="2" width="130" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
@@ -471,7 +470,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeU-Qj-tet">
-                                        <rect key="frame" x="280" y="1" width="130" height="30"/>
+                                        <rect key="frame" x="280" y="2" width="130" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
@@ -488,7 +487,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwd-8h-Y6l">
-                                        <rect key="frame" x="420" y="1" width="130" height="30"/>
+                                        <rect key="frame" x="420" y="2" width="130" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.086353867690000002" green="0.62896136479999998" blue="0.94691051140000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>
@@ -501,7 +500,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="LoadNewData:" destination="UaC-O7-Bpi" eventType="touchUpInside" id="rEo-PJ-23H"/>
+                                            <action selector="ButtonLoadNewData:" destination="UaC-O7-Bpi" eventType="touchUpInside" id="DHh-gZ-7ch"/>
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dgl-3Z-Y2a">
@@ -509,7 +508,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PFE-jz-FsM">
-                                                <rect key="frame" x="0.0" y="0.0" width="130" height="30"/>
+                                                <rect key="frame" x="0.0" y="1" width="130" height="30"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="20"/>

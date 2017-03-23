@@ -13,7 +13,6 @@
 @end
 
 @interface LGFClandar : UIView
-+(LGFClandar *)Clandar;
-- (void)ShowInView:(id)SuperSelf  Date:(NSString*)Date;
++(LGFClandar *)Clandar:(id)Super SelectDate:(NSString*)SelectDate;
 @property (nonatomic, assign) id<LGFClandarDelegate> delegate;
 @end

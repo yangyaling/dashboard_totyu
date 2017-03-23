@@ -20,37 +20,28 @@
 @end
 @implementation LGFColorSelectView
 
-+(LGFColorSelectView *)ColorSelect{
-    static LGFColorSelectView*ColorSelect = nil;
-    if (!ColorSelect) {
-        ColorSelect = [[LGFColorSelectView alloc]init];
-        ColorSelect.backgroundColor = [UIColor whiteColor];
-        ColorSelect.layer.cornerRadius = 5.0;
-        ColorSelect.layer.shadowColor = [UIColor blackColor].CGColor;
-        ColorSelect.layer.shadowOffset = CGSizeMake(1,1);
-        ColorSelect.layer.shadowOpacity = 0.3;
+-(instancetype)initWithFrame:(CGRect)frame Super:(id)Super Data:(NSDictionary*)actiondict{
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        self.actiondict = actiondict;//数据源
+        self.delegate = Super;//添加代理
+        [self AddChildSubview];
+        self.Title.text = self.actiondict[@"actionname"];
+        [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
     }
-    return ColorSelect;
-}
-
-- (void)ShowInView:(id)Super Data:(NSDictionary*)actiondict{
-    self.actiondict = actiondict;//数据源
-    self.delegate = Super;//添加代理
-    [self AddChildSubview];
-    self.Title.text = self.actiondict[@"actionname"];
-    [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
+    return self;
 }
 /**
  添加子控件
  */
 -(void)AddChildSubview{
-    self.frame = CGRectMake(WindowView.width / 3, WindowView.height / 5, WindowView.width / 3, WindowView.height/5*3);
-    [self.Cover addSubview:self];
-    [self addSubview:self.Title];
-    [self addSubview:self.confirm];
-    [self addSubview:self.cancel];
-    [self addSubview:self.ColorImageView];
-    [self addSubview:self.ResultView];
+    [self addSubview:self.Cover];
+    [self.Cover addSubview:self.Title];
+    [self.Cover addSubview:self.confirm];
+    [self.Cover addSubview:self.cancel];
+    [self.Cover addSubview:self.ColorImageView];
+    [self.Cover addSubview:self.ResultView];
     [self.ColorImageView addGestureRecognizer:self.tapGesture];
 }
 
@@ -101,12 +92,7 @@
     int bytesPerRow = bytesPerPixel * 1;
     NSUInteger bitsPerComponent = 8;
     unsigned char pixelData[4] = { 0, 0, 0, 0 };
-    CGContextRef context = CGBitmapContextCreate(pixelData,
-                                                 1,
-                                                 1,
-                                                 bitsPerComponent,
-                                                 bytesPerRow,
-                                                 colorSpace,                                                 kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
+    CGContextRef context = CGBitmapContextCreate(pixelData,1,1,bitsPerComponent,bytesPerRow,colorSpace,                             kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Big);
     CGColorSpaceRelease(colorSpace);
     CGContextSetBlendMode(context, kCGBlendModeCopy);
     CGContextTranslateCTM(context, -pointX, pointY-(CGFloat)height);
@@ -128,16 +114,19 @@
 
 -(UIView *)Cover{
     if (!_Cover) {
-        _Cover = [[UIView alloc]initWithFrame:WindowView.bounds];
-        _Cover.backgroundColor = [UIColor clearColor];
-        [WindowView addSubview:_Cover];
+        _Cover = [[UIView alloc]initWithFrame:CGRectMake(self.width / 3, self.height / 5, self.width / 3, self.height/5*3)];
+        _Cover.backgroundColor = [UIColor whiteColor];
+        _Cover.layer.cornerRadius = 5.0;
+        _Cover.layer.shadowColor = [UIColor blackColor].CGColor;
+        _Cover.layer.shadowOffset = CGSizeMake(1,1);
+        _Cover.layer.shadowOpacity = 0.3;
     }
     return _Cover;
 }
 
 -(UIView *)ResultView{
     if (!_ResultView) {
-        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.width / 4 * 3, self.height / 16, self.height / 8, self.height / 8)];
+        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.Cover.width / 4 * 3, self.Cover.height / 16, self.Cover.height / 8, self.Cover.height / 8)];
         _ResultView.backgroundColor = [UIColor whiteColor];
         _ResultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ResultView.layer.borderWidth = 0.5;
@@ -148,7 +137,7 @@
 
 -(UILabel *)Title{
     if (!_Title) {
-        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.height / 16, self.width / 4 * 3, self.height / 8)];
+        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.Cover.height / 16, self.Cover.width / 4 * 3, self.Cover.height / 8)];
         _Title.font = [UIFont systemFontOfSize:30];
         _Title.textAlignment = NSTextAlignmentCenter;
     }
@@ -157,7 +146,7 @@
 
 -(UIImageView *)ColorImageView{
     if (!_ColorImageView) {
-        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.height / 4, self.width - 20, self.height / 4 * 3 - 50)];
+        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.Cover.height / 4, self.Cover.width - 20, self.Cover.height / 4 * 3 - 50)];
         [_ColorImageView setImage:[UIImage imageNamed:@"huaban.png"]];
         _ColorImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ColorImageView.layer.borderWidth = 0.5;
@@ -168,7 +157,7 @@
 
 -(UIButton *)confirm{
     if (!_confirm) {
-        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10 + (self.width - 20) / 2, self.height - 50, (self.width - 20) / 2, 50)];
+        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10 + (self.Cover.width - 20) / 2, self.Cover.height - 50, (self.Cover.width - 20) / 2, 50)];
         [_confirm setTitle:@"確認" forState:UIControlStateNormal];
         [_confirm setTitleColor:NITColor(30, 150, 250) forState:UIControlStateNormal];
         [_confirm addTarget:self action:@selector(confirmedit) forControlEvents:UIControlEventTouchUpInside];
@@ -178,7 +167,7 @@
 
 -(UIButton *)cancel{
     if (!_cancel) {
-        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.height - 50, (self.width - 20) / 2, 50)];
+        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.Cover.height - 50, (self.Cover.width - 20) / 2, 50)];
         [_cancel setTitle:@"キャンセル" forState:UIControlStateNormal];
         [_cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [_cancel addTarget:self action:@selector(canceledit) forControlEvents:UIControlEventTouchUpInside];
@@ -199,8 +188,6 @@
     [self.ColorImageView removeFromSuperview];
     [self.ResultView removeFromSuperview];
     [self removeFromSuperview];
-    self.tapGesture = nil;
-    self.Cover = nil;
 }
 
 

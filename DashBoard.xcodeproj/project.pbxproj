@@ -29,6 +29,7 @@
 		E935E6EE1E5D2CE000C8A181 /* LGFColorSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = E935E6ED1E5D2CE000C8A181 /* LGFColorSelectView.m */; };
 		E935E6F21E5D316A00C8A181 /* huaban.png in Resources */ = {isa = PBXBuildFile; fileRef = E935E6F11E5D316A00C8A181 /* huaban.png */; };
 		E935E6F51E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E935E6F41E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m */; };
+		E93BDF671E8112C00063B1B9 /* TimeOutReloadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E93BDF661E8112C00063B1B9 /* TimeOutReloadButton.m */; };
 		E945E38D1E4AEE700089C6C4 /* NoticeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E945E38C1E4AEE700089C6C4 /* NoticeVC.m */; };
 		E95DB8F71E4D5F9C00DF246F /* ColorSelectionCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E95DB8F61E4D5F9C00DF246F /* ColorSelectionCV.m */; };
 		E96167721E52EC7B00578585 /* NoDataLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E96167711E52EC7B00578585 /* NoDataLabel.m */; };
@@ -181,6 +182,8 @@
 		E935E6F31E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFTableViewAvoidKeyboard.h; sourceTree = "<group>"; };
 		E935E6F41E5E70BE00C8A181 /* LGFTableViewAvoidKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFTableViewAvoidKeyboard.m; sourceTree = "<group>"; };
 		E93BDF631E7FAA6A0063B1B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E93BDF651E8112C00063B1B9 /* TimeOutReloadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeOutReloadButton.h; sourceTree = "<group>"; };
+		E93BDF661E8112C00063B1B9 /* TimeOutReloadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeOutReloadButton.m; sourceTree = "<group>"; };
 		E945E38B1E4AEE700089C6C4 /* NoticeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeVC.h; sourceTree = "<group>"; };
 		E945E38C1E4AEE700089C6C4 /* NoticeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoticeVC.m; sourceTree = "<group>"; };
 		E95DB8F51E4D5F9C00DF246F /* ColorSelectionCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorSelectionCV.h; sourceTree = "<group>"; };
@@ -569,6 +572,8 @@
 				E96167711E52EC7B00578585 /* NoDataLabel.m */,
 				E91D84191E715C1900E24EF8 /* LGFNullCheck.h */,
 				E91D841A1E715C1900E24EF8 /* LGFNullCheck.m */,
+				E93BDF651E8112C00063B1B9 /* TimeOutReloadButton.h */,
+				E93BDF661E8112C00063B1B9 /* TimeOutReloadButton.m */,
 			);
 			path = CustomControls;
 			sourceTree = "<group>";
@@ -1041,6 +1046,7 @@
 			files = (
 				E935E5FA1E5C0D7B00C8A181 /* MKAnnotationView+WebCache.m in Sources */,
 				E966EB351E2DAE5300754B3B /* FishTabButtonPagerController.m in Sources */,
+				E93BDF671E8112C00063B1B9 /* TimeOutReloadButton.m in Sources */,
 				E9E082CB1E2E39DF001BC2C2 /* UserListCVCell.m in Sources */,
 				E96F867C1E320A5F00C9B81D /* ActivityStatisticsDetailVC.m in Sources */,
 				E966EB551E2DAE5300754B3B /* MJRefreshStateHeader.m in Sources */,
@@ -1292,9 +1298,11 @@
 				DEVELOPMENT_TEAM = ZD4G3EV24J;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/dashboard.pch";
 				INFOPLIST_FILE = DashBoard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nit.DashBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -1305,9 +1313,11 @@
 				DEVELOPMENT_TEAM = ZD4G3EV24J;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/$(PRODUCT_NAME)/dashboard.pch";
 				INFOPLIST_FILE = DashBoard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nit.DashBoard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

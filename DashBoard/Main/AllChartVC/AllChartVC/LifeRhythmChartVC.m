@@ -58,15 +58,17 @@
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;   
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;
             [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
+        [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
     }];
 }
+
 
 #pragma mark - UICollectionViewDataSource And Delegate
 

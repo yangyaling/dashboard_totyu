@@ -48,7 +48,7 @@
         _manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"application/x-json",@"text/html", nil];
         [_manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
         [_manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-        _manager.requestSerializer.timeoutInterval = 60.f;//超时时间
+        _manager.requestSerializer.timeoutInterval = 50.f;//超时时间
     }
     return _manager;
 }

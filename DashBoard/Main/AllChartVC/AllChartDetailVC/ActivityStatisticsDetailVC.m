@@ -66,7 +66,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
  日期检索
  */
 - (IBAction)DateRetrieval:(id)sender {
-    [[LGFClandar Clandar] ShowInView:self Date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
+    [LGFClandar Clandar:self SelectDate:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
 }
 /**
  点击调色板颜色刷新数据 回到当前页

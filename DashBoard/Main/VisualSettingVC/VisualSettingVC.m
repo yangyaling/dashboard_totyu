@@ -54,7 +54,8 @@
 }
 
 - (IBAction)ColorSelect:(id)sender {
-    [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
+    LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:WindowView.bounds Super:self Data:_DataDict];
+    [WindowView addSubview:ColorSelect];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
@@ -134,7 +135,8 @@
 }
 
 - (IBAction)ColorSelect:(id)sender {
-    [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
+    LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:WindowView.bounds Super:self Data:_DataDict];
+    [WindowView addSubview:ColorSelect];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {

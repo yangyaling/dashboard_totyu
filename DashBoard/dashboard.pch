@@ -36,6 +36,8 @@
 
 #import "NoDataLabel.h"//没数据提示用标题
 
+#import "TimeOutReloadButton.h"//请求超时，重新请求按钮
+
 #import "NITCollectionView.h"//layout设置
 
 #import "LGFNullCheck.h"

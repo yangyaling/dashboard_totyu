@@ -51,7 +51,8 @@
 }
 
 - (IBAction)ColorSelectButton:(id)sender {
-    [[LGFColorSelectView ColorSelect]ShowInView:self Data:_DataDict];
+    LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:WindowView.bounds Super:self Data:_DataDict];
+    [WindowView addSubview:ColorSelect];
 }
 - (IBAction)DeviceSelectButton:(UIButton*)sender {
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
@@ -104,7 +105,7 @@
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
         if (systemactioninfo.count == 0) {
-            [self LoadVzConfigData];
+            [self LoadNewData];
         }
         [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     }
@@ -117,7 +118,7 @@
     }];
 }
 
-- (void)LoadVzConfigData{
+- (void)LoadNewData{
     [MBProgressHUD showMessage:@"後ほど..." toView:self];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
@@ -160,6 +161,7 @@
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
+        [[TimeOutReloadButton alloc]Show:self SuperView:self];
     }];
 }
 

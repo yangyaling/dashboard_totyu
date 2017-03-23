@@ -58,6 +58,7 @@
     for (int i = 0; i < _YValuesArray.count; i++) {
         UILabel *NumTitle = [[UILabel alloc]initWithFrame:_numbartype != 190 ?BarYValueFrame : LineYValueFrame];
         NumTitle.font = [UIFont systemFontOfSize:_numbarview.height / 3];
+        NumTitle.adjustsFontSizeToFitWidth = YES;
         NumTitle.textColor = [UIColor blackColor];
         NumTitle.textAlignment = NSTextAlignmentCenter;
         NumTitle.text = _YValuesArray[i];

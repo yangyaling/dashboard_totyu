@@ -111,7 +111,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
  日期检索
  */
 - (IBAction)DateRetrieval:(id)sender {
-    [[LGFClandar Clandar] ShowInView:self Date:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
+    [LGFClandar Clandar:self SelectDate:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate]];
 }
 /**
  日周月年 Segmented 点击方法

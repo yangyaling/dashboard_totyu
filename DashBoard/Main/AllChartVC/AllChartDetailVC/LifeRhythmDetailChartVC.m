@@ -58,13 +58,14 @@
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
             _DataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][0]];
             _OneDataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count == 0 && _OneDataArray.count == 0 ? 0 : 1])return;    
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count == 0 && _OneDataArray.count == 0 ? 0 : 1])return;
             [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
+        [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
     }];
 }
 

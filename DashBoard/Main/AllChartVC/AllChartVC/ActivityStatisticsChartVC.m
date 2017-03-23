@@ -83,6 +83,7 @@
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
+        [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
     }];
 }
 
