@@ -280,7 +280,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSLog(@"--SYSTEM_USER_DICT--:%@",SYSTEM_USER_DICT);
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
-        [self LoadBuildingInfoData];
+        [self LoadNewData];
+        [self LoadAlertData];
+        [self LoadNoticeCount];
     }
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
 }
