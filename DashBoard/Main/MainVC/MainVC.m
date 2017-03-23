@@ -262,6 +262,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 }
 
+#pragma mark - 循环调用
+
 /**
  自动时间
  */
@@ -282,6 +284,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
 }
+
 #pragma mark - UICollectionView Delegate and DataSource
 
 /**
