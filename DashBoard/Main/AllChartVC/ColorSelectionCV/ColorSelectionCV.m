@@ -54,6 +54,7 @@
     LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:WindowView.bounds Super:self Data:_DataDict];
     [WindowView addSubview:ColorSelect];
 }
+
 - (IBAction)DeviceSelectButton:(UIButton*)sender {
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
@@ -142,6 +143,7 @@
                             }
                         }
                     }];
+                    //selecttype: 选中了哪个device  actionselect:选中了哪个cell
                     [self.ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         [obj setValue:@"NO" forKey:@"selecttype"];
                         [obj setValue:@"NO" forKey:@"actionselect"];

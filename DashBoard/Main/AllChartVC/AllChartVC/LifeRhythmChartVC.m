@@ -33,7 +33,6 @@
     return _WeekArray;
 }
 
-
 - (void)viewDidLoad{
     [super viewDidLoad];
     [self LoadNewData];
@@ -65,6 +64,7 @@
             [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
+        NSLog(@"errors:%@",[defeats localizedDescription]);
         [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
     }];
 }
@@ -112,7 +112,6 @@
         NSIndexPath *indexPath = _ChartCV.indexPathsForSelectedItems.lastObject;
         NSDictionary *DataDict = [NSDictionary dictionaryWithDictionary:_DataArray[indexPath.item]];
         advc.SelectDay = [[DataDict allKeys] firstObject];
-        
         advc.Weekdate = _WeekArray[indexPath.item];
     }
 }

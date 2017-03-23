@@ -183,12 +183,11 @@
 }
 
 -(void)RemoveAllView{
-    [self.Cover removeFromSuperview];
-    [self.Title removeFromSuperview];
-    [self.ColorImageView removeFromSuperview];
-    [self.ResultView removeFromSuperview];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self removeFromSuperview];
 }
 
-
+- (void)dealloc{
+    [self RemoveAllView];
+}
 @end

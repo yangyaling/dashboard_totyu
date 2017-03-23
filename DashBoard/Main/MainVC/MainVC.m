@@ -78,7 +78,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
  发送请求获取新数据
  */
 - (void)LoadBuildingInfoData{
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:_UserListCV success:^(id success){
+    [MBProgressHUD showMessage:@"後ほど..." toView:_UserListCV];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.BuildingArray = tmpDic[@"buildingInfo"];
@@ -104,7 +105,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
  获取user数据
  */
 - (void)LoadNewData{
-    [MBProgressHUD showMessage:@"後ほど..." toView:_UserListCV];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
     [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:parameter mjheader:nil superview:_UserListCV success:^(id success){
@@ -120,6 +120,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
     }defeats:^(NSError *defeats){
+        NSLog(@"errors:%@",[defeats localizedDescription]);
 //        [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
     }];
 }
@@ -129,7 +130,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (void)LoadAlertData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:parameter mjheader:nil superview:_UserListCV success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:parameter mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
@@ -158,7 +159,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (void)LoadNoticeCount{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:_UserListCV success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             if ([tmpDic[@"vznoticecount"] intValue] == 0) {
