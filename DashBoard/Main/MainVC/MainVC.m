@@ -91,9 +91,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
                 _BuildName.text = buildingdict[@"displayname"];
                 _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
-                [self LoadNewData];
-                [self LoadAlertData];
-                [self LoadNoticeCount];
+                [self LoadAllData];
             }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -113,8 +111,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.UserLisrArray = tmpDic[@"custlist"];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count])return;
-            [[SDImageCache sharedImageCache] clearDisk];
-            [[SDImageCache sharedImageCache] clearMemory];
             [self CellHorizontalAlignment];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -282,11 +278,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSLog(@"--SYSTEM_USER_DICT--:%@",SYSTEM_USER_DICT);
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
+        [self LoadAllData];
+    }
+    [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
+}
+
+-(void)LoadAllData{
+    [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] clearMemory];
+    
+    MAIN(^{
         [self LoadNewData];
         [self LoadAlertData];
         [self LoadNoticeCount];
-    }
-    [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
+    });
 }
 
 #pragma mark - UICollectionView Delegate and DataSource
