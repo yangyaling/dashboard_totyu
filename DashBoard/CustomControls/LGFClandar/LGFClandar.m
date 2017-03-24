@@ -50,13 +50,13 @@
     if (!_WeekView) {
         _WeekView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height/2, self.width, self.height/2)];
         NSArray *WeekArray = @[@"日",@"月",@"火",@"水",@"木",@"金",@"土"];
-        for (int i = 0; i<WeekArray.count; i++) {
-            UILabel *WeekLabel = [[UILabel alloc]initWithFrame:CGRectMake(i*(self.width/7), 0, self.width/7, self.height/2)];
-            WeekLabel.text = WeekArray[i];
+        [WeekArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UILabel *WeekLabel = [[UILabel alloc]initWithFrame:CGRectMake(idx*(self.width/7), 0, self.width/7, self.height/2)];
+            WeekLabel.text = obj;
             WeekLabel.textColor = [UIColor blackColor];
             WeekLabel.textAlignment = NSTextAlignmentCenter;
             [_WeekView addSubview:WeekLabel];
-        }
+        }];
     }
     return _WeekView;
 }
@@ -145,8 +145,8 @@
             [montharr addObject:str];
             [comps setMonth:([comps month] - 1)];
         }
-        for (int i = 0; i < montharr.count; i++) {
-            NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:montharr[i]];
+        [montharr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:obj];
             NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
             NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate:MonthDate];
             NSMutableArray *DayArray = [NSMutableArray array];
@@ -157,12 +157,12 @@
                     [DayArray addObject:@""];
                 } else {
                     [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d - (week - 1)]];
-                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",montharr[i],d - (week - 1)]];
+                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",obj,d - (week - 1)]];
                 }
             }
-            NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":montharr[i]};
+            NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":obj};
             [_ClandarDataArray addObject:MonthDict];
-        }
+        }];
     }
     return _ClandarDataArray;
 }

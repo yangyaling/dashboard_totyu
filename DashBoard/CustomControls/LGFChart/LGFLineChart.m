@@ -30,8 +30,12 @@
             NSArray *avgarray = [NSArray arrayWithArray:_LineDataDict[@"avg"]];
             _XTotalLength = (int)avgarray.count - 1;
         } else {
-            NSArray *dataarray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
-            _XTotalLength = (int)dataarray.count - 1;
+            if (_LineType == EnvironmentList) {
+                _XTotalLength = 1440;
+            }else{
+                NSArray *dataarray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
+                _XTotalLength = (int)dataarray.count - 1;
+            }
         }
     }
     return self;
@@ -168,19 +172,15 @@
             DataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
         }
         
-        if (DataArray.count > 0) {
-            if (![DataArray[row] isEqualToString:@""]) {
-                if (_LineType == EnvironmentSet) {
-                    [self DataLineTitle:[NSString stringWithFormat:@"最大値：%0.2f 平均値：%0.2f 最小値：%0.2f",[_LineDataDict[@"max"][row] floatValue],[_LineDataDict[@"avg"][row] floatValue],[_LineDataDict[@"min"][row] floatValue]]];
-                } else {
-                    if (_LineType == ActivitySet) {
-                        [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];
-                    }else{
-                        [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
-                    }
+        if (DataArray.count > 0 && row < DataArray.count && ![DataArray[row] isEqualToString:@""]) {
+            if (_LineType == EnvironmentSet) {
+                [self DataLineTitle:[NSString stringWithFormat:@"最大値：%0.2f 平均値：%0.2f 最小値：%0.2f",[_LineDataDict[@"max"][row] floatValue],[_LineDataDict[@"avg"][row] floatValue],[_LineDataDict[@"min"][row] floatValue]]];
+            } else {
+                if (_LineType == ActivitySet) {
+                    [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];
+                }else{
+                    [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
                 }
-            }else{
-                [self DataLineTitle:@"データがない"];
             }
         }else{
             [self DataLineTitle:@"データがない"];

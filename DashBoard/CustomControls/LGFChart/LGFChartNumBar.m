@@ -5,11 +5,11 @@
 //  Created by totyu3 on 17/2/8.
 //  Copyright © 2017年 NIT. All rights reserved.
 //
-#define BarYValueWidth i*(_numbarview.width / _YValuesArray.count) + _numbartype
+#define BarYValueWidth idx*(_numbarview.width / _YValuesArray.count) + _numbartype
 
 #define BarYValueFrame CGRectMake(BarYValueWidth, _numbarview.y, _numbarview.width/_YValuesArray.count, _numbarview.height)
 
-#define LineYValueWidth i*((_numbarview.width + _numbarview.width / _YValuesArray.count + _numbarview.width / _YValuesArray.count / _YValuesArray.count) / _YValuesArray.count)
+#define LineYValueWidth idx*((_numbarview.width + _numbarview.width / _YValuesArray.count + _numbarview.width / _YValuesArray.count / _YValuesArray.count) / _YValuesArray.count)
 
 #define LineYValueFrame CGRectMake(LineYValueWidth + _numbartype - (_numbarview.width / _YValuesArray.count) / 2, _numbarview.y, _numbarview.width / _YValuesArray.count, _numbarview.height)
 
@@ -55,15 +55,15 @@
     [_numbarview removeFromSuperview];
     _numbarview = [[UIView alloc]initWithFrame:_numbartype != 190 ? NumBarRect : NumLineRect];
     //添加y轴
-    for (int i = 0; i < _YValuesArray.count; i++) {
-        UILabel *NumTitle = [[UILabel alloc]initWithFrame:_numbartype != 190 ?BarYValueFrame : LineYValueFrame];
+    [_YValuesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UILabel *NumTitle = [[UILabel alloc]initWithFrame:_numbartype != 190 ? BarYValueFrame : LineYValueFrame];
         NumTitle.font = [UIFont systemFontOfSize:_numbarview.height / 3];
         NumTitle.adjustsFontSizeToFitWidth = YES;
         NumTitle.textColor = [UIColor blackColor];
         NumTitle.textAlignment = NSTextAlignmentCenter;
-        NumTitle.text = _YValuesArray[i];
+        NumTitle.text = obj;
         [self addSubview:NumTitle];
-    }
+    }];
     [self addSubview:_numbarview];
 }
 
