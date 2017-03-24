@@ -102,9 +102,10 @@
 }
 
 - (void)ShowInView{
+    self.Cover.frame = CGRectMake(self.width, 0, 300, self.height);
     [self AddChildSubview];
     [UIView animateWithDuration:0.2 animations:^{
-        self.Cover.frame = CGRectMake(self.width-280, 0, 280, self.height);
+        self.Cover.frame = CGRectMake(self.width-300, 0, 300, self.height);
         self.Cover.alpha = 1.0;
     }];
     [self getAllDaysWithCalender];
@@ -123,7 +124,7 @@
 
 -(UIView *)Cover{
     if (!_Cover) {
-        _Cover = [[UIView alloc]initWithFrame:CGRectMake(self.width, 0, 280, self.height)];
+        _Cover = [[UIView alloc]initWithFrame:CGRectMake(self.width, 0, 300, self.height)];
         _Cover.layer.shadowColor = [UIColor blackColor].CGColor;
         _Cover.layer.shadowOffset = CGSizeMake(1,1);
         _Cover.layer.shadowOpacity = 0.3;
@@ -295,7 +296,7 @@
 
 - (void)ClandarHidden{
     [UIView animateWithDuration:0.2 animations:^{
-        self.Cover.frame = CGRectMake(self.width, 0, 350, self.height);
+        self.Cover.frame = CGRectMake(self.width, 0, 300, self.height);
         self.Cover.alpha = 0.0;
     } completion:^(BOOL finished) {
         [self RemoveAllView];
