@@ -148,7 +148,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 _UserAlert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
                 [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 }]];
-                [MasterKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
+                [LGFKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
             }
             [_UserListCV reloadData];
         } else {
@@ -190,9 +190,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }]];
     [testalert addAction:[UIAlertAction actionWithTitle:@"はい" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self cleanCaches];
-        MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
+        LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"LoginView"];
     }]];
-    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+    [LGFKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
 }
 /**
  清除全部缓存

@@ -68,7 +68,7 @@
             if ([tmpDic[@"code"] isEqualToString:@"200"]) {
                 [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
                 [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
-                MasterKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
+                LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
             } else {
                 [MBProgressHUD showError:@"登録失败!" toView:self.view];
                 NSLog(@"errors: %@",tmpDic[@"errors"]);

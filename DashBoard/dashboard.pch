@@ -68,6 +68,10 @@
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
 #define radianToDegrees(radian) (radian*180.0)/(M_PI)
 
+//弱引用/强引用
+#define kWeakSelf(type)  __weak typeof(type) weak##type = type;
+#define kStrongSelf(type) __strong typeof(type) type = weak##type;
+
 //方正黑体简体字体定义
 #define FONT(F) [UIFont fontWithName:@"FZHTJW--GB1-0" size:F]
 
@@ -111,12 +115,27 @@
 #define NITScreenH [UIScreen mainScreen].bounds.size.height
 
 //当前视图
-#define WindowView [UIApplication sharedApplication].windows.lastObject
+#define LGFLastView [UIApplication sharedApplication].windows.lastObject
 //keyWindow
-#define MasterKeyWindow [UIApplication sharedApplication].keyWindow
+#define LGFKeyWindow [UIApplication sharedApplication].keyWindow
 
 //Main storyboard
 #define MainSB [UIStoryboard storyboardWithName:@"Main" bundle:nil]
+
+//字符串是否为空
+#define LGFStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length] < 1 ? YES : NO )
+
+//数组是否为空
+#define LGFArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || array.count == 0)
+
+//字典是否为空
+#define LGFDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
+
+//是否是空对象
+#define kObjectIsEmpty(_object) (_object == nil \
+|| [_object isKindOfClass:[NSNull class]] \
+|| ([_object respondsToSelector:@selector(length)] && [(NSData *)_object length] == 0) \
+|| ([_object respondsToSelector:@selector(count)] && [(NSArray *)_object count] == 0))/
 
 #define TotalDay 6 //可滑动总天数
 #define TotalWeek 4 //可滑动总周数

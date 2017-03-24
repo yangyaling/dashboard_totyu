@@ -27,6 +27,6 @@
 //    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:[NSString stringWithFormat:@"%@はクリックしました，このページは展示されていません",_RoomName.text] preferredStyle:UIAlertControllerStyleAlert];
 //    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 //    }]];
-//    [MasterKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+//    [LGFKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
 }
 @end

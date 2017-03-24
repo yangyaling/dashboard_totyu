@@ -106,7 +106,6 @@
     [mjheader endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [MBProgressHUD hideHUDForView:view];
-//    [NITProgress ShowProgress:RequestEnd];
 }
 
 -(void)requestCancel{
