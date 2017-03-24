@@ -122,8 +122,9 @@
 - (void)LoadNewData{
     [MBProgressHUD showMessage:@"後ほど..." toView:self];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:parameter mjheader:nil superview:self success:^(id success){
+    NSString *buildingid = SystemUserDict[@"buildingid"];
+    NSString *floorno = SystemUserDict[@"floorno"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:self success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *UserListArray = [NSArray arrayWithArray:tmpDic[@"vzconfiginfo"]];

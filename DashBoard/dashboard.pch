@@ -44,10 +44,35 @@
 
 #import "UnderlineView.h"//线条view
 
-#define TotalDay 6 //可滑动总天数
-#define TotalWeek 4 //可滑动总周数
+//获取版本
+#define IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+#define CurrentSystemVersion [[UIDevice currentDevice] systemVersion]
 
-#define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)
+//判断是真机还是模拟器
+#if TARGET_OS_IPHONE
+//iPhone Device
+#endif
+
+//获取当前语言
+#define CurrentLanguage ([[NSLocale preferredLanguages] objectAtIndex:0])
+
+#if TARGET_IPHONE_SIMULATOR
+//iPhone Simulator
+#endif
+
+//G－C－D
+#define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
+#define MAIN(block) dispatch_async(dispatch_get_main_queue(),block)
+
+//由角度获取弧度 有弧度获取角度
+#define degreesToRadian(x) (M_PI * (x) / 180.0)
+#define radianToDegrees(radian) (radian*180.0)/(M_PI)
+
+//方正黑体简体字体定义
+#define FONT(F) [UIFont fontWithName:@"FZHTJW--GB1-0" size:F]
+
+//程序的本地化,引用国际化的文件
+#define MyLocal(x, ...) NSLocalizedString(x, nil)
 
 // 获取方法耗时时间
 #define TICK   CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
@@ -69,7 +94,7 @@
 
 #define NITColorAlpha(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/1.0]
 
-// 随机色
+//随机色
 #define NITRandomColor NITColor(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
 
 //小菊花
@@ -81,19 +106,24 @@
 //user缓存
 #define NITUserDefaults [NSUserDefaults standardUserDefaults]
 
+//Window宽高
 #define NITScreenW [UIScreen mainScreen].bounds.size.width
 #define NITScreenH [UIScreen mainScreen].bounds.size.height
 
+//当前视图
 #define WindowView [UIApplication sharedApplication].windows.lastObject
-
+//keyWindow
 #define MasterKeyWindow [UIApplication sharedApplication].keyWindow
-
-#define SystemColor(alpha) NITColorAlpha(255.0, 62.0, 123.0,(alpha))
 
 //Main storyboard
 #define MainSB [UIStoryboard storyboardWithName:@"Main" bundle:nil]
 
+#define TotalDay 6 //可滑动总天数
+#define TotalWeek 4 //可滑动总周数
 
+#define SystemColor(alpha) NITColorAlpha(255.0, 62.0, 123.0,(alpha))
+
+#define NSNullJudge(str) (str)==[NSNull null] ? @"" : (str)
 
 
 

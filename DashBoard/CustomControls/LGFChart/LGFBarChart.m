@@ -50,16 +50,17 @@
     } else {
         NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
         NSArray *colorarray = [_BarDataDict[@"actioncolor"] componentsSeparatedByString:@"|"];
-        for (int i = 0; i < array.count; i++) {
-            if ([array[i] intValue] == 1) {
+        
+        [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if ([obj intValue] == 1) {
                 [[UIColor colorWithHex:colorarray[0]] setStroke];
             } else {
                 [[UIColor colorWithHex:colorarray[1]] setStroke];
             }
-            CGContextMoveToPoint(context, i * (self.width/TotalLength), self.height);
-            CGContextAddLineToPoint(context, i * (self.width/TotalLength), 0);
+            CGContextMoveToPoint(context, idx * (self.width/TotalLength), self.height);
+            CGContextAddLineToPoint(context, idx * (self.width/TotalLength), 0);
             CGContextDrawPath(context, kCGPathStroke);
-        }
+        }];
     }
     [self AddAuxiliaryLine:context];
 }
@@ -92,10 +93,10 @@
                 if (![removedict[@"selecttype"] isEqualToString:@"YES"]) {
                     NSArray *DataArray = BarDict[@"data"];
                     if (DataArray.count > 0) {
-                        for (int i = 0; i < DataArray.count; i++) {
-                            CGContextMoveToPoint(context, BarX(DataArray[i]), self.height);
-                            CGContextAddLineToPoint(context, BarX(DataArray[i]), 0);
-                        }
+                        [DataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                            CGContextMoveToPoint(context, BarX(obj), self.height);
+                            CGContextAddLineToPoint(context, BarX(obj), 0);
+                        }];
                         CGContextDrawPath(context, kCGPathStroke);
                     }
                 }

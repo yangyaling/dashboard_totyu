@@ -106,8 +106,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)LoadNewData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:parameter mjheader:nil superview:_UserListCV success:^(id success){
+    NSString *buildingid = SystemUserDict[@"buildingid"];
+    NSString *floorno = SystemUserDict[@"floorno"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:_UserListCV success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.UserLisrArray = tmpDic[@"custlist"];
@@ -129,8 +130,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)LoadAlertData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSDictionary *parameter = @{@"buildingid":SystemUserDict[@"buildingid"],@"floorno":SystemUserDict[@"floorno"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:parameter mjheader:nil superview:nil success:^(id success){
+    NSString *buildingid = SystemUserDict[@"buildingid"];
+    NSString *floorno = SystemUserDict[@"floorno"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];

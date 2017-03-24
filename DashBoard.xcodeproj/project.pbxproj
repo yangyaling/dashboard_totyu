@@ -966,6 +966,7 @@
 		E966EA321E2DADCE00754B3B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = LGF;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = NIT;
 				TargetAttributes = {

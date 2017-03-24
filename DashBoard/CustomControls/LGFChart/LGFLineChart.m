@@ -39,11 +39,12 @@
 
 -(NSArray*)TotalValueCheck:(NSArray*)array{
     NSMutableArray *numarr = [NSMutableArray array];
-    for (id vlaue in array) {
-        if (![vlaue isEqual:@""]) {
-            [numarr addObject:vlaue];
+    [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if (![obj isEqual:@""]) {
+            [numarr addObject:obj];
         }
-    }
+    }];
+
     if ([_LineDataDict[@"actionid"] isEqualToString:@"環境1"] && _LineType == EnvironmentSet) {
         _YMaxLength = 50;
         _YMinLength = 0;
@@ -68,13 +69,15 @@
     CGContextSetLineWidth(context, LineWidth);
     [[UIColor colorWithHex:_LineDataDict[@"actioncolor"]] setStroke];
     if (_LineType == EnvironmentSet) {
+        [self TotalValueCheck:_LineDataDict[@"avg"]];
         //画平均值折线
-        [self DrawChartLine:context LineArray:[self TotalValueCheck:_LineDataDict[@"avg"]] DottedLineBOOL:NO];
+        [self DrawChartLine:context LineArray:_LineDataDict[@"avg"] DottedLineBOOL:NO];
         //画最大值,最小值折线
-        [self DrawChartLine:context LineArray:[self TotalValueCheck:_LineDataDict[@"max"]] DottedLineBOOL:YES];
-        [self DrawChartLine:context LineArray:[self TotalValueCheck:_LineDataDict[@"min"]] DottedLineBOOL:YES];
+        [self DrawChartLine:context LineArray:_LineDataDict[@"max"] DottedLineBOOL:YES];
+        [self DrawChartLine:context LineArray:_LineDataDict[@"min"] DottedLineBOOL:YES];
     } else {
-        [self DrawChartLine:context LineArray:[self TotalValueCheck:_LineDataDict[@"data"]] DottedLineBOOL:NO];
+        [self TotalValueCheck:_LineDataDict[@"data"]];
+        [self DrawChartLine:context LineArray:_LineDataDict[@"data"] DottedLineBOOL:NO];
     }
     
     [self AddAuxiliaryLine:context];
@@ -93,11 +96,15 @@
         CGContextSetLineDash(context, 0, arr, 2);
     }
     if (LineArray.count > 0 ) {
-        CGContextMoveToPoint(context, 0, DLineY(LineArray[0]));
-        for (int i = 1; i < LineArray.count; i++) {
-            CGContextAddLineToPoint(context, LineX(i), DLineY(LineArray[i]));
-        }
-        CGContextDrawPath(context, kCGPathStroke);
+        [LineArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if (idx < LineArray.count-1) {//前后空数据判断
+                if (![obj isEqualToString:@""]&&![LineArray[idx+1] isEqualToString:@""]) {
+                    CGContextMoveToPoint(context, LineX(idx), DLineY(obj));
+                    CGContextAddLineToPoint(context, LineX(idx+1), DLineY(LineArray[idx+1]));
+                    CGContextDrawPath(context, kCGPathStroke);
+                }
+            }
+        }];
     }
 }
 /**
@@ -160,11 +167,11 @@
         } else {
             DataArray = [NSArray arrayWithArray:_LineDataDict[@"data"]];
         }
-
+        
         if (DataArray.count > 0) {
             if (![DataArray[row] isEqualToString:@""]) {
                 if (_LineType == EnvironmentSet) {
-                    [self DataLineTitle:[NSString stringWithFormat:@"最大値：%@ 平均値：%@ 最小値：%@",_LineDataDict[@"max"][row],_LineDataDict[@"avg"][row],_LineDataDict[@"min"][row]]];
+                    [self DataLineTitle:[NSString stringWithFormat:@"最大値：%0.2f 平均値：%0.2f 最小値：%0.2f",[_LineDataDict[@"max"][row] floatValue],[_LineDataDict[@"avg"][row] floatValue],[_LineDataDict[@"min"][row] floatValue]]];
                 } else {
                     if (_LineType == ActivitySet) {
                         [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];

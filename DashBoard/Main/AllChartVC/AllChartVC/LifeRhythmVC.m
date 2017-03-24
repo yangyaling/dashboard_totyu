@@ -99,10 +99,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
         _DateLabel.text = [NSDate getWeekBeginAndEndWith:date];
     }
     [_PageCV reloadData];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //PageCV reloadData完毕 滚动到指定页
-        [_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    });
+    MAIN(^{[_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];});//PageCV reloadData完毕 滚动到指定页
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
