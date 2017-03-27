@@ -179,7 +179,7 @@
                 if (_LineType == ActivitySet) {
                     [self DataLineTitle:[NSString stringWithFormat:@"%@",DataArray[row]]];
                 }else{
-                    [self DataLineTitle:[NSString stringWithFormat:@"%@ %@",[self timeFormatted:86400/(self.width/x)],_LineDataDict[@"data"][row]]];
+                    [self DataLineTitle:[NSString stringWithFormat:@"%@ %0.2f",[self timeFormatted:86400/(self.width/x)],[_LineDataDict[@"data"][row] floatValue]]];
                 }
             }
         }else{
