@@ -279,19 +279,16 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
         [self LoadAllData];
+        [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
     }
-    [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
 }
 
 -(void)LoadAllData{
     [[SDImageCache sharedImageCache] clearDisk];
     [[SDImageCache sharedImageCache] clearMemory];
-    
-    MAIN(^{
-        [self LoadNewData];
-        [self LoadAlertData];
-        [self LoadNoticeCount];
-    });
+    [self LoadNewData];
+    [self LoadAlertData];
+    [self LoadNoticeCount];
 }
 
 #pragma mark - UICollectionView Delegate and DataSource
@@ -317,6 +314,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (indexPath.item >= self.UserLisrArray.count) {
         CollectionCellWhite *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellWhite" forIndexPath:indexPath];
         cell.backgroundColor = [UIColor whiteColor];
@@ -331,7 +329,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.CellBGView.layer.borderWidth = 0.5;
         [cell.alert removeFromSuperview];
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
-        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]] placeholderImage:nil];
+        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]] placeholderImage:nil options:SDWebImageRefreshCached];
         cell.RoomName.text = DataDict[@"roomname"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];

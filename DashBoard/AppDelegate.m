@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "SDWebImageDownloader.h"
+#import "SDWebImageManager.h"
 
 @interface AppDelegate ()
 
@@ -25,6 +27,30 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    //SDWebImage url缓存机制修改
+//    SDWebImageDownloader *imgDownloader = SDWebImageManager.sharedManager.imageDownloader;
+//    imgDownloader.headersFilter  = ^NSDictionary *(NSURL *url, NSDictionary *headers) {
+//        NSFileManager *fm = [[NSFileManager alloc] init];
+//        NSString *imgKey = [SDWebImageManager.sharedManager cacheKeyForURL:url];
+//        NSString *imgPath = [SDWebImageManager.sharedManager.imageCache defaultCachePathForKey:imgKey];
+//        NSDictionary *fileAttr = [fm attributesOfItemAtPath:imgPath error:nil];
+//        NSMutableDictionary *mutableHeaders = [headers mutableCopy];
+//        NSDate *lastModifiedDate = nil;
+//        if (fileAttr.count > 0) {
+//            if (fileAttr.count > 0) {
+//                lastModifiedDate = (NSDate *)fileAttr[NSFileModificationDate];
+//            }
+//        }
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"GMT"];
+//        formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+//        formatter.dateFormat = @"EEE, dd MMM yyyy HH:mm:ss z";
+//        NSString *lastModifiedStr = [formatter stringFromDate:lastModifiedDate];
+//        lastModifiedStr = lastModifiedStr.length > 0 ? lastModifiedStr : @"";
+//        [mutableHeaders setValue:lastModifiedStr forKey:@"If-Modified-Since"];
+//        return mutableHeaders;  
+//    };
     
     [[UINavigationBar appearance] setTintColor:SystemColor(1.0)];
     
