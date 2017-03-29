@@ -18,8 +18,6 @@
     
     
     NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyyy-MM-dd"];
     
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     
@@ -31,32 +29,22 @@
     
     NSDate *newdate = [calendar dateByAddingComponents:comps toDate:currentDate options:0];
     
-    return [format stringFromDate:newdate];
+    return [self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:newdate];
     
 }
 
 ///根据用户输入的时间(dateString)确定当天是星期几,输入的时间格式 yyyy-MM-dd ,如 2015-12-18
 + (NSString *)getTheDayOfTheWeekByDateString:(NSString *)dateString{
     
-    NSDateFormatter *inputFormatter=[[NSDateFormatter alloc]init];
+    NSDate *formatterDate=[self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:dateString];
     
-    [inputFormatter setDateFormat:@"yyyy-MM-dd"];
-    
-    NSDate *formatterDate=[inputFormatter dateFromString:dateString];
-    
-    NSDateFormatter *outputFormatter=[[NSDateFormatter alloc]init];
-    
-    [outputFormatter setDateFormat:@"EEEE-MMMM-d"];
-    
-    NSString *outputDateStr=[outputFormatter stringFromDate:formatterDate];
+    NSString *outputDateStr=[self NeedDateFormat:@"EEEE-MMMM-d" ReturnType:returnstring date:formatterDate];
     
     NSArray *weekArray=[outputDateStr componentsSeparatedByString:@"-"];
     
     NSString *str  = [[weekArray objectAtIndex:0] substringToIndex:1];
-    
-    [inputFormatter setDateFormat:@"yyyy年MM月dd日"];
-    
-    NSString *ruStr = [NSString stringWithFormat:@"%@(%@)",[inputFormatter stringFromDate:formatterDate],str];
+
+    NSString *ruStr = [NSString stringWithFormat:@"%@(%@)",[self NeedDateFormat:@"yyyy年MM月dd日" ReturnType:returnstring date:formatterDate],str];
      
     return ruStr;
 }
@@ -64,6 +52,7 @@
 + (id)NeedDateFormat:(NSString*)DateFormat ReturnType:(ReturnType)ReturnType date:(id)date{
 
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     fmt.dateFormat = DateFormat;
     
     if ([date isKindOfClass:[NSDate class]]) {
@@ -86,11 +75,7 @@
 {
     //当前时间
     NSDate *nowDate = [NSDate new];
-    
-    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"yyyy-MM-dd";
-    
-    return [fmt stringFromDate:nowDate];
+    return [self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:nowDate];
 }
 
 
@@ -117,6 +102,7 @@
     // date ==  2014-04-30 10:05:28 --> 2014-04-30 00:00:00
     // now == 2014-05-01 09:22:10 --> 2014-05-01 00:00:00
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     fmt.dateFormat = @"yyyy-MM-dd";
     
     // 2014-04-30
@@ -145,6 +131,7 @@
 {
     NSDate *now = [NSDate date];
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     fmt.dateFormat = @"yyyy-MM-dd";
     
     NSString *dateStr = [fmt stringFromDate:self];
@@ -193,13 +180,8 @@
     NSInteger year = [comps year];
     NSInteger weekofyear = [comps weekOfYear];
     
-    
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"K"];
-    NSInteger hour12 = [[format stringFromDate:thisTime]intValue]-1;
-    NSDateFormatter *formatTwo = [[NSDateFormatter alloc] init];
-    [formatTwo setDateFormat:@"aa"];
-    NSInteger ampm = [[format stringFromDate:thisTime] isEqualToString:@"AM"]?0:1;
+    NSInteger hour12 = [[self NeedDateFormat:@"K" ReturnType:returnstring date:thisTime]intValue]-1;
+    NSInteger ampm = [[self NeedDateFormat:@"aa" ReturnType:returnstring date:thisTime] isEqualToString:@"AM"]?0:1;
     
     switch (timeType) {
         case 1:
@@ -272,9 +254,7 @@
         
     }
     
-    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    fmt.dateFormat = @"yyyy-MM-dd";
-    NSString *dateString =  [fmt stringFromDate:LGFdate];
+    NSString *dateString = [self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:LGFdate];
     
     
     return dateString;
@@ -372,10 +352,7 @@
         NSDate *selectdate;
         
         if ([date isKindOfClass:[NSString class]]) {
-            NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-            fmt.dateFormat = @"yyyy-MM-dd";
-            
-            selectdate = [fmt dateFromString:date];
+            selectdate = [self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:date];
         } else {
             
             selectdate = date;
@@ -431,10 +408,9 @@
         }else {
             return @"";
         }
-        NSDateFormatter *myDateFormatter = [[NSDateFormatter alloc] init];
-        [myDateFormatter setDateFormat:@"MM月dd日"];
-        NSString *beginString = [myDateFormatter stringFromDate:beginDate];
-        NSString *endString = [myDateFormatter stringFromDate:endDate];
+
+        NSString *beginString = [self NeedDateFormat:@"MM月dd日" ReturnType:returnstring date:beginDate];
+        NSString *endString = [self NeedDateFormat:@"MM月dd日" ReturnType:returnstring date:endDate];
         NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:beginDate];
         NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:endDate];
         NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
@@ -477,14 +453,11 @@
         [lastDayComp setDay:day + lastDiff];
         NSDate *lastDayOfWeek= [calendar dateFromComponents:lastDayComp];
         
-        NSDateFormatter *formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"MM月dd日"];
-        
         NSInteger beginDateWeek = [NSDate nowTimeType:LGFweek time:firstDayOfWeek];
         NSInteger endDateWeek = [NSDate nowTimeType:LGFweek time:lastDayOfWeek];
         NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
         
-        NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",[formater stringFromDate:firstDayOfWeek],WeekArray[beginDateWeek-1],[formater stringFromDate:lastDayOfWeek],WeekArray[endDateWeek-1]];
+        NSString *s = [NSString stringWithFormat:@"%@（%@）〜　%@（%@）",[self NeedDateFormat:@"MM月dd日" ReturnType:returnstring date:firstDayOfWeek],WeekArray[beginDateWeek-1],[self NeedDateFormat:@"MM月dd日" ReturnType:returnstring date:lastDayOfWeek],WeekArray[endDateWeek-1]];
         
         return s;
     } else {
@@ -500,10 +473,7 @@
         
         [comp setYear:comp.year-10];
         
-        NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-        fmt.dateFormat = @"yyyy-MM-dd";
-        
-        return [fmt stringFromDate:[calendar dateFromComponents:comp]];
+        return [self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:[calendar dateFromComponents:comp]];
     } else {
         return @"error";
     }

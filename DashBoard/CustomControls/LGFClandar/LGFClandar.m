@@ -140,12 +140,14 @@
         NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
         NSMutableArray *montharr = [NSMutableArray array];
+        
         for (int i = 0; i < 360; i++) {
             NSDate *lastMonth = [calendar dateFromComponents:comps];
             NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
             [montharr addObject:str];
             [comps setMonth:([comps month] - 1)];
         }
+        
         [montharr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:obj];
             NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
@@ -313,8 +315,9 @@
 
 - (id)AuToDateFormatter:(NSString*)FormatterType object:(id)object{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [formatter setDateFormat:FormatterType];
-    id NewObject;
+    id NewObject = nil;
     if ([object isKindOfClass:[NSString class]]) {
         NewObject = [formatter dateFromString:object];
     } else {
