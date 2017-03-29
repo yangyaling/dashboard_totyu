@@ -175,6 +175,7 @@
         _TimeTitlePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, -10, self.TimeTitleView.width, self.TimeTitleView.height+20)];
         _TimeTitlePicker.datePickerMode = UIDatePickerModeDate;
         _TimeTitlePicker.maximumDate = [NSDate date];
+        [_TimeTitlePicker setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
         NSArray *EndDayArray = [NSArray arrayWithArray:self.ClandarDataArray.lastObject[@"DayArray"]];
         _TimeTitlePicker.minimumDate = [self AuToDateFormatter:@"yyyy年MM月dd日" object:EndDayArray.lastObject];
         [_TimeTitlePicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
