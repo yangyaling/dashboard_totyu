@@ -219,6 +219,7 @@
 
 - (void)ClandarSelectDate:(NSDate*)date{
     if (date) {
+        _TimeTitlePicker.date = date;
         NSString * monthstr = [self AuToDateFormatter:@"yyyy年MM月" object:date];
         NSString * daystr = [self AuToDateFormatter:@"d" object:date];
         for (NSDictionary *dict in self.ClandarDataArray) {
