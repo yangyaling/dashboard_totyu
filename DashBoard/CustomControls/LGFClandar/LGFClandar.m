@@ -138,14 +138,14 @@
     if (!_ClandarDataArray) {
         _ClandarDataArray = [NSMutableArray array];
         NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-        NSDateComponents *comps = [calendar components:NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitYear fromDate:[NSDate date]];
+        NSDateComponents *comps =  [[NSDateComponents alloc] init];
         NSMutableArray *montharr = [NSMutableArray array];
         
         for (int i = 0; i < 360; i++) {
-            NSDate *lastMonth = [calendar dateFromComponents:comps];
+            [comps setMonth:-i];
+            NSDate *lastMonth = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
             NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
             [montharr addObject:str];
-            [comps setMonth:([comps month] - 1)];
         }
         
         [montharr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

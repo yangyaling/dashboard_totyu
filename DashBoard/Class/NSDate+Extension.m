@@ -52,7 +52,7 @@
 + (id)NeedDateFormat:(NSString*)DateFormat ReturnType:(ReturnType)ReturnType date:(id)date{
 
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [fmt setTimeZone:[NSTimeZone systemTimeZone]];
     fmt.dateFormat = DateFormat;
     
     if ([date isKindOfClass:[NSDate class]]) {
