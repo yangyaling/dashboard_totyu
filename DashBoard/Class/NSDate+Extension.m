@@ -102,7 +102,7 @@
     // date ==  2014-04-30 10:05:28 --> 2014-04-30 00:00:00
     // now == 2014-05-01 09:22:10 --> 2014-05-01 00:00:00
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [fmt setTimeZone:[NSTimeZone systemTimeZone]];
     fmt.dateFormat = @"yyyy-MM-dd";
     
     // 2014-04-30
@@ -131,7 +131,7 @@
 {
     NSDate *now = [NSDate date];
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
-    [fmt setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [fmt setTimeZone:[NSTimeZone systemTimeZone]];
     fmt.dateFormat = @"yyyy-MM-dd";
     
     NSString *dateStr = [fmt stringFromDate:self];
