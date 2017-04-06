@@ -1,3 +1,4 @@
+
 //
 //  DDCollectionViewHorizontalLayout.m
 //  TestCollectionView
@@ -10,8 +11,10 @@
 {
     [super prepareLayout];
     
-    self.rowCount = 2;//行
-    self.itemCountPerRow = 3;//列
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+
+    self.rowCount = [SystemUserDict[@"rowandcolumn"][@"row"] intValue];//行
+    self.itemCountPerRow = [SystemUserDict[@"rowandcolumn"][@"column"] intValue];//列
     
     self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     self.minimumLineSpacing = 0;

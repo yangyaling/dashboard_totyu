@@ -57,6 +57,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
+    [SystemUserDict setObject:@{@"row" : @"2" , @"column" : @"3"} forKey:@"rowandcolumn"];//row:行 column:列
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     [self CellHorizontalAlignment];
 }
@@ -301,9 +302,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
  Cell横向排列
  */
 -(void)CellHorizontalAlignment{
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    int Total = [SystemUserDict[@"rowandcolumn"][@"row"] intValue] * [SystemUserDict[@"rowandcolumn"][@"column"] intValue];
     pageCount = self.UserLisrArray.count;
-    while (pageCount % 6 != 0) ++pageCount;
-    _UserPC.numberOfPages = pageCount / 6;
+    while (pageCount % Total != 0) ++pageCount;
+    _UserPC.numberOfPages = pageCount / Total;
     [_UserListCV registerClass:[UICollectionViewCell class]
     forCellWithReuseIdentifier:@"CellWhite"];
     [_UserListCV reloadData];
@@ -314,7 +317,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(_UserListCV.width / 3,_UserListCV.height / 2);
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    return CGSizeMake(_UserListCV.width / [SystemUserDict[@"rowandcolumn"][@"column"] intValue],_UserListCV.height / [SystemUserDict[@"rowandcolumn"][@"row"] intValue]);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
