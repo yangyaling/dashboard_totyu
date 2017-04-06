@@ -15,11 +15,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <objc/runtime.h>
 
-@interface CollectionCellWhite : UICollectionViewCell
-@end
-@implementation CollectionCellWhite
-@end
-
 @interface MainVC ()
 {
     NSInteger pageCount;
@@ -316,7 +311,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     pageCount = self.UserLisrArray.count;
     while (pageCount % 6 != 0) ++pageCount;
     _UserPC.numberOfPages = pageCount / 6;
-    [_UserListCV registerClass:[CollectionCellWhite class]
+    [_UserListCV registerClass:[UICollectionViewCell class]
     forCellWithReuseIdentifier:@"CellWhite"];
     [_UserListCV reloadData];
 }
@@ -332,7 +327,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.item >= self.UserLisrArray.count) {
-        CollectionCellWhite *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellWhite" forIndexPath:indexPath];
+        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellWhite" forIndexPath:indexPath];
         cell.backgroundColor = [UIColor whiteColor];
         cell.userInteractionEnabled = NO;
         return cell;

@@ -2082,31 +2082,31 @@
                                 <color key="shadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <size key="shadowOffset" width="1" height="1"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="haE-kK-wga" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="haE-kK-wga">
                                 <rect key="frame" x="0.0" y="114" width="400" height="654"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="400" id="NhN-5V-DJl"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dGX-NZ-asc">
-                                    <size key="itemSize" width="389" height="144"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="dGX-NZ-asc">
+                                    <size key="itemSize" width="400" height="144"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoticeCollectionCell" id="3hv-wm-VGd" customClass="NoticeCollectionCell">
-                                        <rect key="frame" x="5.5" y="0.0" width="389" height="144"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="144"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="389" height="144"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="144"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wL7-4v-4Xe" customClass="UnderlineView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="389" height="144"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="144"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-lg-nOo">
-                                                            <rect key="frame" x="10" y="106" width="366" height="24"/>
+                                                            <rect key="frame" x="10" y="106" width="377" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="E5d-N1-BXI"/>
                                                             </constraints>
@@ -2118,7 +2118,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boP-QT-uJ3">
-                                                            <rect key="frame" x="10" y="10" width="369" height="95"/>
+                                                            <rect key="frame" x="10" y="10" width="380" height="95"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2154,9 +2154,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="5"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="qTA-MU-ZC0" id="BrS-fp-hov"/>
                                     <outlet property="delegate" destination="qTA-MU-ZC0" id="EP4-Kl-ulW"/>
