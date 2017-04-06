@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NITCollectionView.h"
 #import "LGFColorSelectView.h"
 IB_DESIGNABLE
-@interface ColorSelectionCV : NITCollectionView
+@interface ColorSelectionCV : UICollectionView
 @property (nonatomic, strong) NSMutableArray *ColorSelectionArray;
 @property (nonatomic, copy) IBInspectable NSString *CSReuseIdentifier;
 @end

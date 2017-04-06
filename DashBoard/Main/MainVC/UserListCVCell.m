@@ -15,6 +15,7 @@
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {
         if ([dic[@"roomid"] isEqualToString:alerttype]) {
+            [_alert removeFromSuperview];
             _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(_CellBGView.width/3*2, 2, _CellBGView.width/3, 50)];
             _alert.delegate = self;
             [_CellBGView addSubview:_alert];

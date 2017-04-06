@@ -19,7 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *DateLabel;
 
 
-@property (weak, nonatomic) IBOutlet NITCollectionView *PageCV;
+@property (weak, nonatomic) IBOutlet UICollectionView *PageCV;
 @property (weak, nonatomic) IBOutlet ColorSelectionCV *ColorSelectionCV;
 @property (strong, nonatomic) NSMutableArray *controlarr;
 @property (nonatomic, strong) NSDate *SelectDate;

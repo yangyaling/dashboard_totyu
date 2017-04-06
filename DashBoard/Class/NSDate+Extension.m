@@ -53,6 +53,7 @@
 
     NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
     [fmt setTimeZone:[NSTimeZone systemTimeZone]];
+    [fmt setLocale:[NSLocale systemLocale]];
     fmt.dateFormat = DateFormat;
     
     if ([date isKindOfClass:[NSDate class]]) {

@@ -38,8 +38,6 @@
 
 #import "TimeOutReloadButton.h"//请求超时，重新请求按钮
 
-#import "NITCollectionView.h"//layout设置
-
 #import "LGFNullCheck.h"
 
 #import "UnderlineView.h"//线条view
@@ -63,6 +61,7 @@
 //G－C－D
 #define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
 #define MAIN(block) dispatch_async(dispatch_get_main_queue(),block)
+#define GLOBAL(block) dispatch_async(dispatch_get_global_queue(0, 0),block)
 
 //由角度获取弧度 有弧度获取角度
 #define degreesToRadian(x) (M_PI * (x) / 180.0)

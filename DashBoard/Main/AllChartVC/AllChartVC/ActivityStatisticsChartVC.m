@@ -18,7 +18,7 @@
 @end
 
 @interface ActivityStatisticsChartVC ()
-@property (weak, nonatomic) IBOutlet NITCollectionView *ChartCV;
+@property (weak, nonatomic) IBOutlet UICollectionView *ChartCV;
 @property (weak, nonatomic) IBOutlet LGFChartNumBar *ChartNum;
 @property (nonatomic, strong) NSMutableArray *DataArray;
 @end

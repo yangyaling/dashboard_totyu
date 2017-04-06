@@ -19,7 +19,7 @@
 @end
 
 @interface LifeRhythmChartVC ()
-@property (weak, nonatomic) IBOutlet NITCollectionView *ChartCV;
+@property (weak, nonatomic) IBOutlet UICollectionView *ChartCV;
 @property (nonatomic, strong) NSArray *WeekArray;
 @property (nonatomic, strong) NSArray *DataArray;
 @end

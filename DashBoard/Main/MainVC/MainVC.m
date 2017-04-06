@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
 @property (weak, nonatomic) IBOutlet UILabel *NowTime;
 @property (weak, nonatomic) IBOutlet UILabel *BuildName;
-@property (weak, nonatomic) IBOutlet NITCollectionView *UserListCV;
+@property (weak, nonatomic) IBOutlet UICollectionView *UserListCV;
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
 @property (nonatomic, strong) UIAlertController *UserAlert;
 @property (nonatomic, strong) NSArray *UserLisrArray;
@@ -56,6 +56,12 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    LWLCollectionViewHorizontalLayout *layout = [LWLCollectionViewHorizontalLayout new];
+    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    layout.itemSize = CGSizeMake(_UserListCV.width / 3,_UserListCV.height / 2);;
+    layout.minimumLineSpacing = 0;
+    layout.minimumInteritemSpacing = 0;
+    _UserListCV.collectionViewLayout = layout;
     [self LoadBuildingInfoData];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
@@ -78,6 +84,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  发送请求获取新数据
  */
 - (void)LoadBuildingInfoData{
+//    [_UserListCV setNeedsDisplay];
     [MBProgressHUD showMessage:@"後ほど..." toView:_UserListCV];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
@@ -89,8 +96,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [SystemUserDict setValue:buildingdict[@"floorno"] forKey:@"floorno"];
             [SystemUserDict setValue:buildingdict[@"displayname"] forKey:@"displayname"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                
+                BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+
                 _BuildName.text = buildingdict[@"displayname"];
-                _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
+                _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
                 [self LoadAllData];
             }
         } else {
@@ -141,7 +151,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 [_UserAlert dismissViewControllerAnimated:YES completion:nil];
                 //在KeyWindow上弹出alert框(每个页面都能看到)
                 NSDictionary *alertdict = alertarray[alertarray.count - 1];
-                _UserAlert = [UIAlertController alertControllerWithTitle:alertdict[@"registdate"] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
+                BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+                NSDate *registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]];
+                _UserAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
                 [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
                 }]];
                 [LGFKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
@@ -211,6 +223,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  获取新数据
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
+    [_UserListCV setNeedsDisplay];
     [self LoadBuildingInfoData];
 }
 /**
@@ -267,7 +280,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)AutoTime{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AutoTime) object:nil];
-    _NowTime.text = [NSDate NeedDateFormat:@"yyyy年MM月dd日 HH:mm:ss" ReturnType:returnstring date:[NSDate date]];
+
+    BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+    _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
 }
 /**
@@ -285,6 +300,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 -(void)LoadAllData{
     [[SDImageCache sharedImageCache] clearDisk];
+    [[SDImageCache sharedImageCache] cleanDisk];
     [[SDImageCache sharedImageCache] clearMemory];
     [self LoadNewData];
     [self LoadAlertData];

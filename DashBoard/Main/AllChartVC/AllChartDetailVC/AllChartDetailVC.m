@@ -12,7 +12,7 @@
 
 @interface AllChartDetailVC ()
 @property (strong, nonatomic) NSMutableArray *controlarr;
-@property (weak, nonatomic) IBOutlet NITCollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *SelectViewSeg;
 @end
 @implementation AllChartDetailVC

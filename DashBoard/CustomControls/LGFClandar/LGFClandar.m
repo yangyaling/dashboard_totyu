@@ -138,24 +138,24 @@
     if (!_ClandarDataArray) {
         _ClandarDataArray = [NSMutableArray array];
         NSCalendar*calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-        NSDateComponents *comps =  [[NSDateComponents alloc] init];
-        NSMutableArray *montharr = [NSMutableArray array];
+        NSDateComponents *Comps =  [[NSDateComponents alloc] init];
+        NSMutableArray *YearMonthArray = [NSMutableArray array];
         
         for (int i = 0; i < 360; i++) {
-            [comps setMonth:-i];
-            NSDate *lastMonth = [calendar dateByAddingComponents:comps toDate:[NSDate date] options:0];
-            NSString * str = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
-            [montharr addObject:str];
+            [Comps setMonth: - i];//每次循环月份减1
+            NSDate *lastMonth = [calendar dateByAddingComponents:Comps toDate:[NSDate date] options:0];//获取减1月后的日期
+            NSString *YearMonthStr = [self AuToDateFormatter:@"yyyy年MM月" object:lastMonth];
+            [YearMonthArray addObject:YearMonthStr];
         }
         
-        [montharr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [YearMonthArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSDate *MonthDate = [self AuToDateFormatter:@"yyyy年MM月" object:obj];
             NSInteger week = [[calendar components:NSCalendarUnitWeekday fromDate:MonthDate] weekday];
             NSRange range = [calendar rangeOfUnit:NSCalendarUnitDay inUnit: NSCalendarUnitMonth forDate:MonthDate];
             NSMutableArray *DayArray = [NSMutableArray array];
             NSMutableArray *DayNumArray = [NSMutableArray array];
-            for (int d = 1; d < range.length+week; d++) {
-                if (d<week) {
+            for (int d = 1; d < range.length + week; d++) {
+                if (d < week) {
                     [DayNumArray addObject:@""];
                     [DayArray addObject:@""];
                 } else {
@@ -318,6 +318,7 @@
 - (id)AuToDateFormatter:(NSString*)FormatterType object:(id)object{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setTimeZone:[NSTimeZone systemTimeZone]];
+    [formatter setLocale:[NSLocale systemLocale]];
     [formatter setDateFormat:FormatterType];
     id NewObject = nil;
     if ([object isKindOfClass:[NSString class]]) {

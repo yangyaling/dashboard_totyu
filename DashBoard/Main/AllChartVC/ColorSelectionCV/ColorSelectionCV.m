@@ -66,13 +66,13 @@
     }
     [systemactioninfo replaceObjectAtIndex:_Row withObject:actionselectdict];
     [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (idx!=_Row) {
+        if (idx != _Row) {
             [obj setValue:@"NO" forKey:@"actionselect"];
             [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
         }
     }];
     [systemactioninfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        if (idx==_Row) {
+        if (idx == _Row) {
             [obj setValue:@"NO" forKey:@"selecttype"];
         } else {
             [obj setValue:actionselectdict[@"actionselect"] forKey:@"selecttype"];

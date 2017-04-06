@@ -112,7 +112,6 @@
 		E996C1101E51ABFC00B05C4C /* LGFLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = E996C10F1E51ABFC00B05C4C /* LGFLineChart.m */; };
 		E996C1131E52CC3A00B05C4C /* ActivityStatisticsDetailChartVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E996C1121E52CC3A00B05C4C /* ActivityStatisticsDetailChartVC.m */; };
 		E9B8BE281E30A46F00A6DFDA /* NITSegmented.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B8BE271E30A46F00A6DFDA /* NITSegmented.m */; };
-		E9B8BE2E1E30A5BF00A6DFDA /* NITCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B8BE2D1E30A5BF00A6DFDA /* NITCollectionView.m */; };
 		E9B8BE321E30AAA400A6DFDA /* LGFDropDown.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B8BE311E30AAA400A6DFDA /* LGFDropDown.m */; };
 		E9E0827E1E2DFC56001BC2C2 /* VisualSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E0827D1E2DFC56001BC2C2 /* VisualSettingVC.m */; };
 		E9E082C21E2E2158001BC2C2 /* UserTestData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9E082C11E2E2158001BC2C2 /* UserTestData.plist */; };
@@ -351,8 +350,6 @@
 		E996C1121E52CC3A00B05C4C /* ActivityStatisticsDetailChartVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityStatisticsDetailChartVC.m; sourceTree = "<group>"; };
 		E9B8BE261E30A46F00A6DFDA /* NITSegmented.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NITSegmented.h; sourceTree = "<group>"; };
 		E9B8BE271E30A46F00A6DFDA /* NITSegmented.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NITSegmented.m; sourceTree = "<group>"; };
-		E9B8BE2C1E30A5BF00A6DFDA /* NITCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NITCollectionView.h; sourceTree = "<group>"; };
-		E9B8BE2D1E30A5BF00A6DFDA /* NITCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NITCollectionView.m; sourceTree = "<group>"; };
 		E9B8BE301E30AAA400A6DFDA /* LGFDropDown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGFDropDown.h; sourceTree = "<group>"; };
 		E9B8BE311E30AAA400A6DFDA /* LGFDropDown.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGFDropDown.m; sourceTree = "<group>"; };
 		E9E0827C1E2DFC56001BC2C2 /* VisualSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VisualSettingVC.h; sourceTree = "<group>"; };
@@ -541,8 +538,6 @@
 				E966EA741E2DAE5300754B3B /* UIView+Extension.m */,
 				E9B8BE261E30A46F00A6DFDA /* NITSegmented.h */,
 				E9B8BE271E30A46F00A6DFDA /* NITSegmented.m */,
-				E9B8BE2C1E30A5BF00A6DFDA /* NITCollectionView.h */,
-				E9B8BE2D1E30A5BF00A6DFDA /* NITCollectionView.m */,
 				E96F867D1E345D4500C9B81D /* NITLabel.h */,
 				E96F867E1E345D4500C9B81D /* NITLabel.m */,
 				E935E5D51E56E93200C8A181 /* UIColor+UIColor.h */,
@@ -1115,7 +1110,6 @@
 				E96F86791E320A4D00C9B81D /* LifeRhythmDetailVC.m in Sources */,
 				E966EB5A1E2DAE5300754B3B /* UIView+MJExtension.m in Sources */,
 				E935E6071E5C0D7B00C8A181 /* UIImageView+HighlightedWebCache.m in Sources */,
-				E9B8BE2E1E30A5BF00A6DFDA /* NITCollectionView.m in Sources */,
 				E935E6061E5C0D7B00C8A181 /* UIImage+WebP.m in Sources */,
 				E966EB3D1E2DAE5300754B3B /* MJExtensionConst.m in Sources */,
 				E966EB841E2DC15100754B3B /* LoginVC.m in Sources */,

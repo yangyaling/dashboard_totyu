@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *RoomTitle;
 @property (weak, nonatomic) IBOutlet UILabel *UserNameTitle;
 @property (weak, nonatomic) IBOutlet UILabel *TimeFrameTitle;
-@property (weak, nonatomic) IBOutlet NITCollectionView *PageCV;
+@property (weak, nonatomic) IBOutlet UICollectionView *PageCV;
 @property (weak, nonatomic) IBOutlet ColorSelectionCV *ColorSelectionCV;
 @property (weak, nonatomic) IBOutlet UIView *DarkColorView;
 @property (weak, nonatomic) IBOutlet UIView *LightColorView;

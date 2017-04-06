@@ -210,11 +210,11 @@
                                     <action selector="AllAlert:" destination="UaC-O7-Bpi" eventType="touchUpInside" id="FOr-PC-CeQ"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uSL-vL-21R" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="uSL-vL-21R">
                                 <rect key="frame" x="0.0" y="182" width="1024" height="586"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6Ra-jy-Nmq">
-                                    <size key="itemSize" width="340" height="291"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="dAt-C3-okC">
+                                    <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -386,9 +386,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="main"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="UaC-O7-Bpi" id="PK6-ME-tEG"/>
                                     <outlet property="delegate" destination="UaC-O7-Bpi" id="TkQ-tc-iOk"/>
@@ -1081,14 +1078,14 @@
                                     <constraint firstAttribute="trailing" secondItem="Mz8-eR-2zu" secondAttribute="trailing" constant="10" id="zhN-VI-cHK"/>
                                 </constraints>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PA2-aO-Hpo" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PA2-aO-Hpo">
                                 <rect key="frame" x="0.0" y="153" width="200" height="615"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="7OA-YI-eTe"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="llY-Oe-HnV">
-                                    <size key="itemSize" width="201" height="208"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="llY-Oe-HnV">
+                                    <size key="itemSize" width="200" height="153.75"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1207,9 +1204,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="4"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="6lM-0k-ECb" id="ccY-iS-lCh"/>
                                     <outlet property="delegate" destination="6lM-0k-ECb" id="Rbk-IB-p0v"/>
@@ -1316,11 +1310,11 @@
                                     <action selector="SelectView:" destination="E0G-pg-Dea" eventType="valueChanged" id="nho-VV-Q9P"/>
                                 </connections>
                             </segmentedControl>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TgN-Uy-drh" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="TgN-Uy-drh">
                                 <rect key="frame" x="0.0" y="115" width="1024" height="653"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="gqn-IZ-wzB">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="gqn-IZ-wzB">
+                                    <size key="itemSize" width="1024" height="653"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1335,9 +1329,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="E0G-pg-Dea" id="oSi-hh-X7v"/>
                                     <outlet property="delegate" destination="E0G-pg-Dea" id="pBO-95-OdL"/>
@@ -1406,22 +1397,22 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="GO7-SE-t7s"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iXk-dB-Nj8">
-                                            <size key="itemSize" width="22" height="49.666666666666671"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iXk-dB-Nj8">
+                                            <size key="itemSize" width="200" height="29.800000000000001"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LRVCCSCell" id="65w-2o-a9a" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rHm-Sl-9k4">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="24"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050393774787" blue="0.90666803657897721" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="V0H-bM-Pn7"/>
@@ -1436,7 +1427,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vLm-42-RIc">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1463,7 +1454,6 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="LRVCCSCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
@@ -1538,11 +1528,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="BottomType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hm6-oX-54U" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hm6-oX-54U">
                                 <rect key="frame" x="0.0" y="135" width="1024" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="HgC-UF-l9a">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="HgC-UF-l9a">
+                                    <size key="itemSize" width="1024" height="528"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1557,9 +1547,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="0wg-hN-YkQ" id="ODt-7u-ap6"/>
                                     <outlet property="delegate" destination="0wg-hN-YkQ" id="WNP-5b-Eef"/>
@@ -1691,22 +1678,22 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="gac-fJ-6of"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KwD-oi-nnQ">
-                                            <size key="itemSize" width="22" height="49.666666666666671"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="KwD-oi-nnQ">
+                                            <size key="itemSize" width="200" height="29.800000000000001"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ASVCCSCell" id="I7F-2p-fu7" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vC2-vI-0b4">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="24"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="7y3-BL-UIs"/>
@@ -1721,7 +1708,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="igi-ho-ePh">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -1748,7 +1735,6 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="ASVCCSCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
@@ -1804,11 +1790,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="BottomType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xFy-rE-nvl" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xFy-rE-nvl">
                                 <rect key="frame" x="0.0" y="135" width="1024" height="569"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Yk2-ir-n8x">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Yk2-ir-n8x">
+                                    <size key="itemSize" width="1024" height="569"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1823,9 +1809,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="y8g-l8-8vp" id="j8Y-iY-OWQ"/>
                                     <outlet property="delegate" destination="y8g-l8-8vp" id="VVt-yt-VvN"/>
@@ -1870,18 +1853,18 @@
                         <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i4l-XW-XVE" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="i4l-XW-XVE">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="704"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="QQe-nu-NMi">
-                                    <size key="itemSize" width="1004" height="90"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="QQe-nu-NMi">
+                                    <size key="itemSize" width="1024" height="100.56999999999999"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LifeRhythmChartCell" id="KfP-NE-KFI" customClass="LifeRhythmChartCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="100.57142857142857"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="100.56999999999999"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="1024" height="101"/>
@@ -1933,9 +1916,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="7"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="U5x-5s-nVY" id="upd-qC-A7H"/>
                                     <outlet property="delegate" destination="U5x-5s-nVY" id="hh8-4i-dSv"/>
@@ -1972,25 +1952,25 @@
                         <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sQj-fG-gqF" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="sQj-fG-gqF">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="664"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Gnv-XC-fqg">
-                                    <size key="itemSize" width="1014" height="212"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Gnv-XC-fqg">
+                                    <size key="itemSize" width="1024" height="212"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActivityStatisticsChartCell" id="D2v-hE-AW3" customClass="ActivityStatisticsChartCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="221.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="212"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="221"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="1024" height="212"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="トイレ使用" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVS-JK-3TA">
-                                                    <rect key="frame" x="55" y="5" width="132" height="211.5"/>
+                                                    <rect key="frame" x="55" y="5" width="132" height="202"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="132" id="jmF-0o-9K9"/>
                                                     </constraints>
@@ -2002,11 +1982,11 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P91-js-Zfa">
-                                                    <rect key="frame" x="190" y="5" width="799" height="211.5"/>
+                                                    <rect key="frame" x="190" y="5" width="799" height="202"/>
                                                     <color key="backgroundColor" red="0.94844933710000001" green="0.94844933710000001" blue="0.94844933710000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaD-UA-K9O">
-                                                    <rect key="frame" x="31" y="103" width="15" height="15"/>
+                                                    <rect key="frame" x="31" y="98.5" width="15" height="15"/>
                                                     <color key="backgroundColor" red="0.09595001635" green="0.59338289730000005" blue="0.99835759400000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="15" id="Gt5-WX-8Hb"/>
@@ -2038,9 +2018,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="3"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="vWD-3t-IEv" id="7co-mA-GTC"/>
                                     <outlet property="delegate" destination="vWD-3t-IEv" id="0OL-SW-aDC"/>
@@ -2119,17 +2096,17 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NoticeCollectionCell" id="3hv-wm-VGd" customClass="NoticeCollectionCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="130.80000000000001"/>
+                                        <rect key="frame" x="5.5" y="0.0" width="389" height="144"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="131"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="389" height="144"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wL7-4v-4Xe" customClass="UnderlineView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="400" height="131"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="389" height="144"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-lg-nOo">
-                                                            <rect key="frame" x="10" y="93" width="377" height="24"/>
+                                                            <rect key="frame" x="10" y="106" width="366" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="E5d-N1-BXI"/>
                                                             </constraints>
@@ -2141,7 +2118,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </label>
                                                         <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boP-QT-uJ3">
-                                                            <rect key="frame" x="10" y="10" width="380" height="82"/>
+                                                            <rect key="frame" x="10" y="10" width="369" height="95"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -2247,11 +2224,11 @@
                                     <action selector="SelectView:" destination="Py7-0E-KN1" eventType="valueChanged" id="RZk-dU-CAI"/>
                                 </connections>
                             </segmentedControl>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ycr-Kq-fJ3" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ycr-Kq-fJ3">
                                 <rect key="frame" x="0.0" y="115" width="1024" height="654"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UIk-FA-WOe">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="UIk-FA-WOe">
+                                    <size key="itemSize" width="1024" height="654"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2266,9 +2243,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="Py7-0E-KN1" id="vF6-Xh-gK4"/>
                                     <outlet property="delegate" destination="Py7-0E-KN1" id="qER-cv-WSC"/>
@@ -2394,22 +2368,22 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="489-6s-0l4"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5J2-3H-CCI">
-                                            <size key="itemSize" width="22" height="49.666666666666671"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="5J2-3H-CCI">
+                                            <size key="itemSize" width="200" height="29.800000000000001"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LRDVCell" id="GbG-6A-lDI" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuT-WU-Xig">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="24"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="GRq-Mh-cCb"/>
@@ -2424,7 +2398,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yw0-5m-rpw">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2451,7 +2425,6 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="LRDVCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
@@ -2537,11 +2510,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="BottomType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VI1-OV-ruM" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VI1-OV-ruM">
                                 <rect key="frame" x="0.0" y="135" width="1024" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ibB-bG-rOb">
-                                    <size key="itemSize" width="1024" height="492"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="ibB-bG-rOb">
+                                    <size key="itemSize" width="1024" height="528"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -2556,9 +2529,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="yJG-oL-1K4" id="CB7-bF-liV"/>
                                     <outlet property="delegate" destination="yJG-oL-1K4" id="bIe-BV-QoK"/>
@@ -2607,18 +2577,18 @@
                         <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dP6-FO-acc" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dP6-FO-acc">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="704"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Odz-3B-1tH">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Odz-3B-1tH">
+                                    <size key="itemSize" width="1024" height="117.33"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="50" height="50"/>
+                                    <size key="footerReferenceSize" width="1024" height="352"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LifeRhythmChartDetailCell" id="MkU-gP-D7R" customClass="LifeRhythmChartDetailCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="117.33333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="117.33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="1024" height="117"/>
@@ -2692,9 +2662,6 @@
                                         <outlet property="OneDayLabel" destination="J4h-6p-QKT" id="u8G-3u-ChG"/>
                                     </connections>
                                 </collectionReusableView>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="reusablecv"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="fOh-rE-yD8" id="WZU-mY-fp3"/>
                                     <outlet property="delegate" destination="fOh-rE-yD8" id="ZHd-tB-SEz"/>
@@ -2730,25 +2697,25 @@
                         <rect key="frame" x="0.0" y="64" width="1024" height="704"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gsU-pG-kAg" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="gsU-pG-kAg">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="704"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Hmj-wx-2w4">
-                                    <size key="itemSize" width="1024" height="139"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Hmj-wx-2w4">
+                                    <size key="itemSize" width="1024" height="117.33"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActivityStatisticsDetailCell" id="gJ2-vX-Dvf" customClass="ActivityStatisticsDetailCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="117.33333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="117.33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="1024" height="117"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="部屋ドア開" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b0n-gb-t1l">
-                                                    <rect key="frame" x="0.0" y="0.0" width="130" height="117"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="130" height="117.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="130" id="bRg-Fw-kbf"/>
                                                     </constraints>
@@ -2760,7 +2727,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DLV-fI-A6u">
-                                                    <rect key="frame" x="135" y="4" width="879" height="109"/>
+                                                    <rect key="frame" x="135" y="4" width="879" height="109.5"/>
                                                     <color key="backgroundColor" red="0.95699179290000003" green="0.95699179290000003" blue="0.95699179290000003" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                             </subviews>
@@ -2780,9 +2747,6 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="6"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="yP7-5h-hbl" id="opY-Ot-r3r"/>
                                     <outlet property="delegate" destination="yP7-5h-hbl" id="1Oq-Y5-A0t"/>
@@ -2846,22 +2810,22 @@
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="gZ9-jB-fa8"/>
                                         </constraints>
-                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Z91-ez-e9y">
-                                            <size key="itemSize" width="22" height="49.666666666666671"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="10" id="Z91-ez-e9y">
+                                            <size key="itemSize" width="200" height="29.800000000000001"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CSDVCCell" id="bOt-1N-Mgv" customClass="ColorSelectionCVCell">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.48"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="29.800000000000001"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="29"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIV-NW-5tt">
-                                                            <rect key="frame" x="3" y="3" width="22" height="23"/>
+                                                            <rect key="frame" x="3" y="3" width="22" height="24"/>
                                                             <color key="backgroundColor" red="1" green="0.34531050390000001" blue="0.90666803659999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="22" id="Zmf-Uc-lg3"/>
@@ -2876,7 +2840,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sc2-qZ-URT">
-                                                            <rect key="frame" x="30" y="2" width="170" height="25"/>
+                                                            <rect key="frame" x="30" y="2" width="170" height="26"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <state key="normal" title="部屋ドア開">
                                                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -2903,7 +2867,6 @@
                                             </collectionViewCell>
                                         </cells>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="colorselect"/>
                                             <userDefinedRuntimeAttribute type="string" keyPath="CSReuseIdentifier" value="CSDVCCell"/>
                                         </userDefinedRuntimeAttributes>
                                     </collectionView>
@@ -2993,11 +2956,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="TopType" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfo-54-RzT" customClass="NITCollectionView">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfo-54-RzT">
                                 <rect key="frame" x="0.0" y="135" width="1024" height="529"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mcD-Ol-lSX">
-                                    <size key="itemSize" width="50" height="50"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="mcD-Ol-lSX">
+                                    <size key="itemSize" width="1024" height="529"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3012,9 +2975,6 @@
                                         </view>
                                     </collectionViewCell>
                                 </cells>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="LayoutType" value="paging"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outlet property="dataSource" destination="0Fp-JE-mtf" id="4Tu-jW-9dS"/>
                                     <outlet property="delegate" destination="0Fp-JE-mtf" id="goa-UJ-U47"/>

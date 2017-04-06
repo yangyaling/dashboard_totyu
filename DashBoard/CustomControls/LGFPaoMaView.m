@@ -29,10 +29,14 @@
         self.clipsToBounds = YES;
         time = titlearray.count*2;
         OneShowContentView = [[UIView alloc]initWithFrame:currentFrame];
+
+        BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+        
         for (int i = 0; i < titlearray.count; i++) {
             UILabel *lab = [[UILabel alloc]initWithFrame:PaoMaLabelFrame];
             NSDictionary *alertdict = titlearray[i];
-            lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:@"HH:mm:ss" ReturnType:returnstring date:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]]]];
+            NSDate *registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]];
+            lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
             [self labelset:lab];
             [OneShowContentView addSubview:lab];
         }

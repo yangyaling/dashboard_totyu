@@ -173,20 +173,20 @@
             if (options & SDWebImageHandleCookies) downloaderOptions |= SDWebImageDownloaderHandleCookies;
             if (options & SDWebImageAllowInvalidSSLCertificates) downloaderOptions |= SDWebImageDownloaderAllowInvalidSSLCertificates;
             if (options & SDWebImageHighPriority) downloaderOptions |= SDWebImageDownloaderHighPriority;
-//            if (image && options & SDWebImageRefreshCached) {
-//                // force progressive off if image already cached but forced refreshing
-//                downloaderOptions &= ~SDWebImageDownloaderProgressiveDownload;
-//                // ignore image read from NSURLCache if image if cached but force refreshing
-//                downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
-//            }
-            if (image && options & SDWebImageRefreshCached) {//来国锋修改
+            if (image && options & SDWebImageRefreshCached) {
                 // force progressive off if image already cached but forced refreshing
                 downloaderOptions &= ~SDWebImageDownloaderProgressiveDownload;
-                // remove SDWebImageDownloaderUseNSURLCache flag
-                downloaderOptions &= ~SDWebImageDownloaderUseNSURLCache;
                 // ignore image read from NSURLCache if image if cached but force refreshing
                 downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
             }
+//            if (image && options & SDWebImageRefreshCached) {//来国锋修改
+//                // force progressive off if image already cached but forced refreshing
+//                downloaderOptions &= ~SDWebImageDownloaderProgressiveDownload;
+//                // remove SDWebImageDownloaderUseNSURLCache flag
+//                downloaderOptions &= ~SDWebImageDownloaderUseNSURLCache;
+//                // ignore image read from NSURLCache if image if cached but force refreshing
+//                downloaderOptions |= SDWebImageDownloaderIgnoreCachedResponse;
+//            }
             id <SDWebImageOperation> subOperation = [self.imageDownloader downloadImageWithURL:url options:downloaderOptions progress:progressBlock completed:^(UIImage *downloadedImage, NSData *data, NSError *error, BOOL finished) {
                 if (weakOperation.isCancelled) {
                     // Do nothing if the operation was cancelled

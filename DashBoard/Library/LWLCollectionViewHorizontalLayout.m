@@ -13,6 +13,8 @@
     self.rowCount = 2;
     self.itemCountPerRow = 3;
     self.allAttributes = [NSMutableArray array];
+
+    self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     NSUInteger count = [self.collectionView numberOfItemsInSection:0];
     for (NSUInteger i = 0; i<count; i++) {
