@@ -37,14 +37,11 @@
 + (NSString *)getTheDayOfTheWeekByDateString:(NSString *)dateString{
     
     NSDate *formatterDate=[self NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:dateString];
-    
-    NSString *outputDateStr=[self NeedDateFormat:@"EEEE-MMMM-d" ReturnType:returnstring date:formatterDate];
-    
-    NSArray *weekArray=[outputDateStr componentsSeparatedByString:@"-"];
-    
-    NSString *str  = [[weekArray objectAtIndex:0] substringToIndex:1];
 
-    NSString *ruStr = [NSString stringWithFormat:@"%@(%@)",[self NeedDateFormat:@"yyyy年MM月dd日" ReturnType:returnstring date:formatterDate],str];
+    NSInteger DateWeek = [NSDate nowTimeType:LGFweek time:formatterDate]-1;
+    NSArray *WeekArray = @[@"月",@"火",@"水",@"木",@"金",@"土",@"日"];
+
+    NSString *ruStr = [NSString stringWithFormat:@"%@(%@)",[self NeedDateFormat:@"yyyy年MM月dd日" ReturnType:returnstring date:formatterDate],WeekArray[DateWeek]];
      
     return ruStr;
 }
