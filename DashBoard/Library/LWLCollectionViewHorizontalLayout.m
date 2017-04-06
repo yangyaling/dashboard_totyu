@@ -10,8 +10,13 @@
 {
     [super prepareLayout];
     
-    self.rowCount = 2;
-    self.itemCountPerRow = 3;
+    self.rowCount = 2;//行
+    self.itemCountPerRow = 3;//列
+    
+    self.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.minimumLineSpacing = 0;
+    self.minimumInteritemSpacing = 0;
+    
     self.allAttributes = [NSMutableArray array];
 
     self.scrollDirection = UICollectionViewScrollDirectionHorizontal;

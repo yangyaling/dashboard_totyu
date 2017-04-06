@@ -51,12 +51,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    LWLCollectionViewHorizontalLayout *layout = [LWLCollectionViewHorizontalLayout new];
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    layout.itemSize = CGSizeMake(_UserListCV.width / 3,_UserListCV.height / 2);;
-    layout.minimumLineSpacing = 0;
-    layout.minimumInteritemSpacing = 0;
-    _UserListCV.collectionViewLayout = layout;
     [self LoadBuildingInfoData];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
@@ -295,7 +289,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 -(void)LoadAllData{
     [[SDImageCache sharedImageCache] clearDisk];
-    [[SDImageCache sharedImageCache] cleanDisk];
     [[SDImageCache sharedImageCache] clearMemory];
     [self LoadNewData];
     [self LoadAlertData];
@@ -340,7 +333,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.CellBGView.layer.borderWidth = 0.5;
         [cell.alert removeFromSuperview];
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
-        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]] placeholderImage:nil options:SDWebImageRefreshCached];
+        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]];
         cell.RoomName.text = DataDict[@"roomname"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];
