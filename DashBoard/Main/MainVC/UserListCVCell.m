@@ -16,9 +16,9 @@
     for (NSDictionary *dic in _alertArray) {
         if ([dic[@"roomid"] isEqualToString:alerttype]) {
             [_alert removeFromSuperview];
-            _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(_CellBGView.width/3*2, 2, _CellBGView.width/3, 50)];
+            _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(self.width-self.width/6, 0, self.width/6, self.width/6)];
             _alert.delegate = self;
-            [_CellBGView addSubview:_alert];
+            [self addSubview:_alert];
             _CellBGView.backgroundColor = SystemColor(0.3);
         }
     }

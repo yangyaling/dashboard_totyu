@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LGFPaoMaView : UIView
-- (instancetype)initWithFrame:(CGRect)frame withTitleArray:(NSArray *)titlearray;
+@interface LGFPaoMaView : UILabel
+@property (nonatomic, strong) NSArray *AlertArray;
 @end

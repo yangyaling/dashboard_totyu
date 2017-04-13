@@ -17,4 +17,5 @@
 @interface AlertLabel : UIButton
 @property (nonatomic, strong) id<AlertLabelDelegate> delegate;
 -(instancetype)initWithFrame:(CGRect)frame;
+@property (nonatomic, strong) UIImageView *AlertIcon;
 @end

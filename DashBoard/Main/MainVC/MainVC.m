@@ -28,7 +28,7 @@
 @property (nonatomic, strong) UIAlertController *UserAlert;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
-@property (nonatomic, strong)  NSArray *CurrentAlertarrays;
+@property (nonatomic, strong) NSArray *CurrentAlertarrays;
 @end
 
 @implementation MainVC
@@ -57,7 +57,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
-    [SystemUserDict setObject:@{@"row" : @"2" , @"column" : @"3"} forKey:@"rowandcolumn"];//row:行 column:列
+    [SystemUserDict setObject:@{@"row" : @"5" , @"column" : @"6"} forKey:@"rowandcolumn"];//row:行 column:列
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     [self CellHorizontalAlignment];
 }
@@ -74,7 +74,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
  发送请求获取新数据
  */
 - (void)LoadBuildingInfoData{
-//    [_UserListCV setNeedsDisplay];
     [MBProgressHUD showMessage:@"後ほど..." toView:_UserListCV];
     [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
@@ -110,6 +109,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.UserLisrArray = tmpDic[@"custlist"];
+            [[SDImageCache sharedImageCache] clearDisk];
+            [[SDImageCache sharedImageCache] clearMemory];
             if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count])return;
             [self CellHorizontalAlignment];
         } else {
@@ -213,7 +214,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  获取新数据
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
-    [_UserListCV setNeedsDisplay];
+
     [self LoadBuildingInfoData];
 }
 /**
@@ -270,7 +271,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)AutoTime{
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AutoTime) object:nil];
-
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
     _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
@@ -289,8 +289,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 -(void)LoadAllData{
-    [[SDImageCache sharedImageCache] clearDisk];
-    [[SDImageCache sharedImageCache] clearMemory];
+    
     [self LoadNewData];
     [self LoadAlertData];
     [self LoadNoticeCount];

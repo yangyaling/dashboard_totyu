@@ -10,13 +10,8 @@
 #import "LGFPaoMaView.h"
 IB_DESIGNABLE
 @interface AlertBar : UIView
--(instancetype)initWithCoder:(NSCoder *)aDecoder;
-@property (nonatomic) IBInspectable CGFloat           BorderWidth;
 @property (nonatomic) IBInspectable CGFloat           CornerRadius;
-@property (nonatomic) IBInspectable UIColor          *BorderColor;
 @property (nonatomic, strong) NSArray *AlertArray;
-@property (nonatomic , strong) LGFPaoMaView *paoma;
-@property (nonatomic , strong) UILabel *NoAlert;
-@property (nonatomic , strong) UILabel *AlertLabel;
-@property (nonatomic , strong) UIView *Mask;
+@property (nonatomic, weak) IBOutlet UILabel*AlertLabel;
+@property (nonatomic, weak) IBOutlet LGFPaoMaView*PaoMaView;
 @end
