@@ -57,7 +57,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
-    [SystemUserDict setObject:@{@"row" : @"5" , @"column" : @"6"} forKey:@"rowandcolumn"];//row:行 column:列
+    
+    NSString *row;
+    NSString *column;
+    if (NITScreenW == 736 || NITScreenW == 667) {
+        row = @"2";
+        column = @"3";
+    }else if(NITScreenW == 1024){
+        row = @"4";
+        column = @"6";
+    }else if(NITScreenW == 1366){
+        row = @"6";
+        column = @"8";
+    }
+    [SystemUserDict setObject:@{@"row" : row , @"column" : column} forKey:@"rowandcolumn"];//row:行 column:列
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     [self CellHorizontalAlignment];
 }
@@ -215,7 +228,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
 
-    [self LoadBuildingInfoData];
+//    [self LoadBuildingInfoData];
+    LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
 }
 /**
  警报一览
