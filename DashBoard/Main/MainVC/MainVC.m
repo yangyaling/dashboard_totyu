@@ -60,15 +60,15 @@ static NSString * const reuseIdentifier = @"MainVCell";
     
     NSString *row;
     NSString *column;
-    if (NITScreenW == 736 || NITScreenW == 667) {
-        row = @"2";
-        column = @"3";
-    }else if(NITScreenW == 1024){
+    if(NITScreenW == 1024){
         row = @"4";
         column = @"6";
     }else if(NITScreenW == 1366){
         row = @"6";
         column = @"8";
+    }else{
+        row = @"2";
+        column = @"3";
     }
     [SystemUserDict setObject:@{@"row" : row , @"column" : column} forKey:@"rowandcolumn"];//row:行 column:列
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
