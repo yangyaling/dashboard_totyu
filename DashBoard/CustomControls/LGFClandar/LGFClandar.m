@@ -159,8 +159,8 @@
                     [DayNumArray addObject:@""];
                     [DayArray addObject:@""];
                 } else {
-                    [DayNumArray addObject:[NSString stringWithFormat:@"%d",d - (week - 1)]];
-                    [DayArray addObject:[NSString stringWithFormat:@"%@%d日",obj,d - (week - 1)]];
+                    [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d - (week - 1)]];
+                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",obj,d - (week - 1)]];
                 }
             }
             NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":obj};
