@@ -20,7 +20,7 @@
 
 -(void)setAlertArray:(NSArray *)AlertArray{
     _AlertArray = AlertArray;
-    _AlertLabel.text = [NSString stringWithFormat:@"アラート情報 %ld 件",_AlertArray.count];
+    _AlertLabel.text = [NSString stringWithFormat:@"アラート情報 %ld 件",(unsigned long)_AlertArray.count];
     if (_AlertArray.count == 0 || !_AlertArray) {
         _AlertLabel.textColor = [UIColor whiteColor];
         _PaoMaView.text = @"すべて正常";

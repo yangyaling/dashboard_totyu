@@ -159,8 +159,8 @@
                     [DayNumArray addObject:@""];
                     [DayArray addObject:@""];
                 } else {
-                    [DayNumArray addObject:[NSString stringWithFormat:@"%ld",d - (week - 1)]];
-                    [DayArray addObject:[NSString stringWithFormat:@"%@%ld日",obj,d - (week - 1)]];
+                    [DayNumArray addObject:[NSString stringWithFormat:@"%d",d - (week - 1)]];
+                    [DayArray addObject:[NSString stringWithFormat:@"%@%d日",obj,d - (week - 1)]];
                 }
             }
             NSDictionary *MonthDict = @{@"DayArray":DayArray,@"DayNumArray":DayNumArray,@"MonthNum":obj};
@@ -203,7 +203,7 @@
         [_ClandarCV registerClass:[ClandarDayCell class]forCellWithReuseIdentifier:@"ClandarDayCell"];
         [_ClandarCV registerClass:[ClandarMonthReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ClandarMonthReusableView"];
         _ClandarCV.showsVerticalScrollIndicator = NO;
-        _ClandarCV.prefetchingEnabled = YES;
+//        _ClandarCV.prefetchingEnabled = YES;
         _ClandarCV.bounces = NO;
         _ClandarCV.backgroundColor = [UIColor whiteColor];
         _ClandarCV.dataSource = self;
