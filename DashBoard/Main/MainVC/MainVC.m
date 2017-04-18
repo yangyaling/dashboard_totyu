@@ -18,6 +18,7 @@
 @interface MainVC ()
 {
     NSInteger pageCount;
+    int PageNumArrayNum;
 }
 @property (weak, nonatomic) IBOutlet UIPageControl *UserPC;
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
@@ -25,10 +26,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *BuildName;
 @property (weak, nonatomic) IBOutlet UICollectionView *UserListCV;
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
+@property (weak, nonatomic) IBOutlet UIButton *PageNumBtn;
 @property (nonatomic, strong) UIAlertController *UserAlert;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
 @property (nonatomic, strong) NSArray *CurrentAlertarrays;
+@property (nonatomic, strong) NSArray *PageNumArray;
 @end
 
 @implementation MainVC
@@ -57,30 +60,41 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
-    
-    NSString *row;
-    NSString *column;
-    if(NITScreenW == 1024){
-        row = @"4";
-        column = @"6";
-    }else if(NITScreenW == 1366){
-        row = @"6";
-        column = @"8";
-    }else{
-        row = @"2";
-        column = @"3";
-    }
-    [SystemUserDict setObject:@{@"row" : row , @"column" : column} forKey:@"rowandcolumn"];//row:行 column:列
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-    [self CellHorizontalAlignment];
+
+    if(NITScreenW == 1024){
+        _PageNumArray = @[@"2x3",@"3x4",@"4x5",@"5x6",@"6x7"];
+    }else if(NITScreenW == 1366){
+        _PageNumArray = @[@"3x4",@"5x6",@"6x7",@"7x8",@"8x9"];
+    }else{
+        _PageNumArray = @[@"2x3",@"3x4",@"3x5"];
+    }
+    PageNumArrayNum = 0;
+    [self SelectPageNum:_PageNumBtn];
 }
 
--(void)DidBecomeActive{
+-(void)DidBecomeActive {
     [self LoadBuildingInfoData];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (IBAction)SelectPageNum:(UIButton *)sender {
+
+    [_PageNumBtn setTitle:_PageNumArray[PageNumArrayNum] forState:UIControlStateNormal];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSArray *rowandcolumn=[_PageNumArray[PageNumArrayNum] componentsSeparatedByString:@"x"];
+    [SystemUserDict setObject:@{@"row" : rowandcolumn[0] , @"column" : rowandcolumn[1]} forKey:@"rowandcolumn"];
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        [self CellHorizontalAlignment];
+    }
+    if (PageNumArrayNum == _PageNumArray.count-1) {
+        PageNumArrayNum = 0;
+    }else{
+        PageNumArrayNum++;
+    }
 }
 
 /**
@@ -98,9 +112,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [SystemUserDict setValue:buildingdict[@"floorno"] forKey:@"floorno"];
             [SystemUserDict setValue:buildingdict[@"displayname"] forKey:@"displayname"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                
                 BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
-
                 _BuildName.text = buildingdict[@"displayname"];
                 _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
                 [self LoadAllData];
@@ -221,15 +233,14 @@ static NSString * const reuseIdentifier = @"MainVCell";
             // 将文件删除
             [fileManager removeItemAtPath:absolutePath error:nil];
         }
-    }  
+    }
 }
 /**
  获取新数据
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
 
-//    [self LoadBuildingInfoData];
-    LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
+    [self LoadBuildingInfoData];
 }
 /**
  警报一览
@@ -322,7 +333,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     _UserPC.numberOfPages = pageCount / Total;
     [_UserListCV registerClass:[UICollectionViewCell class]
     forCellWithReuseIdentifier:@"CellWhite"];
-    [_UserListCV reloadData];
+    [_UserListCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -350,7 +361,16 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.CellBGView.layer.borderWidth = 0.5;
         [cell.alert removeFromSuperview];
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
-        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]];
+
+        [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]
+                  placeholderImage:[UIImage imageNamed:@"placeholderImage"]
+                           options:SDWebImageRetryFailed
+                          progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                              float showProgress = (float)receivedSize/(float)expectedSize;
+                              cell.UserImage.alpha = showProgress;
+                          } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                              cell.UserImage.alpha = 1.0;
+                          }];
         cell.RoomName.text = DataDict[@"roomname"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];

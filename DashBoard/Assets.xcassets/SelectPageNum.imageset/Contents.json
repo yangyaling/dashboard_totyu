@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "AlertLabel.png",
+      "filename" : "SelectPageNum.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "AlertLabel-2.png",
+      "filename" : "SelectPageNum-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "AlertLabel-1.png",
+      "filename" : "SelectPageNum-2.png",
       "scale" : "3x"
     }
   ],

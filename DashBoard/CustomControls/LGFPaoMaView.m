@@ -10,7 +10,7 @@
 
 #define PaoMaLabelFrame CGRectMake(self.width/xisnshigeshu * i + 5, self.height / 15, self.width/xisnshigeshu - 10, self.height - (self.height / 15) * 2)
 
-#define currentFrame CGRectMake(0, 0, self.width / xisnshigeshu*_AlertArray.count, self.height)
+#define currentFrame CGRectMake(0, 0, self.width / xisnshigeshu*AlertArray.count, self.height)
 
 #import "LGFPaoMaView.h"
 @interface LGFPaoMaView ()
@@ -24,18 +24,19 @@
 @implementation LGFPaoMaView
 
 -(void)setAlertArray:(NSMutableArray *)AlertArray{
-    _AlertArray = AlertArray;
+
     self.clipsToBounds = YES;
-    time = _AlertArray.count*2;
+    time = AlertArray.count*2;
     OneShowContentView = [[UIView alloc]initWithFrame:currentFrame];
     
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [OneShowContentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
     
-    for (int i = 0; i < _AlertArray.count; i++) {
+    for (int i = 0; i < AlertArray.count; i++) {
         UILabel *lab = [[UILabel alloc]initWithFrame:PaoMaLabelFrame];
-        NSDictionary *alertdict = _AlertArray[i];
+        NSDictionary *alertdict = AlertArray[i];
         NSDate *registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]];
         lab.text = [NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
         [self labelset:lab];

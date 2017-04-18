@@ -13,15 +13,9 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if (self) {
-        self.opaque = NO;
-        self.layer.masksToBounds = NO;
-        self.layer.shouldRasterize = YES;
-        self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         self.alpha = 0.8;
-        [self setTitleColor:[UIColor yellowColor] forState:UIControlStateNormal];
-        [self setTitle:@"Alert!!" forState:UIControlStateNormal];
-        self.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22];
-        [self addTarget:self action:@selector(setTouchDown:) forControlEvents:UIControlEventTouchDown];
+//        [self addTarget:self action:@selector(setTouchDown:) forControlEvents:UIControlEventTouchDown];
         [self addSubview:self.AlertIcon];
     }
     return self;
