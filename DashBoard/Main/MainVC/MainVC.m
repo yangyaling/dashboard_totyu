@@ -61,7 +61,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
-
     if(NITScreenW == 1024){
         _PageNumArray = @[@"2x3",@"3x4",@"4x5",@"5x6",@"6x7"];
     }else if(NITScreenW == 1366){
