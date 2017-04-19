@@ -332,7 +332,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     _UserPC.numberOfPages = pageCount / Total;
     [_UserListCV registerClass:[UICollectionViewCell class]
     forCellWithReuseIdentifier:@"CellWhite"];
-    [_UserListCV reloadSections:[NSIndexSet indexSetWithIndex:0]];
+    [_UserListCV reloadData];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
