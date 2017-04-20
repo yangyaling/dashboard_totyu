@@ -18,7 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *UserNameTitle;
 @property (weak, nonatomic) IBOutlet UILabel *TimeFrameTitle;
 @property (weak, nonatomic) IBOutlet UICollectionView *PageCV;
-@property (weak, nonatomic) IBOutlet ColorSelectionCV *ColorSelectionCV;
+@property (weak, nonatomic) IBOutlet UIView *ColorSelectionView;
 @property (weak, nonatomic) IBOutlet UIView *DarkColorView;
 @property (weak, nonatomic) IBOutlet UIView *LightColorView;
 @property (strong, nonatomic) NSMutableArray *controlarr;
@@ -48,6 +48,12 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    ColorSelectionCV *cscv = [MainSB instantiateViewControllerWithIdentifier:@"ColorSelectionSB"];
+    [self addChildViewController:cscv];
+    [_ColorSelectionView layoutIfNeeded];
+    UIView *view = [cscv view];
+    view.size = _ColorSelectionView.size;
+    [_ColorSelectionView addSubview:view];
     //设置楼层信息
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     _DarkColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"darkcolor"]];

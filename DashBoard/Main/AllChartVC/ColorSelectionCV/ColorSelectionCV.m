@@ -19,15 +19,27 @@
 
 -(void)setDataDict:(NSDictionary *)DataDict{
     _DataDict = DataDict;
-    if ([DataDict[@"actionselect"] isEqualToString:@"YES"]) {
-        [self.Device setTitleColor:SystemColor(1.0) forState:UIControlStateNormal];
-        self.Device.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-    } else {
-        [self.Device setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        self.Device.titleLabel.font = [UIFont systemFontOfSize:14];
+    CGFloat devicefontsize;
+    if(NITScreenW == 1024){
+        devicefontsize = 15;
+    }else if(NITScreenW == 1366){
+        devicefontsize = 15;
+    }else if(NITScreenW == 736){
+        devicefontsize = 10;
+    }else{
+        devicefontsize = 8;
     }
-    [self.Device setTitle:DataDict[@"actionname"] forState:UIControlStateNormal];
-    self.ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
+    
+    [_Device setTitle:[NSString stringWithFormat:@" %@",DataDict[@"actionname"]] forState:UIControlStateNormal];
+    if ([DataDict[@"actionselect"] isEqualToString:@"YES"]) {
+        [_Device setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_Device setBackgroundColor:SystemColor(1.0)];
+    } else {
+        [_Device setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_Device setBackgroundColor:NITColor(250.0, 250.0, 250.0)];
+    }
+    
+    _ColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
 }
 
 -(void)SelectColor:(NSDictionary *)ColorDict{
@@ -87,7 +99,8 @@
 
 @end
 
-@interface ColorSelectionCV ()<UICollectionViewDelegate,UICollectionViewDataSource>
+@interface ColorSelectionCV ()
+@property (weak, nonatomic) IBOutlet UICollectionView *ColorSelection;
 @end
 @implementation ColorSelectionCV
 
@@ -98,37 +111,39 @@
     return _ColorSelectionArray;
 }
 
--(instancetype)initWithCoder:(NSCoder *)aDecoder{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        self.delegate = self;
-        self.dataSource = self;
-        NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-        NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-        if (systemactioninfo.count == 0) {
-            [self LoadNewData];
-        }
-        [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
+- (void)viewDidLoad{
+    [super viewDidLoad];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
+    if (systemactioninfo.count == 0) {
+        [self LoadNewData];
     }
-    return self;
+    [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [_ColorSelection reloadData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 -(void)ReloadColor:(id)sender{
-    [UIView performWithoutAnimation:^{
-        [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
-    }];
+    [_ColorSelection reloadData];
 }
 
 - (void)LoadNewData{
-    [MBProgressHUD showMessage:@"後ほど..." toView:self];
+    [MBProgressHUD showMessage:@"" toView:_ColorSelection];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSString *buildingid = SystemUserDict[@"buildingid"];
     NSString *floorno = SystemUserDict[@"floorno"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:self success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:_ColorSelection success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *UserListArray = [NSArray arrayWithArray:tmpDic[@"vzconfiginfo"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:UserListArray.count])return;
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ColorSelection DataBool:UserListArray.count])return;
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
             for (NSDictionary *dict in UserListArray) {
                 if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]] && [dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
@@ -154,17 +169,15 @@
                 }
             }
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                [UIView performWithoutAnimation:^{
-                    [self reloadSections:[NSIndexSet indexSetWithIndex:0]];
-                }];
+                [_ColorSelection reloadData];
             }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:self DataBool:0];
+            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ColorSelection DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
-        [[TimeOutReloadButton alloc]Show:self SuperView:self];
+        [[TimeOutReloadButton alloc]Show:self SuperView:_ColorSelection];
     }];
 }
 
@@ -173,16 +186,15 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-    [[NoDataLabel alloc] Show:@"データがない" SuperView:self DataBool:systemactioninfo.count];
     return systemactioninfo.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake(self.width,self.height / 5 + (self.height / 5 * 0.1));
+    return CGSizeMake(_ColorSelection.width,_ColorSelection.height / 5 + (_ColorSelection.height / 5 * 0.1));
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:_CSReuseIdentifier forIndexPath:indexPath];
+    ColorSelectionCVCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ColorSelectionCell" forIndexPath:indexPath];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
     cell.DataDict = systemactioninfo[indexPath.item];

@@ -13,11 +13,6 @@
 @end
 @implementation AlertBar
 
--(void)setCornerRadius:(CGFloat)CornerRadius{
-    _CornerRadius =CornerRadius;
-    self.layer.cornerRadius = _CornerRadius;
-}
-
 -(void)setAlertArray:(NSArray *)AlertArray{
 
     _AlertLabel.text = [NSString stringWithFormat:@"アラート情報 %ld 件",(unsigned long)AlertArray.count];

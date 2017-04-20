@@ -193,6 +193,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *UserListCollection;
 @property (weak, nonatomic) IBOutlet UITableView *VisualSetTable;
 @property (weak, nonatomic) IBOutlet UIButton *SaveButton;
+@property (weak, nonatomic) IBOutlet UIView *SaveButtonView;
 @property (nonatomic, strong) NSArray *UserListArray;
 @property (nonatomic, strong) NSArray *VisualSetArray;
 @end
@@ -219,6 +220,7 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _SaveButtonView.height = NITScreenH / 15;
     //UserListCollection 设置默认选中
     UserListCollectionSelectItem = 0;
     [self LoadPlaceData];
@@ -374,9 +376,9 @@ static NSString * const reuseIdentifiertbvtwo = @"VisualSetTwoTableCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *DataDict = self.VisualSetArray[indexPath.item];
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]]isEqualToString:@"6"]) {
-        return 90;
+        return _VisualSetTable.height / 5;
     } else {
-        return 50;
+        return _VisualSetTable.height / 10;
     }
 }
 

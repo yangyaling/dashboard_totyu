@@ -10,7 +10,6 @@
 #import "LGFPaoMaView.h"
 IB_DESIGNABLE
 @interface AlertBar : UIView
-@property (nonatomic) IBInspectable CGFloat           CornerRadius;
 @property (nonatomic, strong) NSArray *AlertArray;
 @property (nonatomic, weak) IBOutlet UILabel*AlertLabel;
 @property (nonatomic, weak) IBOutlet LGFPaoMaView*PaoMaView;

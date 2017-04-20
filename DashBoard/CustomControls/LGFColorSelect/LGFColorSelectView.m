@@ -126,7 +126,7 @@
 
 -(UIView *)ResultView{
     if (!_ResultView) {
-        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.Cover.width / 4 * 3, self.Cover.height / 16, self.Cover.height / 8, self.Cover.height / 8)];
+        _ResultView = [[UIView alloc]initWithFrame:CGRectMake(self.Cover.width / 4 * 3, self.Cover.height / 48, self.Cover.height / 8, self.Cover.height / 8)];
         _ResultView.backgroundColor = [UIColor whiteColor];
         _ResultView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ResultView.layer.borderWidth = 0.5;
@@ -137,8 +137,16 @@
 
 -(UILabel *)Title{
     if (!_Title) {
-        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.Cover.height / 16, self.Cover.width / 4 * 3, self.Cover.height / 8)];
-        _Title.font = [UIFont systemFontOfSize:30];
+        _Title = [[UILabel alloc]initWithFrame:CGRectMake(0, self.Cover.height / 24, self.Cover.width / 4 * 3, self.Cover.height / 12)];
+        if(NITScreenW == 1024){
+            _Title.font = [UIFont systemFontOfSize:20];
+        }else if(NITScreenW == 1366){
+            _Title.font = [UIFont systemFontOfSize:25];
+        }else if(NITScreenW == 736){
+            _Title.font = [UIFont systemFontOfSize:12];
+        }else{
+            _Title.font = [UIFont systemFontOfSize:8];
+        }
         _Title.textAlignment = NSTextAlignmentCenter;
     }
     return _Title;
@@ -146,7 +154,7 @@
 
 -(UIImageView *)ColorImageView{
     if (!_ColorImageView) {
-        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.Cover.height / 4, self.Cover.width - 20, self.Cover.height / 4 * 3 - 50)];
+        _ColorImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, self.Cover.height / 6, self.Cover.width - 20, self.Cover.height / 6 * 4)];
         [_ColorImageView setImage:[UIImage imageNamed:@"huaban.png"]];
         _ColorImageView.layer.borderColor = [UIColor lightGrayColor].CGColor;
         _ColorImageView.layer.borderWidth = 0.5;
@@ -157,8 +165,17 @@
 
 -(UIButton *)confirm{
     if (!_confirm) {
-        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10 + (self.Cover.width - 20) / 2, self.Cover.height - 50, (self.Cover.width - 20) / 2, 50)];
+        _confirm = [[UIButton alloc]initWithFrame:CGRectMake(10 + (self.Cover.width - 20) / 2, self.Cover.height / 6 * 5, (self.Cover.width - 20) / 2, self.Cover.height / 6)];
         [_confirm setTitle:@"確認" forState:UIControlStateNormal];
+        if(NITScreenW == 1024){
+            _confirm.titleLabel.font = [UIFont systemFontOfSize:20];
+        }else if(NITScreenW == 1366){
+            _confirm.titleLabel.font = [UIFont systemFontOfSize:25];
+        }else if(NITScreenW == 736){
+            _confirm.titleLabel.font = [UIFont systemFontOfSize:12];
+        }else{
+            _confirm.titleLabel.font = [UIFont systemFontOfSize:8];
+        }
         [_confirm setTitleColor:NITColor(30, 150, 250) forState:UIControlStateNormal];
         [_confirm addTarget:self action:@selector(confirmedit) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -167,8 +184,17 @@
 
 -(UIButton *)cancel{
     if (!_cancel) {
-        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.Cover.height - 50, (self.Cover.width - 20) / 2, 50)];
+        _cancel = [[UIButton alloc]initWithFrame:CGRectMake(10, self.Cover.height / 6 * 5, (self.Cover.width - 20) / 2, self.Cover.height / 6)];
         [_cancel setTitle:@"キャンセル" forState:UIControlStateNormal];
+        if(NITScreenW == 1024){
+            _cancel.titleLabel.font = [UIFont systemFontOfSize:20];
+        }else if(NITScreenW == 1366){
+            _cancel.titleLabel.font = [UIFont systemFontOfSize:25];
+        }else if(NITScreenW == 736){
+            _cancel.titleLabel.font = [UIFont systemFontOfSize:12];
+        }else{
+            _cancel.titleLabel.font = [UIFont systemFontOfSize:8];
+        }
         [_cancel setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         [_cancel addTarget:self action:@selector(canceledit) forControlEvents:UIControlEventTouchUpInside];
     }

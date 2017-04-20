@@ -51,10 +51,19 @@
 -(void)labelset:(UILabel*)lab{
     lab.textAlignment = NSTextAlignmentCenter;
     lab.textColor = [UIColor whiteColor];
-    lab.font = [UIFont boldSystemFontOfSize:20];
+    if(NITScreenW == 1024){
+        lab.font = [UIFont boldSystemFontOfSize:20];
+    }else if(NITScreenW == 1366){
+        lab.font = [UIFont boldSystemFontOfSize:25];
+    }else if(NITScreenW == 736){
+        lab.font = [UIFont boldSystemFontOfSize:15];
+    }else{
+        lab.font = [UIFont boldSystemFontOfSize:12];
+    }
+    
     lab.backgroundColor = [UIColor orangeColor];
     lab.adjustsFontSizeToFitWidth = YES;
-    lab.layer.cornerRadius = 5;
+    lab.layer.cornerRadius = 3;
     lab.clipsToBounds = YES;
     lab.opaque = YES;
 }

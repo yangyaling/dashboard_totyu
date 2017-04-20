@@ -66,7 +66,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }else if(NITScreenW == 1366){
         _PageNumArray = @[@"3x4",@"5x6",@"6x7",@"7x8",@"8x9"];
     }else{
-        _PageNumArray = @[@"2x3",@"3x4",@"3x5"];
+        _PageNumArray = @[@"2x4",@"3x5"];
     }
     PageNumArrayNum = 0;
     [self SelectPageNum:_PageNumBtn];

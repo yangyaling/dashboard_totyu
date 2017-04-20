@@ -8,7 +8,7 @@
 #define SuperView [UIApplication sharedApplication].windows.lastObject.rootViewController.view
 #define EMPTY @""
 //动态字体大小
-#define FontSize (_mainTitleLabel.frame.size.height+_mainTitleLabel.frame.size.width)/10
+#define FontSize (_mainTitleLabel.frame.size.height+_mainTitleLabel.frame.size.width)/12
 //还原
 #define DropDownReduction CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 0)
 //打开菜单

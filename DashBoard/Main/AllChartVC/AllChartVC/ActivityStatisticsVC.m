@@ -8,6 +8,7 @@
 
 #import "ActivityStatisticsVC.h"
 #import "ActivityStatisticsChartVC.h"
+#import "ColorSelectionCV.h"
 #import "NITSegmented.h"
 
 @interface ActivityStatisticsVC ()<LGFClandarDelegate,ActivityStatisticsChartVCDelegate>
@@ -22,7 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *TimeFrameTitle;
 @property (weak, nonatomic) IBOutlet NITSegmented *TimeSelectSeg;
 @property (weak, nonatomic) IBOutlet UICollectionView *PageCV;
-@property (weak, nonatomic) IBOutlet ColorSelectionCV *ColorSelectionCV;
+@property (weak, nonatomic) IBOutlet UIView *ColorSelectionView;
+
 @property (strong, nonatomic) NSMutableArray *controlarr;
 @property (nonatomic, strong) NSDate *SelectDate;
 @end
@@ -90,6 +92,12 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    ColorSelectionCV *cscv = [MainSB instantiateViewControllerWithIdentifier:@"ColorSelectionSB"];
+    [self addChildViewController:cscv];
+    [_ColorSelectionView layoutIfNeeded];
+    UIView *view = [cscv view];
+    view.size = _ColorSelectionView.size;
+    [_ColorSelectionView addSubview:view];
     //设置楼层信息
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     _FloorTitle.text = SystemUserDict[@"displayname"];

@@ -75,6 +75,10 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     return self.NoticeArray.count;
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    return CGSizeMake(_NoticeCollection.width,_NoticeCollection.height / 4);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *DataDict = self.NoticeArray[indexPath.item];
     NoticeCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];

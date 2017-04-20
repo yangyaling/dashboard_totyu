@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "LGFColorSelectView.h"
 IB_DESIGNABLE
-@interface ColorSelectionCV : UICollectionView
+@interface ColorSelectionCV : UIViewController
 @property (nonatomic, strong) NSMutableArray *ColorSelectionArray;
-@property (nonatomic, copy) IBInspectable NSString *CSReuseIdentifier;
 @end

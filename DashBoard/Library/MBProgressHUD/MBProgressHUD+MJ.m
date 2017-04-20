@@ -15,25 +15,34 @@
     // 快速显示一个提示信息
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     
-    hud.labelText = text;
+    hud.label.text = text;
     
-    hud.color = [UIColor whiteColor];
+    hud.backgroundView.backgroundColor = [UIColor whiteColor];
     
-    hud.labelColor = [UIColor blackColor];
+    hud.label.textColor = [UIColor blackColor];
     
-    hud.labelFont = [UIFont systemFontOfSize:20];
+    if(NITScreenW == 1024){
+        hud.label.font = [UIFont systemFontOfSize:20];
+    }else if(NITScreenW == 1366){
+        hud.label.font = [UIFont systemFontOfSize:25];
+    }else if(NITScreenW == 736){
+        hud.label.font = [UIFont systemFontOfSize:15];
+    }else{
+        hud.label.font = [UIFont systemFontOfSize:15];
+    }
+    
     
 //    // 设置图片
 //    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
 //    
     // 再设置模式
-    hud.mode = MBProgressHUDModeText;
+    hud.mode = MBProgressHUDModeIndeterminate;
     
     // 隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
     
     // 1秒之后再消失
-    [hud hide:YES afterDelay:2.0];
+    [hud hideAnimated:YES afterDelay:1.0];
 }
 
 #pragma mark 显示错误信息
@@ -51,22 +60,26 @@
     // 快速显示一个提示信息
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
     
-    hud.labelText = message;
+    hud.label.text = message;
+        
+    hud.mode = MBProgressHUDModeIndeterminate;
     
-    hud.mode = MBProgressHUDModeCustomView;
+    hud.bezelView.backgroundColor = [UIColor whiteColor];
     
-    hud.customView = [[UIImageView alloc] initWithImage:[UIImage sd_animatedGIFNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", @"hud"]]];
+    hud.label.textColor = [UIColor blackColor];
     
-    hud.color = [UIColor whiteColor];
-    
-    hud.labelColor = [UIColor blackColor];
-    
-    hud.labelFont = [UIFont systemFontOfSize:20];
+    if(NITScreenW == 1024){
+        hud.label.font = [UIFont systemFontOfSize:20];
+    }else if(NITScreenW == 1366){
+        hud.label.font = [UIFont systemFontOfSize:25];
+    }else if(NITScreenW == 736){
+        hud.label.font = [UIFont systemFontOfSize:15];
+    }else{
+        hud.label.font = [UIFont systemFontOfSize:15];
+    }
     
     // 隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;
-    // YES代表需要蒙版效果
-    hud.dimBackground = NO;
     
     return hud;
 }
