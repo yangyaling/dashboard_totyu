@@ -17,7 +17,7 @@
     
     hud.label.text = text;
     
-    hud.backgroundView.backgroundColor = [UIColor whiteColor];
+//    hud.backgroundView.backgroundColor = [UIColor whiteColor];
     
     hud.label.textColor = [UIColor blackColor];
     
@@ -33,10 +33,10 @@
     
     
 //    // 设置图片
-//    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
-//    
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"MBProgressHUD.bundle/%@", icon]]];
+//
     // 再设置模式
-    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.mode = MBProgressHUDModeCustomView;
     
     // 隐藏时候从父控件中移除
     hud.removeFromSuperViewOnHide = YES;

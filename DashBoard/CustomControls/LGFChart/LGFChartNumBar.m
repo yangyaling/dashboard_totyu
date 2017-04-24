@@ -53,6 +53,7 @@
 
 -(void)addnumbarview{
     [_numbarview removeFromSuperview];
+    
     _numbarview = [[UIView alloc]initWithFrame:_numbartype ==1 ? NumBarRect : NumLineRect];
     //添加y轴
     [_YValuesArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

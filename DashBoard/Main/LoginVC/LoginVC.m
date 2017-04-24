@@ -12,6 +12,7 @@
 @interface LoginVC ()
 @property (strong, nonatomic) IBOutlet UITextField *userId;
 @property (strong, nonatomic) IBOutlet UITextField *passWord;
+@property (weak, nonatomic) IBOutlet UITextField *postcode;
 @end
 
 @implementation LoginVC
@@ -31,18 +32,25 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField*)textField{
-    if (textField ==_userId) {
+    if (textField == _postcode) {
+        [_userId becomeFirstResponder];
+    } else if (textField == _userId) {
         [_passWord becomeFirstResponder];
     } else {
         [self.view endEditing:YES];
+        [self login:_userId.text password:_passWord.text];
     }
     return YES;
 }
 
 - (IBAction)Login:(id)sender {
     
+    if (!_postcode.text.length) {
+        [MBProgressHUD showError:@"ホストコードを入力してください" toView:self.view];
+        return;
+    }
     if (!_userId.text.length) {
-        [MBProgressHUD showError:@"ユーザIDを入力してください" toView:self.view];
+        [MBProgressHUD showError:@"ユーザーIDを入力してください" toView:self.view];
         return;
     }
     if(!_passWord.text.length){
@@ -67,8 +75,8 @@
             NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
             if ([tmpDic[@"code"] isEqualToString:@"200"]) {
                 [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
-                [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
                 LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
+                [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
             } else {
                 [MBProgressHUD showError:@"登録失败!" toView:self.view];
                 NSLog(@"errors: %@",tmpDic[@"errors"]);

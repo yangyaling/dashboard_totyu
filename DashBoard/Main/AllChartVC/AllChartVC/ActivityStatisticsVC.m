@@ -92,6 +92,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [_ColorSelectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     ColorSelectionCV *cscv = [MainSB instantiateViewControllerWithIdentifier:@"ColorSelectionSB"];
     [self addChildViewController:cscv];
     [_ColorSelectionView layoutIfNeeded];

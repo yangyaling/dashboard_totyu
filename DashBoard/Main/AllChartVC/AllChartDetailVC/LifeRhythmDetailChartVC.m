@@ -112,6 +112,7 @@
     cell.DeciceName.text = DataDict[@"actionname"];
     [cell setNeedsLayout];
     [cell layoutIfNeeded];
+    [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *ChartView;
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]] isEqualToString:@"4"]) {
         ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:2];

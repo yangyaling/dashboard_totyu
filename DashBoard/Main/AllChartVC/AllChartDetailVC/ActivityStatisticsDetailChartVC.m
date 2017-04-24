@@ -90,6 +90,7 @@
     cell.DeciceName.text = DataDict[@"actionname"];
     [cell setNeedsLayout];
     [cell layoutIfNeeded];
+    [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:1];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];

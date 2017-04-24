@@ -105,6 +105,7 @@
     cell.DeviceColorView.backgroundColor = [UIColor colorWithHex:DataDict[@"actioncolor"]];
     [cell setNeedsLayout];
     [cell layoutIfNeeded];
+    [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:[[NSString stringWithFormat:@"%@",DataDict[@"actionsummary"]] isEqualToString:@"1"] ? ActivitySet : EnvironmentSet];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];

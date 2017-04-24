@@ -32,6 +32,7 @@
 @property (nonatomic, strong) NSArray *BuildingArray;
 @property (nonatomic, strong) NSArray *CurrentAlertarrays;
 @property (nonatomic, strong) NSArray *PageNumArray;
+@property (nonatomic, strong) NSArray *PageTitleArray;
 @end
 
 @implementation MainVC
@@ -62,11 +63,14 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
     [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
     if(NITScreenW == 1024){
-        _PageNumArray = @[@"2x3",@"3x4",@"4x5",@"5x6",@"6x7"];
+        _PageNumArray = @[@"3x4",@"4x5",@"5x6"];
+        _PageTitleArray = @[@"大",@"中",@"小"];
     }else if(NITScreenW == 1366){
-        _PageNumArray = @[@"3x4",@"5x6",@"6x7",@"7x8",@"8x9"];
+        _PageNumArray = @[@"5x6",@"6x7",@"7x8"];
+        _PageTitleArray = @[@"大",@"中",@"小"];
     }else{
         _PageNumArray = @[@"2x4",@"3x5"];
+        _PageTitleArray = @[@"大",@"中"];
     }
     PageNumArrayNum = 0;
     [self SelectPageNum:_PageNumBtn];
@@ -82,7 +86,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (IBAction)SelectPageNum:(UIButton *)sender {
 
-    [_PageNumBtn setTitle:_PageNumArray[PageNumArrayNum] forState:UIControlStateNormal];
+    [_PageNumBtn setTitle:_PageTitleArray[PageNumArrayNum] forState:UIControlStateNormal];
+    [_PageNumBtn setBackgroundImage:[UIImage imageNamed:_PageTitleArray[PageNumArrayNum]] forState:UIControlStateNormal];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSArray *rowandcolumn=[_PageNumArray[PageNumArrayNum] componentsSeparatedByString:@"x"];
     [SystemUserDict setObject:@{@"row" : rowandcolumn[0] , @"column" : rowandcolumn[1]} forKey:@"rowandcolumn"];

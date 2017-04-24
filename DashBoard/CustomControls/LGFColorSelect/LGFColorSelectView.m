@@ -210,6 +210,7 @@
 
 -(void)RemoveAllView{
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.Cover.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self removeFromSuperview];
 }
 

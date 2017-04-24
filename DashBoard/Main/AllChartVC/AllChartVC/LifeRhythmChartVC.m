@@ -90,6 +90,7 @@
         [cell layoutIfNeeded];
         NSString *SelectDate = [[DataDict allKeys] firstObject];
         NSArray *ActionArray = [NSArray arrayWithArray:DataDict[SelectDate][1]];
+        [cell.DayDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DayDataView.bounds BarData:ActionArray BarType:1];
         [cell.DayDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [cell.DayDataView addSubview:ChartView];

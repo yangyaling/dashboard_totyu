@@ -48,6 +48,7 @@
 
 -(UIView *)WeekView{
     if (!_WeekView) {
+        [_WeekView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         _WeekView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height/2, self.width, self.height/2)];
         NSArray *WeekArray = @[@"日",@"月",@"火",@"水",@"木",@"金",@"土"];
         [WeekArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -119,6 +120,7 @@
     [self addSubview:self.Cover];
     [self.Cover addSubview:self.ClandarCV];
     [self.Cover addSubview:self.TimeTitleView];
+    [self.TimeTitleView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.TimeTitleView addSubview:self.TimeTitlePicker];
 }
 
