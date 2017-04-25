@@ -8,7 +8,7 @@
 #define SuperView [UIApplication sharedApplication].windows.lastObject.rootViewController.view
 #define EMPTY @""
 //动态字体大小
-#define FontSize (_mainTitleLabel.frame.size.height+_mainTitleLabel.frame.size.width)/12
+#define FontSize (_mainTitleLabel.frame.size.height+_mainTitleLabel.frame.size.width)/10
 //还原
 #define DropDownReduction CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 0)
 //打开菜单
@@ -68,10 +68,11 @@
 }
 
 - (void)commonInit{
-    self.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shadowOffset = CGSizeMake(0,0);
-    self.layer.shadowOpacity = 0.3;
+    
+//    self.backgroundColor = [UIColor colorWithRed:0.98 green:0.98 blue:0.98 alpha:1.0];
+//    self.layer.shadowColor = [UIColor blackColor].CGColor;
+//    self.layer.shadowOffset = CGSizeMake(0,0);
+//    self.layer.shadowOpacity = 0.3;
     [self defaultSet];
 }
 /**
@@ -218,9 +219,9 @@
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DDIdentifier"];
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:FontSize];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.backgroundColor = _TextColor;
+    cell.textLabel.textColor = SystemColor(1.0);
+//    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.backgroundColor = [UIColor whiteColor];
 
     //判断是否有子菜单
     if (child) {
@@ -252,9 +253,9 @@
 -(UILabel *)mainTitleLabel{
     if (!_mainTitleLabel) {
         //主标题
-        _mainTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(2, 0, self.frame.size.width*0.85-2, self.frame.size.height)];
+        _mainTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width*0.15, 0, self.frame.size.width*0.85, self.frame.size.height)];
         _mainTitleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:FontSize];
-        _mainTitleLabel.textAlignment = NSTextAlignmentCenter;
+//        _mainTitleLabel.textAlignment = NSTextAlignmentCenter;
         _mainTitleLabel.adjustsFontSizeToFitWidth = YES;
         _mainTitleLabel.textColor = _TextColor;
         if(SelectTitle&&![SelectTitle isEqualToString:EMPTY]){
@@ -269,7 +270,7 @@
 -(UIView *)arrowView{
     if (!_arrowView) {
         //三角形箭头
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(self.frame.size.width*0.85-2, 0, self.frame.size.width*0.15+2, self.frame.size.height)];
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width * 0.15, self.frame.size.height)];
         _arrowView = [[UIView alloc]initWithFrame:ArrowViewRect];
         _shapeLayer = [self creatArrowShapeLayer];
         _shapeLayer.fillColor = _ArrowColor.CGColor;
@@ -283,11 +284,11 @@
     if (!_dropdowntableview) {
         //下拉菜单
         _dropdowntableview = [[UITableView alloc]initWithFrame:DropDownReduction];
+        [self.superview bringSubviewToFront:_dropdowntableview];
         _dropdowntableview.layer.cornerRadius = _CornerRadius;
         _dropdowntableview.backgroundColor = [UIColor whiteColor];
-        _dropdowntableview.layer.shadowColor = [UIColor blackColor].CGColor;
-        _dropdowntableview.layer.shadowOffset = CGSizeMake(0,0);
-        _dropdowntableview.layer.shadowOpacity = 1.0;
+        _dropdowntableview.layer.borderColor = SystemColor(1.0).CGColor;
+        _dropdowntableview.layer.borderWidth = 1.0;
         _dropdowntableview.separatorStyle = NO;
         _dropdowntableview.dataSource = self;
         _dropdowntableview.delegate = self;
@@ -308,9 +309,9 @@
     //画三角形
     CAShapeLayer *shapeLayer = [[CAShapeLayer alloc] init];
     UIBezierPath *path = [[UIBezierPath alloc] init];
-    [path moveToPoint:CGPointMake(0, _arrowView.frame.size.height/2)];
-    [path addLineToPoint:CGPointMake(_arrowView.frame.size.width/2, 0)];
-    [path addLineToPoint:CGPointMake(_arrowView.frame.size.width, _arrowView.frame.size.height/2)];
+    [path moveToPoint:CGPointMake(0, self.arrowView.frame.size.height/2)];
+    [path addLineToPoint:CGPointMake(self.arrowView.frame.size.width/2, 0)];
+    [path addLineToPoint:CGPointMake(self.arrowView.frame.size.width, self.arrowView.frame.size.height/2)];
     [path closePath];
     shapeLayer.path = path.CGPath;
     return shapeLayer;
@@ -322,15 +323,15 @@
  */
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
     
-    CGPoint button =  [self convertPoint:point toView:_buttonview];
-    CGPoint table =  [self convertPoint:point toView:_dropdowntableview];
-    BOOL buttonbool = [_buttonview pointInside:button withEvent:event];
-    BOOL tablebool = [_dropdowntableview pointInside:table withEvent:event];
+    CGPoint button =  [self convertPoint:point toView:self.buttonview];
+    CGPoint table =  [self convertPoint:point toView:self.dropdowntableview];
+    BOOL buttonbool = [self.buttonview pointInside:button withEvent:event];
+    BOOL tablebool = [self.dropdowntableview pointInside:table withEvent:event];
     
     if (buttonbool){
-        return _buttonview;
+        return self.buttonview;
     }else if(tablebool){
-        return _dropdowntableview;
+        return self.dropdowntableview;
     } else {
         UIView *hitView = [super hitTest:point withEvent:event];
         if (hitView == self){
@@ -349,6 +350,7 @@
     [self doDropDownReduction];
     return YES;
 }
+
 
 #pragma marker---- 封装代码 ----
 /**
@@ -390,7 +392,7 @@
  */
 -(void)selectDropDown:(NSString*)title{
     
-    _mainTitleLabel.text = title;
+    self.mainTitleLabel.text = title;
     SelectTitle = _mainTitleLabel.text;
     [self doDropDownReduction];
     [self.delegate nowSelectRow:SelectTitle selectrow:_SelectRow];
@@ -401,8 +403,8 @@
  */
 -(void)doDropDown{
 
-    _dropdowntableview.hidden = NO;
-    _mainTitleLabel.textColor = _SelectColor;
+    self.dropdowntableview.hidden = NO;
+    self.mainTitleLabel.textColor = _SelectColor;
     
     NSIndexSet * sectionindexset=[[NSIndexSet alloc]initWithIndex:0];
     if (child) {
@@ -411,20 +413,20 @@
         [self.dropdowntableview reloadData];
     }
     
-    _arrowView.transform = CGAffineTransformMakeRotation(M_PI);
-    _dropdowntableview.frame = DropDown;
+    self.arrowView.transform = CGAffineTransformMakeRotation(M_PI);
+    self.dropdowntableview.frame = DropDown;
 }
 /**
  *  上拉还原
  */
 -(void)doDropDownReduction{
     child = NO;
-    _mainTitleLabel.textColor = _TextColor;
-    _arrowView.transform = CGAffineTransformIdentity;
-    _dropdowntableview.frame = DropDownReduction;
+    self.mainTitleLabel.textColor = _TextColor;
+    self.arrowView.transform = CGAffineTransformIdentity;
+    self.dropdowntableview.frame = DropDownReduction;
 
-    if (_dropdowntableview.frame.size.height == self.frame.size.height) {
-        _dropdowntableview.hidden = YES;
+    if (self.dropdowntableview.frame.size.height == self.frame.size.height) {
+        self.dropdowntableview.hidden = YES;
     }
 }
 /**

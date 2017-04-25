@@ -11,11 +11,12 @@
 #import "MainVC.h"
 #import "AlertBar.h"
 #import "UserListCVCell.h"
+#import "LGFDropDown.h"
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
 #import <objc/runtime.h>
 
-@interface MainVC ()
+@interface MainVC ()<LGFDropDownDelegate>
 {
     NSInteger pageCount;
     int PageNumArrayNum;
@@ -23,10 +24,10 @@
 @property (weak, nonatomic) IBOutlet UIPageControl *UserPC;
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
 @property (weak, nonatomic) IBOutlet UILabel *NowTime;
-@property (weak, nonatomic) IBOutlet UILabel *BuildName;
 @property (weak, nonatomic) IBOutlet UICollectionView *UserListCV;
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
 @property (weak, nonatomic) IBOutlet UIButton *PageNumBtn;
+@property (weak, nonatomic) IBOutlet LGFDropDown *BuildName;
 @property (nonatomic, strong) UIAlertController *UserAlert;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
@@ -87,7 +88,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (IBAction)SelectPageNum:(UIButton *)sender {
 
     [_PageNumBtn setTitle:_PageTitleArray[PageNumArrayNum] forState:UIControlStateNormal];
-    [_PageNumBtn setBackgroundImage:[UIImage imageNamed:_PageTitleArray[PageNumArrayNum]] forState:UIControlStateNormal];
+    [_PageNumBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSArray *rowandcolumn=[_PageNumArray[PageNumArrayNum] componentsSeparatedByString:@"x"];
     [SystemUserDict setObject:@{@"row" : rowandcolumn[0] , @"column" : rowandcolumn[1]} forKey:@"rowandcolumn"];
@@ -117,7 +118,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [SystemUserDict setValue:buildingdict[@"displayname"] forKey:@"displayname"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
                 BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
-                _BuildName.text = buildingdict[@"displayname"];
+                _BuildName.delegate = self;
+                _BuildName.DefaultTitle = self.BuildingArray[0][@"displayname"];
+                _BuildName.DataArray = self.BuildingArray;
                 _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
                 [self LoadAllData];
             }
@@ -126,6 +129,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
         }
     }defeats:^(NSError *defeats){
     }];
+}
+/**
+ 楼层下拉框 代理
+ */
+-(void)nowSelectRow:(NSString *)selecttitle selectrow:(NSInteger)selectrow{
 }
 /**
  获取user数据
