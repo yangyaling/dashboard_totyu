@@ -12,7 +12,7 @@
 //还原
 #define DropDownReduction CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, 0)
 //打开菜单
-#define DropDown CGRectMake(self.frame.origin.x, self.frame.origin.y+self.frame.size.height+4, self.frame.size.width,((SuperView.bounds.size.height - (self.frame.origin.y + self.frame.size.height))-self.frame.size.height*(child?_ChildDataArray.count:_DataArray.count))<=0 ? (SuperView.bounds.size.height - (self.frame.origin.y + self.frame.size.height))-5 : self.frame.size.height*(child?_ChildDataArray.count:_DataArray.count))
+#define DropDown CGRectMake(self.frame.origin.x, self.frame.origin.y+self.frame.size.height+2, self.frame.size.width,((SuperView.bounds.size.height - (self.frame.origin.y + self.frame.size.height))-self.frame.size.height*(child?_ChildDataArray.count:_DataArray.count))<=0 ? (SuperView.bounds.size.height - (self.frame.origin.y + self.frame.size.height))-5 : self.frame.size.height*(child?_ChildDataArray.count:_DataArray.count))
 //三角形view
 #define ArrowViewRect CGRectMake(0, 0, view.frame.size.width>view.frame.size.height ? view.frame.size.height/2 : view.frame.size.width/2, view.frame.size.width>view.frame.size.height ? view.frame.size.height/2 : view.frame.size.width/2)
 
