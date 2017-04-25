@@ -88,7 +88,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (IBAction)SelectPageNum:(UIButton *)sender {
 
     [_PageNumBtn setTitle:_PageTitleArray[PageNumArrayNum] forState:UIControlStateNormal];
-    [_PageNumBtn setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [_PageNumBtn setBackgroundImage:[UIImage imageNamed:_PageTitleArray[PageNumArrayNum]] forState:UIControlStateNormal];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSArray *rowandcolumn=[_PageNumArray[PageNumArrayNum] componentsSeparatedByString:@"x"];
     [SystemUserDict setObject:@{@"row" : rowandcolumn[0] , @"column" : rowandcolumn[1]} forKey:@"rowandcolumn"];
