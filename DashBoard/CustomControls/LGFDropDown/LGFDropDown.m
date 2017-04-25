@@ -42,6 +42,8 @@
 
 @property (nonatomic, strong) UITableView             *dropdowntableview;
 
+@property (nonatomic, strong) UIButton *Cover;
+
 @end
 
 @implementation LGFDropDown
@@ -86,7 +88,7 @@
  */
 - (void)viewConfig
 {
-    [self.superview addSubview:self.dropdowntableview];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self addSubview:self.mainTitleLabel];
     [self addSubview:self.buttonview];
     [self addSubview:self.arrowView];
@@ -174,6 +176,8 @@
  *  下拉菜单点击状态
  */
 -(void)selsctview{
+    
+    
 
     select = !select;
     if (select) {
@@ -250,6 +254,16 @@
 
 #pragma marker---- 懒加载控件 ----
 
+-(UIView *)Cover{
+    if (!_Cover) {
+        _Cover = [[UIButton alloc]initWithFrame:self.superview.bounds];
+        [self.superview bringSubviewToFront:_Cover];
+        _Cover.backgroundColor = [UIColor clearColor];
+        [_Cover addTarget:self action:@selector(doDropDownReduction) forControlEvents:UIControlEventTouchDown];
+    }
+    return _Cover;
+}
+
 -(UILabel *)mainTitleLabel{
     if (!_mainTitleLabel) {
         //主标题
@@ -284,7 +298,7 @@
     if (!_dropdowntableview) {
         //下拉菜单
         _dropdowntableview = [[UITableView alloc]initWithFrame:DropDownReduction];
-        [self.superview bringSubviewToFront:_dropdowntableview];
+        [self.Cover bringSubviewToFront:_dropdowntableview];
         _dropdowntableview.layer.cornerRadius = _CornerRadius;
         _dropdowntableview.backgroundColor = [UIColor whiteColor];
         _dropdowntableview.layer.borderColor = SystemColor(1.0).CGColor;
@@ -292,7 +306,6 @@
         _dropdowntableview.separatorStyle = NO;
         _dropdowntableview.dataSource = self;
         _dropdowntableview.delegate = self;
-        _dropdowntableview.hidden = YES;
         _dropdowntableview.bounces = NO;
     }
     return _dropdowntableview;
@@ -318,38 +331,6 @@
 }
 
 #pragma marker---- 手势处理 ----
-/**
- *  子控件超出父控件fram依旧响应点击事件
- */
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
-    
-    CGPoint button =  [self convertPoint:point toView:self.buttonview];
-    CGPoint table =  [self convertPoint:point toView:self.dropdowntableview];
-    BOOL buttonbool = [self.buttonview pointInside:button withEvent:event];
-    BOOL tablebool = [self.dropdowntableview pointInside:table withEvent:event];
-    
-    if (buttonbool){
-        return self.buttonview;
-    }else if(tablebool){
-        return self.dropdowntableview;
-    } else {
-        UIView *hitView = [super hitTest:point withEvent:event];
-        if (hitView == self){
-            return nil;
-        } else {
-            return [super hitTest:point withEvent:event];
-        }
-    }
-}
-/**
- *  点击非本控件收起菜单
- */
-- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event{
-    
-    select = NO;
-    [self doDropDownReduction];
-    return YES;
-}
 
 
 #pragma marker---- 封装代码 ----
@@ -402,8 +383,10 @@
  *  下拉
  */
 -(void)doDropDown{
-
-    self.dropdowntableview.hidden = NO;
+    
+    [self.superview addSubview:self.Cover];
+    [self.Cover addSubview:self.dropdowntableview];
+    
     self.mainTitleLabel.textColor = _SelectColor;
     
     NSIndexSet * sectionindexset=[[NSIndexSet alloc]initWithIndex:0];
@@ -421,13 +404,18 @@
  */
 -(void)doDropDownReduction{
     child = NO;
+    
+    select = NO;
+    
     self.mainTitleLabel.textColor = _TextColor;
     self.arrowView.transform = CGAffineTransformIdentity;
     self.dropdowntableview.frame = DropDownReduction;
 
-    if (self.dropdowntableview.frame.size.height == self.frame.size.height) {
-        self.dropdowntableview.hidden = YES;
-    }
+//    if (self.dropdowntableview.frame.size.height == self.frame.size.height) {
+//        
+//    }
+    [self.dropdowntableview removeFromSuperview];
+    [self.Cover removeFromSuperview];
 }
 /**
  *  table分割线顶格
