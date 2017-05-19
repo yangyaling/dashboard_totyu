@@ -36,7 +36,7 @@
 #pragma mark 键盘出现
 -(void)keyboardWillShow:(NSNotification *)note{
     _tapGesture.frame = self.bounds;
-    [self addSubview:self.tapGesture];
+    [LGFKeyWindow.rootViewController.view addSubview:self.tapGesture];
     CGFloat keyBoardRectheight = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     [self setContentInset:UIEdgeInsetsMake(0, 0, keyBoardRectheight, 0)];
     MAIN([self setContentInset:UIEdgeInsetsMake(0, 0, keyBoardRectheight - self.height *0.15, 0)];);
