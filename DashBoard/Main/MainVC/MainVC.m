@@ -185,13 +185,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
             _CurrentAlertarrays = _LoadAlertArray.copy;
             _AlertBarView.AlertArray = _LoadAlertArray;
             NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
-//            if (_LoadAlertArray.count > 0) {
-//                NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
-//                [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
-//            }
-//            for (NSDictionary *historydict in LoadHistoryArray) {
-//                [self PostAlertNotice:historydict alerttype:@"historyinfo"];
-//            }
+            if (_LoadAlertArray.count > 0) {
+                NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
+                [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+            }
+            for (NSDictionary *historydict in LoadHistoryArray) {
+                [self PostAlertNotice:historydict alerttype:@"historyinfo"];
+            }
             [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
             [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
             [_UserListCV reloadData];

@@ -69,8 +69,8 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
     LifeRhythmDetailChartVC *ldcvc = self.controlarr[ScrollPage];
     [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : ldcvc.DayStr ,@"forweekly" : @"0"}]];
 }

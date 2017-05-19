@@ -111,8 +111,8 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     [self TimeSelect:_TimeSelectSeg];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
     ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr];
     [self TimeFrameTitleSetValue:Previousdate sumflg:ascvc.SumFlg];

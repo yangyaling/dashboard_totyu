@@ -65,8 +65,8 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:YES];
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
     ActivityStatisticsDetailChartVC *asdcvc = self.controlarr[ScrollPage];
     [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : asdcvc.DayStr ,@"forweekly" : @"0"}]];
 }
