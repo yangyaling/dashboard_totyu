@@ -116,6 +116,7 @@
 		E9E0827E1E2DFC56001BC2C2 /* VisualSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E0827D1E2DFC56001BC2C2 /* VisualSettingVC.m */; };
 		E9E082C21E2E2158001BC2C2 /* UserTestData.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9E082C11E2E2158001BC2C2 /* UserTestData.plist */; };
 		E9E082CB1E2E39DF001BC2C2 /* UserListCVCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9E082CA1E2E39DF001BC2C2 /* UserListCVCell.m */; };
+		E9EFB0831EC4482700D91691 /* TestMusic.m4a in Resources */ = {isa = PBXBuildFile; fileRef = E9EFB0821EC4482700D91691 /* TestMusic.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -357,6 +358,7 @@
 		E9E082C11E2E2158001BC2C2 /* UserTestData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserTestData.plist; sourceTree = "<group>"; };
 		E9E082C91E2E39DF001BC2C2 /* UserListCVCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserListCVCell.h; sourceTree = "<group>"; };
 		E9E082CA1E2E39DF001BC2C2 /* UserListCVCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserListCVCell.m; sourceTree = "<group>"; };
+		E9EFB0821EC4482700D91691 /* TestMusic.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = TestMusic.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,6 +502,7 @@
 		E966EA3D1E2DADCE00754B3B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E9EFB0821EC4482700D91691 /* TestMusic.m4a */,
 				E966EB7A1E2DAF4000754B3B /* SealAFNetworking.h */,
 				E966EB7B1E2DAF4000754B3B /* SealAFNetworking.m */,
 				E966EA401E2DADCE00754B3B /* AppDelegate.h */,
@@ -969,6 +972,11 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = ZD4G3EV24J;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					E966EA521E2DADCF00754B3B = {
 						CreatedOnToolsVersion = 8.1;
@@ -1015,6 +1023,7 @@
 				E935E6F21E5D316A00C8A181 /* huaban.png in Resources */,
 				E966EA4A1E2DADCE00754B3B /* Assets.xcassets in Resources */,
 				E966EB561E2DAE5300754B3B /* MJRefresh.bundle in Resources */,
+				E9EFB0831EC4482700D91691 /* TestMusic.m4a in Resources */,
 				E966EA481E2DADCE00754B3B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

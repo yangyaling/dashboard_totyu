@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol ActivityStatisticsDetailChartVCDelegate <NSObject>
+@required
 - (void)MJGetNewData;
 @end
 

@@ -20,9 +20,9 @@
         nodatalabel.textColor = [UIColor lightGrayColor];
         nodatalabel.textAlignment = NSTextAlignmentCenter;
         [SuperView addSubview:nodatalabel];
-        return YES;
-    } else {
         return NO;
+    } else {
+        return YES;
     }
 }
 

@@ -26,6 +26,10 @@ IB_DESIGNABLE
  */
 @property (nonatomic, strong) NSArray          *DataArray;
 /**
+ *  下拉框种类
+ */
+@property (nonatomic) IBInspectable NSString          *LGFDropDownType;
+/**
  *  背景颜色
  */
 @property (nonatomic) IBInspectable UIColor           *BackGroundColor;
@@ -64,6 +68,6 @@ IB_DESIGNABLE
 /**
  *  默认选中
  */
--(void)selectRow:(NSInteger)row;
+-(void)selectRow:(NSInteger)row childrow:(NSInteger)childrow;
 
 @end

@@ -51,36 +51,38 @@
             NSArray *datesArray = [tmpDic valueForKey:@"dates"];
             _ChartNum.YValuesArray = [NSArray arrayWithArray:datesArray];
             _DataArray = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;
-            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-            NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:[SystemUserDict objectForKey:@"systemactioninfo"]];
-            NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
-            int selecttype = 0;
-            for (NSDictionary *DataDict in DataArrayCopy) {
-                for (NSDictionary *removedict in systemactioninfo) {
-                    if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
-                        if (removedict[@"selecttype"]) {
-                            if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
-                                [_DataArray removeObject:DataDict];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+                NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+                NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:[SystemUserDict objectForKey:@"systemactioninfo"]];
+                NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
+                int selecttype = 0;
+                for (NSDictionary *DataDict in DataArrayCopy) {
+                    for (NSDictionary *removedict in systemactioninfo) {
+                        if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
+                            if (removedict[@"selecttype"]) {
+                                if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                                    [_DataArray removeObject:DataDict];
+                                }
                             }
                         }
-                    }
-                    if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
-                        selecttype = 1;
+                        if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
+                            selecttype = 1;
+                        }
                     }
                 }
-            }
-            if (selecttype == 1) {
-                for (NSDictionary *DataDict in DataArrayCopy) {
-                    if (DataDict.count == 8) {
-                        [_DataArray removeObject:DataDict];
+                if (selecttype == 1) {
+                    for (NSDictionary *DataDict in DataArrayCopy) {
+                        if (DataDict.count == 8) {
+                            [_DataArray removeObject:DataDict];
+                        }
                     }
                 }
             }
             [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
+            [MBProgressHUD showError:@"system errors" toView:_ChartCV];
+//            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
@@ -107,7 +109,6 @@
     [cell layoutIfNeeded];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *ChartView = [[LGFLineChart alloc]initWithFrame:cell.DeviceDataView.bounds LineDict:DataDict LineType:[[NSString stringWithFormat:@"%@",DataDict[@"actionsummary"]] isEqualToString:@"1"] ? ActivitySet : EnvironmentSet];
-    [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];
     return cell;
 }

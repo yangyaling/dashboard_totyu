@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 @protocol LifeRhythmChartVCDelegate <NSObject>
+@required
 - (void)MJGetNewData;
 @end
 

@@ -14,6 +14,7 @@
 #import "LGFDropDown.h"
 #import "UIImageView+WebCache.h"
 #import <AVFoundation/AVFoundation.h>
+#import <UserNotifications/UserNotifications.h>
 #import <objc/runtime.h>
 
 @interface MainVC ()<LGFDropDownDelegate>
@@ -28,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *NoticeNewDataTap;
 @property (weak, nonatomic) IBOutlet UIButton *PageNumBtn;
 @property (weak, nonatomic) IBOutlet LGFDropDown *BuildName;
-@property (nonatomic, strong) UIAlertController *UserAlert;
+@property (nonatomic, strong) NSArray *LoadAlertArray;
 @property (nonatomic, strong) NSArray *UserLisrArray;
 @property (nonatomic, strong) NSArray *BuildingArray;
 @property (nonatomic, strong) NSArray *CurrentAlertarrays;
@@ -78,7 +79,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 -(void)DidBecomeActive {
-    [self LoadBuildingInfoData];
+//    [self LoadBuildingInfoData];
+    _AlertBarView.AlertArray = _LoadAlertArray;
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    _AlertBarView.AlertArray = _LoadAlertArray;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,29 +108,21 @@ static NSString * const reuseIdentifier = @"MainVCell";
         PageNumArrayNum++;
     }
 }
-
 /**
  发送请求获取新数据
  */
 - (void)LoadBuildingInfoData{
-    [MBProgressHUD showMessage:@"後ほど..." toView:_UserListCV];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:nil mjheader:nil superview:nil success:^(id success){
+    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSString *staffid = SystemUserDict[@"staffid"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetbuildinginfoType parameters:NSDictionaryOfVariableBindings(staffid,hostcd) mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            self.BuildingArray = tmpDic[@"buildingInfo"];
-            NSDictionary *buildingdict = self.BuildingArray[2];
-            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-            [SystemUserDict setValue:buildingdict[@"buildingid"] forKey:@"buildingid"];
-            [SystemUserDict setValue:buildingdict[@"floorno"] forKey:@"floorno"];
-            [SystemUserDict setValue:buildingdict[@"displayname"] forKey:@"displayname"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
-                _BuildName.delegate = self;
-                _BuildName.DefaultTitle = self.BuildingArray[0][@"displayname"];
-                _BuildName.DataArray = self.BuildingArray;
-                _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
-                [self LoadAllData];
-            }
+            _BuildName.delegate = self;
+            _BuildName.DefaultTitle = tmpDic[@"buildingInfo"][0][@"facilityname2"];
+            _BuildName.DataArray = tmpDic[@"buildingInfo"];
+            [_BuildName selectRow:[SystemUserDict[@"mainvcrow"] integerValue] childrow:[SystemUserDict[@"mainvcchildrow"] integerValue]];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
@@ -131,61 +130,70 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }];
 }
 /**
- 楼层下拉框 代理
+ 设施下拉框 代理
  */
 -(void)nowSelectRow:(NSString *)selecttitle selectrow:(NSInteger)selectrow{
+    [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    [SystemUserDict setValue:selecttitle forKey:@"facilityname2floorno"];
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+        _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
+        [self LoadAllData];
+    }
 }
 /**
  获取user数据
  */
 - (void)LoadNewData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSString *buildingid = SystemUserDict[@"buildingid"];
-    NSString *floorno = SystemUserDict[@"floorno"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:_UserListCV success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            self.UserLisrArray = tmpDic[@"custlist"];
-            [[SDImageCache sharedImageCache] clearDisk];
-            [[SDImageCache sharedImageCache] clearMemory];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count])return;
-            [self CellHorizontalAlignment];
-        } else {
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
-        }
-    }defeats:^(NSError *defeats){
-        NSLog(@"errors:%@",[defeats localizedDescription]);
-//        [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
-    }];
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+    NSString *staffid = SystemUserDict[@"staffid"];
+    if (facilitycd && staffid && floorno) {
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid) mjheader:nil superview:self.view success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            if ([tmpDic[@"code"] isEqualToString:@"200"]) {
+                self.UserLisrArray = tmpDic[@"custlist"];
+                [[SDImageCache sharedImageCache] clearDisk];
+                [[SDImageCache sharedImageCache] clearMemory];
+                [[NoDataLabel alloc] Show:@"データがない" SuperView:self.view DataBool:self.UserLisrArray.count];
+                [self CellHorizontalAlignment];
+            } else {
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
+                [MBProgressHUD showError:@"system errors" toView:self.view];
+//                [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
+            }
+        }defeats:^(NSError *defeats){
+            NSLog(@"errors:%@",[defeats localizedDescription]);
+    //        [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
+        }];
+    }
 }
 /**
  获取alert数据
  */
 - (void)LoadAlertData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSString *buildingid = SystemUserDict[@"buildingid"];
-    NSString *floorno = SystemUserDict[@"floorno"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:nil success:^(id success){
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+    NSString *staffid = SystemUserDict[@"staffid"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid) mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            NSArray *alertarray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
-            _CurrentAlertarrays = alertarray.copy;
-            _AlertBarView.AlertArray = alertarray;
-            if (alertarray.count > 0) {
-                //播放系统声音
-//                AudioServicesPlaySystemSound(1005);
-                //弹出alert框之前先dismiss
-                [_UserAlert dismissViewControllerAnimated:YES completion:nil];
-                //在KeyWindow上弹出alert框(每个页面都能看到)
-                NSDictionary *alertdict = alertarray[alertarray.count - 1];
-                BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
-                NSDate *registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:alertdict[@"registdate"]];
-                _UserAlert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ %@",alertdict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]] message:[NSString stringWithFormat:@"%@ %@\nアラート通知",alertdict[@"roomname"],alertdict[@"username0"]] preferredStyle:UIAlertControllerStyleAlert];
-                [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                }]];
-                [LGFKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
-            }
+            _LoadAlertArray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
+            _CurrentAlertarrays = _LoadAlertArray.copy;
+            _AlertBarView.AlertArray = _LoadAlertArray;
+            NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
+//            if (_LoadAlertArray.count > 0) {
+//                NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
+//                [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+//            }
+//            for (NSDictionary *historydict in LoadHistoryArray) {
+//                [self PostAlertNotice:historydict alerttype:@"historyinfo"];
+//            }
+            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
+            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
             [_UserListCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -194,10 +202,66 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }];
 }
 
+-(void)PostAlertNotice:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
+    //播放系统声音
+    //                AudioServicesPlaySystemSound(1005);
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+    NSDate *registdate;
+    NSString *title;
+    NSString *body;
+    if ([alerttype isEqualToString:@"alertinfo"]) {
+        body = [NSString stringWithFormat:@"%@ %@\nアラート通知",AlertDict[@"roomname"],AlertDict[@"username0"]];
+        registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:AlertDict[@"registdate"]];
+        title = [NSString stringWithFormat:@"%@ %@",AlertDict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+    } else {
+        body = [NSString stringWithFormat:@"%@ %@\nセンサーの設置情報が更新されました\n%@",AlertDict[@"roomname"],AlertDict[@"username0"],[SystemUserDict[@"systemusertype"] isEqualToString:@"1"] ? @"【可視化設定情報を確認してください】" : @"【可視化設定情報を現在確認しています】"];
+        registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm" ReturnType:returndate date:AlertDict[@"registdate"]];
+        title = [NSString stringWithFormat:@"%@ %@",AlertDict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+    }
+    NSString *Identifier = [NSString stringWithFormat:@"%@%@%@",AlertDict[@"roomname"],AlertDict[@"username0"],alerttype];
+    if(SYSREM_VERSION(10.0)){
+        //创建通知
+        UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:2 repeats:NO];
+        UNNotificationAction * actionone = [UNNotificationAction actionWithIdentifier:@"actionone" title:@"OK" options:UNNotificationActionOptionNone];
+        UNNotificationCategory * category = [UNNotificationCategory categoryWithIdentifier:Identifier actions:@[actionone] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];
+        //内容
+        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+        content.title = title;
+        content.subtitle = @"";
+        content.body = body;
+        content.badge = @1;
+        content.categoryIdentifier = Identifier;
+        content.sound = [UNNotificationSound defaultSound];
+        content.userInfo = @{@"alerttype" : alerttype};
+        NSString *requestIdentifier = Identifier;
+        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier
+                                                                              content:content
+                                                                              trigger:trigger];
+        [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithObjects:category, nil]];
+        [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"推送已添加成功 %@", requestIdentifier);
+            }
+        }];
+    }else{
+        UILocalNotification *localNote = [[UILocalNotification alloc] init];
+        localNote.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+        localNote.soundName = UILocalNotificationDefaultSoundName;
+        localNote.timeZone=[NSTimeZone defaultTimeZone];
+        localNote.alertBody = body;
+        localNote.alertTitle = title;
+        localNote.applicationIconBadgeNumber = 1;
+        localNote.userInfo = @{@"alerttype" : alerttype};
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNote];
+    }
+}
+
 - (void)LoadNoticeCount{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSDictionary *parameter = @{@"registdate":SystemUserDict[@"newnoticetime"]};
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:parameter mjheader:nil superview:nil success:^(id success){
+    NSString *registdate = SystemUserDict[@"newnoticetime"];
+    NSString *staffid = SystemUserDict[@"staffid"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:NSDictionaryOfVariableBindings(registdate,staffid) mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             if ([tmpDic[@"vznoticecount"] intValue] == 0) {
@@ -251,7 +315,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
  获取新数据
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
-
     [self LoadBuildingInfoData];
 }
 /**
@@ -263,7 +326,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 /**
  可视化设定
  */
-- (IBAction)VisualSetting:(id)sender {
+- (IBAction)VisualSetting:(id)sender { 
     [self performSegueWithIdentifier:@"DBVisualSettingPush" sender:self];
 }
 /**
@@ -326,7 +389,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 -(void)LoadAllData{
-    
     [self LoadNewData];
     [self LoadAlertData];
     [self LoadNoticeCount];
@@ -383,7 +445,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                           } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                               cell.UserImage.alpha = 1.0;
                           }];
-        cell.RoomName.text = DataDict[@"roomname"];
+        cell.RoomName.text = DataDict[@"roomid"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];
         cell.UserAge.text = [NSString stringWithFormat:@"%@",DataDict[@"userold"]];

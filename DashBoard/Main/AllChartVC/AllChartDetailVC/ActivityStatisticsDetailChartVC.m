@@ -48,16 +48,17 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
             _DataArray  = [NSMutableArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;
-            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-            NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray: [SystemUserDict objectForKey:@"systemactioninfo"]];
-            NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];            
-            for (NSDictionary *DataDict in DataArrayCopy) {
-                for (NSDictionary *removedict in systemactioninfo) {
-                    if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
-                        if (removedict[@"selecttype"]) {
-                            if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
-                                [_DataArray removeObject:DataDict];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+                NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+                NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray: [SystemUserDict objectForKey:@"systemactioninfo"]];
+                NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
+                for (NSDictionary *DataDict in DataArrayCopy) {
+                    for (NSDictionary *removedict in systemactioninfo) {
+                        if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
+                            if (removedict[@"selecttype"]) {
+                                if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                                    [_DataArray removeObject:DataDict];
+                                }
                             }
                         }
                     }
@@ -66,7 +67,8 @@
             [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
+            [MBProgressHUD showError:@"system errors" toView:_ChartCV];
+//            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
@@ -92,7 +94,6 @@
     [cell layoutIfNeeded];
     [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DeviceDataView.bounds BarData:DataDict BarType:1];
-    [cell.DeviceDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.DeviceDataView addSubview:ChartView];
     return cell;
 }

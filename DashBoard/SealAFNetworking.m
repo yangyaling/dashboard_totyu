@@ -6,24 +6,33 @@
 //  Copyright © 2016年 totyu3. All rights reserved.
 //
 
-#define ZwloginURL @"https://mimamori2.azurewebsites.net/dashboard/Zwlogin.php"
-#define ZwgetbuildinginfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetbuildinginfo.php"
-#define ZwgetcustlistURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetcustlist.php"
-#define ZwgetalertinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetalertinfo.php"
+#define ZwloginURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwlogin.php"
 
-#define ZwgetvzconfiginfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvzconfiginfo.php"
-#define ZwgetupdatevzconfiginfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwupdatevzconfiginfo.php"
+#define ZwgetFacilityListURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetfacilitylist.php"
 
-#define ZwupdateactioncolorURL @"https://mimamori2.azurewebsites.net/dashboard/zwupdateactioncolor.php"
+#define ZwgetcolorinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/Zwgetcolorinfo.php"
 
-#define ZwgetvznoticeinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvznoticeinfo.php"
-#define ZwgetvznoticecountURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetvznoticecount.php"
+#define ZwgetbuildinginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetbuildinginfo.php"
+#define ZwgetcustlistURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetcustlist.php"
 
-#define WeeklylrinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetweeklylrinfo.php"
+#define ZwgetalertinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetalertinfo.php"
 
-#define LrinfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetlrinfo.php"
+#define ZwgetvzconfiginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvzconfiginfo.php"
+#define ZwgetupdatevzconfiginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdatevzconfiginfo.php"
+#define ZwupdatenoticeURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdatenoticeinfo.php"
 
-#define LrsuminfoURL @"https://mimamori2.azurewebsites.net/dashboard/zwgetlrsuminfo.php"
+#define ZwupdateactioncolorURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdateactioncolor.php"
+
+#define ZwgetvznoticeinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvznoticeinfo.php"
+#define ZwgetvznoticecountURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvznoticecount.php"
+
+#define WeeklylrinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetweeklylrinfo.php"
+
+#define LrinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetlrinfo.php"
+
+#define LrsuminfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetlrsuminfo.php"
+
+//#define LrsuminfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetcolor.php"
 
 #import "SealAFNetworking.h"
 
@@ -64,13 +73,20 @@
     
     
     if (URLtype == ZwloginType) UrlString = ZwloginURL;
+    if (URLtype == ZwgetFacilityList) UrlString = ZwgetFacilityListURL;//新接口
+    
+    if (URLtype == ZwgetcolorinfoType) UrlString = ZwgetcolorinfoURL;
+    
     if (URLtype == ZwgetbuildinginfoType) UrlString = ZwgetbuildinginfoURL;
     if (URLtype == ZwgetcustlistType) UrlString = ZwgetcustlistURL;
     if (URLtype == ZwgetalertinfoType) UrlString = ZwgetalertinfoURL;
     
+    
+    
     if (URLtype == ZwgetvzconfiginfoType) UrlString = ZwgetvzconfiginfoURL;
     if (URLtype == ZwgetupdatevzconfiginfoType) UrlString = ZwgetupdatevzconfiginfoURL;
     if (URLtype == ZwupdateactioncolorType) UrlString = ZwupdateactioncolorURL;
+    if (URLtype == ZwupdatenoticeType) UrlString = ZwupdatenoticeURL;
     
     if (URLtype == ZwgetvznoticeinfoType) UrlString = ZwgetvznoticeinfoURL;
     if (URLtype == ZwgetvznoticecountType) UrlString = ZwgetvznoticecountURL;
@@ -102,7 +118,6 @@
 }
 
 -(void)RequestEnd:(UIView*)view mjheader:(id)mjheader{
-    
     [mjheader endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     [MBProgressHUD hideHUDForView:view];

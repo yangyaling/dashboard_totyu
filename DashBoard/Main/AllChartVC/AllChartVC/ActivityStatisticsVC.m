@@ -99,23 +99,29 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     UIView *view = [cscv view];
     view.size = _ColorSelectionView.size;
     [_ColorSelectionView addSubview:view];
+    
     //设置楼层信息
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    _FloorTitle.text = SystemUserDict[@"displayname"];
-    _RoomTitle.text = SystemUserDict[@"roomname"];
+    _FloorTitle.text = SystemUserDict[@"facilityname2floorno"];
+    _RoomTitle.text = SystemUserDict[@"roomid"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
-    [self TimeFrameTitleSetValue:[NSDate date]];
     //添加 SystemReloadColor 通知
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     //日周月年 Segmented 默认选中
     [self TimeSelect:_TimeSelectSeg];
-    //刷新数据
-    [self ReloadNewData:[NSDate date] ColorType:NO];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
+    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr];
+    [self TimeFrameTitleSetValue:Previousdate sumflg:ascvc.SumFlg];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 /**
  日期检索
  */
@@ -163,10 +169,10 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     if (!ColorType){
         ScrollPage = TotalRange;
         _SelectDate = date;
-        [self TimeFrameTitleSetValue:date];
+        [self TimeFrameTitleSetValue:date sumflg:@"d"];
     }
     [_PageCV reloadData];
-    MAIN(^{[_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];});//PageCV reloadData完毕 滚动到指定页
+    MAIN([_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];);//PageCV reloadData完毕 滚动到指定页
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -198,22 +204,28 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     //分页分页改变日期
     ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr];
-    [self TimeFrameTitleSetValue:Previousdate];
+    [self TimeFrameTitleSetValue:Previousdate sumflg:ascvc.SumFlg];
 }
 
--(void)TimeFrameTitleSetValue:(NSDate*)date{
+-(void)TimeFrameTitleSetValue:(NSDate*)date sumflg:(NSString*)sumflg{
     if (TimeSelectSegIndex == 0) {//日
         _TimeFrameTitle.text = [NSDate getWeekBeginAndEndWith:date];
+        sumflg = @"d";
     }else if(TimeSelectSegIndex == 1){//周
         _TimeFrameTitle.text = @"";
+        sumflg = @"w";
     }else if(TimeSelectSegIndex == 2){//月
         _TimeFrameTitle.text = [NSDate getYear:date];
+        sumflg = @"m";
     }else if(TimeSelectSegIndex == 3){//年
         _TimeFrameTitle.text = [NSDate getTenYear:date];
+        sumflg = @"y";
     }
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date] ,@"forweekly" : @"2" ,@"sumflg" : sumflg}]];
 }
 
 - (void)dealloc{
     [NITNotificationCenter removeObserver:self];
 }
+
 @end

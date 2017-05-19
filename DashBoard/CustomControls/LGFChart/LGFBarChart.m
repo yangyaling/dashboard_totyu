@@ -50,7 +50,6 @@
     } else {
         NSArray *array = [NSArray arrayWithArray:_BarDataDict[@"data"]];
         NSArray *colorarray = [_BarDataDict[@"actioncolor"] componentsSeparatedByString:@"|"];
-        
         [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             if ([obj intValue] == 1) {
                 [[UIColor colorWithHex:colorarray[0]] setStroke];

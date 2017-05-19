@@ -176,14 +176,14 @@
  *  下拉菜单点击状态
  */
 -(void)selsctview{
-    
-    
 
-    select = !select;
-    if (select) {
-        [self doDropDown];
-    } else {
-        [self doDropDownReduction];
+    if (_DataArray.count > 0) {
+        select = !select;
+        if (select) {
+            [self doDropDown];
+        } else {
+            [self doDropDownReduction];
+        }
     }
 }
 /**
@@ -191,10 +191,17 @@
  *
  *  @param row 选中行数
  */
--(void)selectRow:(NSInteger)row{
-    _SelectRow = row;
-    NSDictionary *dict = _DataArray[row];
-    [self boolchild:dict[@"displayname"] type:2];
+-(void)selectRow:(NSInteger)row childrow:(NSInteger)childrow{
+//    _SelectRow = row;
+//    NSDictionary *dict = _DataArray[row];
+//    [self boolchild:dict[[dict allKeys].lastObject] type:2];
+//    
+    if (child) {
+        [self boolchild:childrow type:0];
+    } else {
+        _SelectRow = row;
+        [self boolchild:row type:2];
+    }
 }
 
 #pragma marker---- tableView dataSource----
@@ -230,10 +237,8 @@
     //判断是否有子菜单
     if (child) {
         [self cellboolchild:_ChildDataArray[indexPath.row] cell:cell];
-
     } else {
-        NSDictionary *dict = _DataArray[indexPath.row];
-        [self cellboolchild:dict[@"displayname"] cell:cell];
+        [self cellboolchild:_DataArray[indexPath.row] cell:cell];
     }
     return cell;
 }
@@ -244,11 +249,10 @@
 {
     //判断是否有子菜单
     if (child) {
-        [self boolchild:_ChildDataArray[indexPath.row] type:0];
+        [self boolchild:indexPath.row type:0];
     } else {
         _SelectRow = indexPath.row;
-        NSDictionary *dict = _DataArray[indexPath.row];
-        [self boolchild:dict[@"displayname"] type:1];
+        [self boolchild:indexPath.row type:1];
     }
 }
 
@@ -338,33 +342,81 @@
  *  cell数据源是否存在子菜单判断
  */
 -(void)cellboolchild:(id)title cell:(UITableViewCell*)cell{
-    
-    if ([title isKindOfClass:[NSString class]]) {
-        cell.textLabel.text = title;
-    }else if([title isKindOfClass:[NSMutableDictionary class]]||[title isKindOfClass:[NSDictionary class]]){
-        cell.textLabel.text = [[title allKeys] firstObject];
+    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
+    if (floornoinfo.count > 0) {//有子菜单
+        cell.textLabel.text = title[@"facilityname2"];
         cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell.textLabel.text = title[@"floorno"];
     }
 }
 /**
  *  是否存在子菜单判断
  */
--(void)boolchild:(id)title type:(int)type{
+-(void)boolchild:(NSInteger)row type:(int)type{
+    
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSDictionary *title;
+    if (child) {
+        title = _ChildDataArray[row];
+        if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
+            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcchildrow"];
+        } else {
+            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"visualsetvcchildrow"];
+        }
+    } else {
+        title = _DataArray[row];
+        if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
+            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcrow"];
+        } else {
+            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"visualsetvcrow"];
+        }
+    }
 
-    if ([title isKindOfClass:[NSString class]]) {//没有子菜单
+    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
+    if (floornoinfo.count > 0) {//有子菜单
+        
+        if (type==2) {
+            
+            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
+                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
+                [SystemUserDict setValue:title[@"floornoinfo"][[SystemUserDict[@"mainvcchildrow"] integerValue]][@"floorno"] forKey:@"mainvcfloorno"];
+            } else {
+                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"visualsetvcfacilitycd"];
+                [SystemUserDict setValue:title[@"floornoinfo"][[SystemUserDict[@"visualsetvcchildrow"] integerValue]][@"floorno"] forKey:@"visualsetvcfloorno"];
+            }
+            
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                [self selectDropDown:[NSString stringWithFormat:@"%@ %@",title[@"facilityname2"],title[@"floornoinfo"][0][@"floorno"]]];
+            }
+        } else {
+            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
+                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
+            } else {
+                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"visualsetvcfacilitycd"];
+            }
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                SelectTitle = title[@"facilityname2"];
+                _ChildDataArray = [NSMutableArray arrayWithArray:floornoinfo];
+                if (type==1)child = YES;
+                [self doDropDown];
+            }
+        }
+    }else{//没有子菜单
+        
         select = NO;
         if (type==2) {
-            SelectTitle = title;
+            
         } else {
-            [self selectDropDown:title];
-        }
-    }else if([title isKindOfClass:[NSMutableDictionary class]]||[title isKindOfClass:[NSDictionary class]]){//有子菜单
-        if (type==2) {
-            SelectTitle = [[title allKeys] firstObject];
-        } else {
-            _ChildDataArray = [NSMutableArray arrayWithArray:[title valueForKey:[[title allKeys] firstObject]]];
-            if (type==1)child = YES;
-            [self doDropDown];
+            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
+                [SystemUserDict setValue:title[@"floorno"] forKey:@"mainvcfloorno"];
+            } else {
+                [SystemUserDict setValue:title[@"floorno"] forKey:@"visualsetvcfloorno"];
+            }
+            
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                [self selectDropDown:[NSString stringWithFormat:@"%@ %@",SelectTitle,title[@"floorno"]]];
+            }
         }
     }
 }
@@ -374,10 +426,8 @@
 -(void)selectDropDown:(NSString*)title{
     
     self.mainTitleLabel.text = title;
-    SelectTitle = _mainTitleLabel.text;
     [self doDropDownReduction];
-    [self.delegate nowSelectRow:SelectTitle selectrow:_SelectRow];
-
+    [self.delegate nowSelectRow:title selectrow:_SelectRow];
 }
 /**
  *  下拉
@@ -389,12 +439,7 @@
     
     self.mainTitleLabel.textColor = _SelectColor;
     
-    NSIndexSet * sectionindexset=[[NSIndexSet alloc]initWithIndex:0];
-    if (child) {
-        [self.dropdowntableview reloadSections:sectionindexset withRowAnimation:UITableViewRowAnimationLeft];
-    } else {
-        [self.dropdowntableview reloadData];
-    }
+    [self.dropdowntableview reloadData];
     
     self.arrowView.transform = CGAffineTransformMakeRotation(M_PI);
     self.dropdowntableview.frame = DropDown;

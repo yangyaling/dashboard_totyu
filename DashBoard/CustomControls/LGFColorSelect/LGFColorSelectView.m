@@ -17,10 +17,11 @@
 @property (nonatomic, strong) UIButton *cancel;
 @property (nonatomic, strong) NSDictionary *actiondict;
 @property (nonatomic, strong) UIView *Cover;
+@property (nonatomic, assign) NSInteger SelectButtonTag;
 @end
 @implementation LGFColorSelectView
 
--(instancetype)initWithFrame:(CGRect)frame Super:(id)Super Data:(NSDictionary*)actiondict{
+-(instancetype)initWithFrame:(CGRect)frame Super:(id)Super Data:(NSDictionary*)actiondict SelectButton:(UIButton *)SelectButton{
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
@@ -28,7 +29,13 @@
         self.delegate = Super;//添加代理
         [self AddChildSubview];
         self.Title.text = self.actiondict[@"actionname"];
-        [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
+        self.SelectButtonTag = SelectButton.tag;
+        if ([[NSString stringWithFormat:@"%@",self.actiondict[@"actionexplain"]] isEqualToString:@"4"]) {
+            NSArray *colorarray = [self.actiondict[@"actioncolor"] componentsSeparatedByString:@"|"];
+            [self.ResultView setBackgroundColor:[UIColor colorWithHex:colorarray[self.SelectButtonTag]]];
+        } else {
+            [self.ResultView setBackgroundColor:[UIColor colorWithHex:self.actiondict[@"actioncolor"]]];
+        }
     }
     return self;
 }
@@ -69,7 +76,20 @@
 - (void)confirmedit{
     [self RemoveAllView];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"actionid":self.actiondict[@"actionid"],@"actionexplain":self.actiondict[@"actionexplain"],@"actioncolor":[UIColor hexFromUIColor:self.ResultView.backgroundColor]};
+    NSString *actioncolor;
+    if ([[NSString stringWithFormat:@"%@",self.actiondict[@"actionexplain"]] isEqualToString:@"4"]) {
+        NSArray *colorarray = [self.actiondict[@"actioncolor"] componentsSeparatedByString:@"|"];
+        if (self.SelectButtonTag == 0) {
+            actioncolor = [NSString stringWithFormat:@"%@|%@",[UIColor hexFromUIColor:self.ResultView.backgroundColor],colorarray[1]];
+        } else {
+            actioncolor = [NSString stringWithFormat:@"%@|%@",colorarray[0],[UIColor hexFromUIColor:self.ResultView.backgroundColor]];
+        }
+    } else {
+        actioncolor = [UIColor hexFromUIColor:self.ResultView.backgroundColor];
+    }
+    
+    
+    NSDictionary *parameter = @{@"userid0":SystemUserDict[@"userid0"],@"actionid":self.actiondict[@"actionid"],@"actionexplain":self.actiondict[@"actionexplain"],@"actioncolor":actioncolor};
     [self.delegate SelectColor:parameter];
 }
 

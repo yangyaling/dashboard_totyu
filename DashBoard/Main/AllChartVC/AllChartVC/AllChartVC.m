@@ -21,7 +21,8 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
     [self.collectionView layoutIfNeeded];
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex == 0 ? 1 : 0 inSection:0]]];
+    MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
 }
 
 /**
@@ -43,6 +44,12 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_SelectViewSeg.selectedSegmentIndex inSection:0]]];
+    MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_SelectViewSeg.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
 }
 
 - (void)didReceiveMemoryWarning {

@@ -59,8 +59,8 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     _DarkColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"darkcolor"]];
     _LightColorView.backgroundColor = [UIColor colorWithHex:SystemUserDict[@"lightcolor"]];
-    _FloorTitle.text = SystemUserDict[@"displayname"];
-    _RoomTitle.text = SystemUserDict[@"roomname"];
+    _FloorTitle.text = SystemUserDict[@"facilityname2floorno"];
+    _RoomTitle.text = SystemUserDict[@"roomid"];
     _UserNameTitle.text = SystemUserDict[@"username0"];
     _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDay]];
     //添加 SystemReloadColor 通知
@@ -69,9 +69,16 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    LifeRhythmDetailChartVC *ldcvc = self.controlarr[ScrollPage];
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : ldcvc.DayStr ,@"forweekly" : @"0"}]];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 /**
  日期检索
  */
@@ -107,9 +114,10 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
         ScrollPage = TotalDay;
         _SelectDate = date;
         _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date]];
+        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate] ,@"forweekly" : @"0"}]];
     }
     [_PageCV reloadData];
-    MAIN(^{[_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];});//PageCV reloadData完毕 滚动到指定页
+    MAIN([_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];);//PageCV reloadData完毕 滚动到指定页
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -141,6 +149,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     //分页分页改变日期
     LifeRhythmDetailChartVC *ldcvc = self.controlarr[ScrollPage];
     _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:ldcvc.DayStr];
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : ldcvc.DayStr ,@"forweekly" : @"0"}]];
 }
 
 - (void)dealloc{

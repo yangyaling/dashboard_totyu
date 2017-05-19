@@ -59,9 +59,17 @@
 #endif
 
 //G－C－D
-#define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), block)
-#define MAIN(block) dispatch_async(dispatch_get_main_queue(),block)
-#define GLOBAL(block) dispatch_async(dispatch_get_global_queue(0, 0),block)
+#define BACK(block) dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{block})
+
+#define GROUP(block) dispatch_group_async(dispatch_group_create(), dispatch_get_global_queue(0,0), ^{block})
+
+#define GROUPNOTIFY(block) dispatch_group_notify(dispatch_group_create(), dispatch_get_global_queue(0,0), ^{block});
+
+#define MAIN(block) dispatch_async(dispatch_get_main_queue(),^{block})
+
+#define AFTER(time,block) dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{block})
+
+#define GLOBAL(block) dispatch_async(dispatch_get_global_queue(0, 0),^{block})
 
 //由角度获取弧度 有弧度获取角度
 #define degreesToRadian(x) (M_PI * (x) / 180.0)
@@ -86,6 +94,8 @@
 
 //ios 10 判断
 #define SYSTEM_VERSION_GRATERTHAN_OR_EQUALTO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+#define SYSREM_VERSION(v) [[UIDevice currentDevice].systemVersion doubleValue] >= v
 
 //沙盒路径
 #define NITFilePath NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject

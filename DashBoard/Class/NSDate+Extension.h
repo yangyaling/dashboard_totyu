@@ -137,4 +137,6 @@ typedef enum {
 + (NSString *)getTenYear:(NSDate*)date;
 
 + (NSString *)GetTenYearDate:(NSDate*)date;
+//比较日期大小
++ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate;
 @end

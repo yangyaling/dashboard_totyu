@@ -31,7 +31,7 @@
         }else if ([obj isKindOfClass:[NSArray class]]||[obj isKindOfClass:[NSMutableArray class]]) {
             [dict setObject:[self CheckArrayNSnull:obj] forKey:key];
         } else {
-            if (obj == [NSNull null]) {
+            if (obj == [NSNull null] || !obj) {
                 obj = @"";
             } else {
                 obj = [NSString stringWithFormat:@"%@",obj];
@@ -52,7 +52,7 @@
         }else if ([obj isKindOfClass:[NSArray class]]||[obj isKindOfClass:[NSMutableArray class]]) {
             [arr replaceObjectAtIndex:idx withObject:[self CheckArrayNSnull:obj]];
         } else {
-            if (obj == [NSNull null]) {
+            if (obj == [NSNull null] || !obj) {
                 obj = @"";
             } else {
                 obj = [NSString stringWithFormat:@"%@",obj];

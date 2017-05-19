@@ -11,6 +11,7 @@
 @interface NoticeCollectionCell : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UITextView *NoticeDetail;
 @property (weak, nonatomic) IBOutlet UILabel *NoticeTime;
+@property (weak, nonatomic) IBOutlet UILabel *NewLabel;
 
 @end
 @implementation NoticeCollectionCell
@@ -37,29 +38,34 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     [super viewDidLoad];
     [self loadNewData];
 }
-
 /**
  发送请求获取新数据
  */
 - (void)loadNewData{
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:nil mjheader:nil superview:self.view success:^(id success){
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+//    NSString *registdate = SystemUserDict[@"newnoticetime"];
+    NSString *staffid = SystemUserDict[@"staffid"];
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:NSDictionaryOfVariableBindings(staffid) mjheader:nil superview:self.view success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             self.NoticeArray = tmpDic[@"vznoticeinfo"];
-            if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count])return;
-            NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
-            NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-            [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count]){
+                NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
+                [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
+                if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                    [_NoticeCollection reloadData];
+                    [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                    NSDictionary *dict = self.NoticeArray[0];
+                    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
+                }
+            } else {
                 [_NoticeCollection reloadData];
-                [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                NSDictionary *dict = self.NoticeArray[0];
-                _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
             }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
+            [MBProgressHUD showError:@"system errors" toView:self.view];
+//            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
         }
     }defeats:^(NSError *defeats){
     }];
@@ -87,6 +93,8 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     cell.selectedBackgroundView = selectedBGView;
     cell.NoticeDetail.text = DataDict[@"title"];
     cell.NoticeTime.text = DataDict[@"registdate"];
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    [cell.NewLabel setHidden:[NSDate compareDate:DataDict[@"registdate"] withDate:SystemUserDict[@"oldnoticetime"]] != 0 ? YES : NO];
     return cell;
 }
 
@@ -95,5 +103,11 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
 }
 
+- (void)dealloc{
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
+    [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"oldnoticetime"];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+}
 
 @end

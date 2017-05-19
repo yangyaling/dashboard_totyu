@@ -57,11 +57,12 @@
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _DataArray = [NSArray arrayWithArray:[tmpDic valueForKey:@"lrlist"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count])return;
+            [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count];
             [_ChartCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
+            [MBProgressHUD showError:@"system errors" toView:_ChartCV];
+//            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ChartCV DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
@@ -92,7 +93,6 @@
         NSArray *ActionArray = [NSArray arrayWithArray:DataDict[SelectDate][1]];
         [cell.DayDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         UIView *ChartView = [[LGFBarChart alloc]initWithFrame:cell.DayDataView.bounds BarData:ActionArray BarType:1];
-        [cell.DayDataView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [cell.DayDataView addSubview:ChartView];
     } else {
         cell.alpha = 0.0;

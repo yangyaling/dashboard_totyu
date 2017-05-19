@@ -476,5 +476,23 @@
         return @"error";
     }
 }
+//比较日期大小
++ (NSInteger)compareDate:(NSString*)aDate withDate:(NSString*)bDate{
+    NSDateFormatter *dateformater = [[NSDateFormatter alloc] init];
+    [dateformater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateformater setTimeZone:[NSTimeZone systemTimeZone]];
+    NSDate *dta = [dateformater dateFromString:aDate];
+    NSDate *dtb = [dateformater dateFromString:bDate];
+    NSComparisonResult result = [dtb compare:dta];
+    if (result == NSOrderedAscending){
+        //bDate比aDate大
+        return 0;
+    } else if (result == NSOrderedSame){
+        return 1;
+    } else {
+        return 2;
+    }
+}
+
 
 @end

@@ -13,6 +13,6 @@
 
 @interface LGFColorSelectView : UIView
 @property (nonatomic, copy) NSString *SelectId;
--(instancetype)initWithFrame:(CGRect)frame Super:(id)Super Data:(NSDictionary*)actiondict;
+-(instancetype)initWithFrame:(CGRect)frame Super:(id)Super Data:(NSDictionary*)actiondict SelectButton:(UIButton*)SelectButton;
 @property (nonatomic, assign) id<LGFColorSelectViewDelegate> delegate;
 @end

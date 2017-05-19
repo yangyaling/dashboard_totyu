@@ -41,7 +41,7 @@
     return self;
 }
 
--(NSArray*)TotalValueCheck:(NSArray*)array{
+-(NSArray*)TotalValueCheck:(NSMutableArray*)array{
     NSMutableArray *numarr = [NSMutableArray array];
     [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         if (![obj isEqual:@""]) {
@@ -73,12 +73,21 @@
     CGContextSetLineWidth(context, LineWidth);
     [[UIColor colorWithHex:_LineDataDict[@"actioncolor"]] setStroke];
     if (_LineType == EnvironmentSet) {
-        [self TotalValueCheck:_LineDataDict[@"avg"]];
+        NSMutableArray *maxarr = [NSMutableArray arrayWithArray:_LineDataDict[@"max"]];
+        NSMutableArray *minarr = [NSMutableArray arrayWithArray:_LineDataDict[@"min"]];
+        NSMutableArray *avgarr = [NSMutableArray arrayWithArray:_LineDataDict[@"avg"]];
+        
+        NSMutableArray *allarr = [NSMutableArray arrayWithArray:_LineDataDict[@"max"]];
+        [allarr addObjectsFromArray:minarr];
+        [self TotalValueCheck:allarr];
+        
         //画平均值折线
-        [self DrawChartLine:context LineArray:_LineDataDict[@"avg"] DottedLineBOOL:NO];
+        [self DrawChartLine:context LineArray:avgarr DottedLineBOOL:NO];
         //画最大值,最小值折线
-        [self DrawChartLine:context LineArray:_LineDataDict[@"max"] DottedLineBOOL:YES];
-        [self DrawChartLine:context LineArray:_LineDataDict[@"min"] DottedLineBOOL:YES];
+        [self DrawChartLine:context LineArray:maxarr DottedLineBOOL:YES];
+        [self DrawChartLine:context LineArray:minarr DottedLineBOOL:YES];
+        
+        
     } else {
         [self TotalValueCheck:_LineDataDict[@"data"]];
         [self DrawChartLine:context LineArray:_LineDataDict[@"data"] DottedLineBOOL:NO];

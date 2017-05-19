@@ -11,14 +11,19 @@
 typedef enum {//枚举请求地址种类
     
     ZwloginType,
+    ZwgetFacilityList,//新接口
     ZwgetbuildinginfoType,
     ZwgetcustlistType,
     ZwgetalertinfoType,
+    
+    //颜色选择
+    ZwgetcolorinfoType,
     
     //可视化设定
     ZwgetvzconfiginfoType,
     ZwgetupdatevzconfiginfoType,
     ZwupdateactioncolorType,
+    ZwupdatenoticeType,
     
     //通知一览
     ZwgetvznoticeinfoType,

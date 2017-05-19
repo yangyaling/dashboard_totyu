@@ -62,8 +62,8 @@
     }
 }
 
-- (IBAction)ColorSelectButton:(id)sender {
-    LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:LGFLastView.bounds Super:self Data:_DataDict];
+- (IBAction)ColorSelectButton:(UIButton*)sender {
+    LGFColorSelectView *ColorSelect = [[LGFColorSelectView alloc]initWithFrame:LGFLastView.bounds Super:self Data:_DataDict SelectButton:sender];
     [LGFLastView addSubview:ColorSelect];
 }
 
@@ -92,6 +92,7 @@
         [systemactioninfo replaceObjectAtIndex:idx withObject:obj];
     }];
     [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
+    
     if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
         [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
     }
@@ -104,26 +105,10 @@
 @end
 @implementation ColorSelectionCV
 
--(NSMutableArray *)ColorSelectionArray{
-    if (!_ColorSelectionArray) {
-        _ColorSelectionArray = [NSMutableArray array];
-    }
-    return _ColorSelectionArray;
-}
-
 - (void)viewDidLoad{
     [super viewDidLoad];
-    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:SystemUserDict[@"systemactioninfo"]];
-    if (systemactioninfo.count == 0) {
-        [self LoadNewData];
-    }
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
-    [_ColorSelection reloadData];
+    [NITNotificationCenter addObserver:self selector:@selector(LoadColorSelectionData:) name:@"SystemLoadColorSelection" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -134,46 +119,47 @@
     [_ColorSelection reloadData];
 }
 
-- (void)LoadNewData{
+
+- (void)LoadColorSelectionData:(NSNotification*)sender{
+    [MBProgressHUD hideHUDForView:_ColorSelection];
     [MBProgressHUD showMessage:@"" toView:_ColorSelection];
+    NSDictionary *parameter;
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSString *buildingid = SystemUserDict[@"buildingid"];
-    NSString *floorno = SystemUserDict[@"floorno"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(buildingid,floorno) mjheader:nil superview:_ColorSelection success:^(id success){
+    if ([sender.userInfo[@"forweekly"] isEqualToString:@"2"]) {
+        parameter = @{@"userid0" : SystemUserDict[@"userid0"] ,@"basedate" : sender.userInfo[@"basedate"] ,@"sumflg" : sender.userInfo[@"sumflg"]};
+    } else {
+        parameter = @{@"userid0" : SystemUserDict[@"userid0"] ,@"basedate" : sender.userInfo[@"basedate"] ,@"forweekly" : sender.userInfo[@"forweekly"]};
+    }
+    NSLog(@"%@",parameter);
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetcolorinfoType parameters:parameter mjheader:nil superview:_ColorSelection success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            NSArray *UserListArray = [NSArray arrayWithArray:tmpDic[@"vzconfiginfo"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ColorSelection DataBool:UserListArray.count])return;
+            NSArray *EnvironmentalArray = [NSArray arrayWithArray:tmpDic[@"colorlist"][0]];
+            NSArray *ActivityArray = [NSArray arrayWithArray:tmpDic[@"colorlist"][1]];
+            [[NoDataLabel alloc] Show:@"データがない" SuperView:_ColorSelection DataBool:ActivityArray.count];
             NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-            for (NSDictionary *dict in UserListArray) {
-                if ([dict[@"userid0"] isEqualToString:SystemUserDict[@"userid0"]] && [dict[@"roomid"] isEqualToString:SystemUserDict[@"roomid"]]) {
-                    NSArray *actioninfoarray = [NSArray arrayWithArray:dict[@"actioninfo"]];
-                    [actioninfoarray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        if (![obj[@"actionclass"]isEqualToString:@"1"]) {
-                            [self.ColorSelectionArray addObject:obj];
-                        } else {
-                            if ([[NSString stringWithFormat:@"%@",obj[@"actionexplain"]] isEqualToString:@"4"]) {
-                                NSArray *colorarray = [obj[@"actioncolor"] componentsSeparatedByString:@"|"];
-                                [SystemUserDict setValue:colorarray[0]forKey:@"lightcolor"];
-                                [SystemUserDict setValue:colorarray[1] forKey:@"darkcolor"];
-                            }
-                        }
-                    }];
-                    //selecttype: 选中了哪个device  actionselect:选中了哪个cell
-                    [self.ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        [obj setValue:@"NO" forKey:@"selecttype"];
-                        [obj setValue:@"NO" forKey:@"actionselect"];
-                        [self.ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
-                    }];
-                    [SystemUserDict setObject:self.ColorSelectionArray forKey:@"systemactioninfo"];
+            _ColorSelectionArray = [NSMutableArray arrayWithArray:ActivityArray];
+            [EnvironmentalArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                if ([obj[@"actionexplain"] isEqualToString:@"4"]) {
+                    NSArray *colorarray = [obj[@"actioncolor"] componentsSeparatedByString:@"|"];
+                    [SystemUserDict setValue:colorarray[0]forKey:@"lightcolor"];
+                    [SystemUserDict setValue:colorarray[1] forKey:@"darkcolor"];
                 }
-            }
+            }];
+            //selecttype: 选中了哪个device  actionselect:选中了哪个cell
+            [_ColorSelectionArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                [obj setValue:@"NO" forKey:@"selecttype"];
+                [obj setValue:@"NO" forKey:@"actionselect"];
+                [_ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
+                }];
+            [SystemUserDict setObject:_ColorSelectionArray forKey:@"systemactioninfo"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
                 [_ColorSelection reloadData];
             }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ColorSelection DataBool:0];
+            [MBProgressHUD showError:@"system errors" toView:_ColorSelection];
+//            [[NoDataLabel alloc] Show:@"system errors" SuperView:_ColorSelection DataBool:0];
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
