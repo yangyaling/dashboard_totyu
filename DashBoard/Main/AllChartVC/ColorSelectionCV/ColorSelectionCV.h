@@ -11,4 +11,6 @@
 IB_DESIGNABLE
 @interface ColorSelectionCV : UIViewController
 @property (nonatomic, strong) NSMutableArray *ColorSelectionArray;
+@property (nonatomic, strong) NSString *LoadCSNotificationName;
+//- (void)LoadColorSelectionData:(NSString*)basedate forweekly:(NSString*)forweekly sumflg:(NSString*)sumflg;
 @end

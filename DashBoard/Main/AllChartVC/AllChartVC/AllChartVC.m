@@ -21,7 +21,7 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
     [self.collectionView layoutIfNeeded];
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex == 0 ? 1 : 0 inSection:0]]];
+    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0]]];
     MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
 }
 
@@ -46,12 +46,6 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
 }
 
-//-(void)viewWillAppear:(BOOL)animated{
-//    [super viewWillAppear:YES];
-//    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:_SelectViewSeg.selectedSegmentIndex inSection:0]]];
-//    MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:_SelectViewSeg.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
-//}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -69,7 +63,11 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    UIView *view = [self.controlarr[indexPath.item]view];
+    //确保自动适配完毕
+    [cell setNeedsLayout];
+    [cell layoutIfNeeded];
+    //cell添加子控制器
+    UIView *view = [self.controlarr[indexPath.item] view];
     view.size = cell.size;
     [cell.contentView addSubview:view];
     return cell;

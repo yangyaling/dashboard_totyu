@@ -27,6 +27,8 @@
 
 @property (strong, nonatomic) NSMutableArray *controlarr;
 @property (nonatomic, strong) NSDate *SelectDate;
+@property (nonatomic, copy) NSString *LoadCSNotificationName;
+@property (nonatomic, copy) NSString *SelectSumFlg;
 @end
 
 @implementation ActivityStatisticsVC
@@ -91,9 +93,11 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _LoadCSNotificationName = @"ActivityStatisticsVCLCSNN";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [_ColorSelectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     ColorSelectionCV *cscv = [MainSB instantiateViewControllerWithIdentifier:@"ColorSelectionSB"];
+    cscv.LoadCSNotificationName = _LoadCSNotificationName;
     [self addChildViewController:cscv];
     [_ColorSelectionView layoutIfNeeded];
     UIView *view = [cscv view];
@@ -108,14 +112,13 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     //添加 SystemReloadColor 通知
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     //日周月年 Segmented 默认选中
-    [self TimeSelect:_TimeSelectSeg];
+    [self ReloadNewData:[NSDate date] ColorType:NO];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
-    NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr];
-    [self TimeFrameTitleSetValue:Previousdate sumflg:ascvc.SumFlg];
+    [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr] sumflg:_SelectSumFlg];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -140,6 +143,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     }
     ScrollPage = TotalRange;
     [self ReloadNewData:[NSDate date] ColorType:NO];
+    [self ReloadCSData:[NSDate date] sumflg:_SelectSumFlg];
 }
 /**
  点击调色板颜色刷新数据 回到当前页
@@ -152,12 +156,14 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
  */
 -(void)MJGetNewData{
     [self ReloadNewData:[NSDate date] ColorType:NO];
+    [self ReloadCSData:[NSDate date] sumflg:_SelectSumFlg];
 }
 /**
  刷新数据 回到日期检索(LGFClandar)选中日期页
  */
 -(void)SelectDate:(NSDate *)date{
     [self ReloadNewData:date ColorType:NO];
+    [self ReloadCSData:date sumflg:_SelectSumFlg];
 }
 /**
  刷新数据逻辑封装
@@ -169,11 +175,18 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     if (!ColorType){
         ScrollPage = TotalRange;
         _SelectDate = date;
-        [self TimeFrameTitleSetValue:date sumflg:@"d"];
+        [self TimeFrameTitleSetValue:date];
     }
     [_PageCV reloadData];
     MAIN([_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];);//PageCV reloadData完毕 滚动到指定页
 }
+/**
+ 刷新调色板数据
+ */
+-(void)ReloadCSData:(NSDate*)date sumflg:(NSString*)sumflg{
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:_LoadCSNotificationName object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date] ,@"forweekly" : @"2" ,@"sumflg" : sumflg}]];
+}
+
 
 #pragma mark - UICollectionViewDataSource And Delegate
 
@@ -204,24 +217,24 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     //分页分页改变日期
     ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
     NSDate *Previousdate = [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr];
-    [self TimeFrameTitleSetValue:Previousdate sumflg:ascvc.SumFlg];
+    [self TimeFrameTitleSetValue:Previousdate];
+    [self ReloadCSData:Previousdate sumflg:ascvc.SumFlg];
 }
 
--(void)TimeFrameTitleSetValue:(NSDate*)date sumflg:(NSString*)sumflg{
+-(void)TimeFrameTitleSetValue:(NSDate*)date{
     if (TimeSelectSegIndex == 0) {//日
         _TimeFrameTitle.text = [NSDate getWeekBeginAndEndWith:date];
-        sumflg = @"d";
+        _SelectSumFlg = @"d";
     }else if(TimeSelectSegIndex == 1){//周
         _TimeFrameTitle.text = @"";
-        sumflg = @"w";
+        _SelectSumFlg = @"w";
     }else if(TimeSelectSegIndex == 2){//月
         _TimeFrameTitle.text = [NSDate getYear:date];
-        sumflg = @"m";
+        _SelectSumFlg = @"m";
     }else if(TimeSelectSegIndex == 3){//年
         _TimeFrameTitle.text = [NSDate getTenYear:date];
-        sumflg = @"y";
+        _SelectSumFlg = @"y";
     }
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date] ,@"forweekly" : @"2" ,@"sumflg" : sumflg}]];
 }
 
 - (void)dealloc{

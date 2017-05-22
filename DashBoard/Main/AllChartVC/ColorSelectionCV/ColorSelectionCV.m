@@ -108,7 +108,7 @@
 - (void)viewDidLoad{
     [super viewDidLoad];
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
-    [NITNotificationCenter addObserver:self selector:@selector(LoadColorSelectionData:) name:@"SystemLoadColorSelection" object:nil];
+    [NITNotificationCenter addObserver:self selector:@selector(LoadColorSelectionData:) name:_LoadCSNotificationName object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -118,7 +118,6 @@
 -(void)ReloadColor:(id)sender{
     [_ColorSelection reloadData];
 }
-
 
 - (void)LoadColorSelectionData:(NSNotification*)sender{
     [MBProgressHUD hideHUDForView:_ColorSelection];
@@ -130,7 +129,7 @@
     } else {
         parameter = @{@"userid0" : SystemUserDict[@"userid0"] ,@"basedate" : sender.userInfo[@"basedate"] ,@"forweekly" : sender.userInfo[@"forweekly"]};
     }
-    NSLog(@"%@",parameter);
+    NSLog(@"%@",@"99999999");
     [[SealAFNetworking NIT] PostWithUrl:ZwgetcolorinfoType parameters:parameter mjheader:nil superview:_ColorSelection success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
@@ -163,7 +162,7 @@
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
-        [[TimeOutReloadButton alloc]Show:self SuperView:_ColorSelection];
+//        [[TimeOutReloadButton alloc]Show:self SuperView:_ColorSelection];
     }];
 }
 

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIView *ColorSelectionView;
 @property (strong, nonatomic) NSMutableArray *controlarr;
 @property (nonatomic, strong) NSDate *SelectDate;
+@property (nonatomic, copy) NSString *LoadCSNotificationName;
 @end
 
 @implementation ActivityStatisticsDetailVC
@@ -45,9 +46,11 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _LoadCSNotificationName = @"ActivityStatisticsDetailVCLCSNN";
     [_PageCV registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [_ColorSelectionView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     ColorSelectionCV *cscv = [MainSB instantiateViewControllerWithIdentifier:@"ColorSelectionSB"];
+    cscv.LoadCSNotificationName = _LoadCSNotificationName;
     [self addChildViewController:cscv];
     [_ColorSelectionView layoutIfNeeded];
     UIView *view = [cscv view];
@@ -68,7 +71,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     ActivityStatisticsDetailChartVC *asdcvc = self.controlarr[ScrollPage];
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : asdcvc.DayStr ,@"forweekly" : @"0"}]];
+    [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:asdcvc.DayStr]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -91,12 +94,14 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
  */
 -(void)MJGetNewData{
     [self ReloadNewData:[NSDate date] ColorType:NO];
+    [self ReloadCSData:[NSDate date]];
 }
 /**
  刷新数据 回到日期检索(LGFClandar)选中日期页
  */
 -(void)SelectDate:(NSDate *)date{
     [self ReloadNewData:date ColorType:NO];
+    [self ReloadCSData:date];
 }
 /**
  刷新数据逻辑封装
@@ -109,10 +114,15 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
         ScrollPage = TotalDay;
         _SelectDate = date;
         _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date]];
-        [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:_SelectDate] ,@"forweekly" : @"0"}]];
     }
     [_PageCV reloadData];
     MAIN([_PageCV scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:ScrollPage inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];);//PageCV reloadData完毕 滚动到指定页
+}
+/**
+ 刷新调色板数据
+ */
+-(void)ReloadCSData:(NSDate*)date{
+    [NITNotificationCenter postNotification:[NSNotification notificationWithName:_LoadCSNotificationName object:nil userInfo:@{@"basedate" : [NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returnstring date:date] ,@"forweekly" : @"0"}]];
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate
@@ -144,7 +154,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
     //分页分页改变日期
     ActivityStatisticsDetailChartVC *asdcvc = self.controlarr[ScrollPage];
     _TimeFrameTitle.text = [NSDate getTheDayOfTheWeekByDateString:asdcvc.DayStr];
-    [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemLoadColorSelection" object:nil userInfo:@{@"basedate" : asdcvc.DayStr ,@"forweekly" : @"0"}]];
+    [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:asdcvc.DayStr]];
 }
 
 - (void)dealloc{

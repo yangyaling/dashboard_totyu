@@ -68,7 +68,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         _PageNumArray = @[@"3x4",@"4x5",@"5x6"];
         _PageTitleArray = @[@"大",@"中",@"小"];
     }else if(NITScreenW == 1366){
-        _PageNumArray = @[@"5x6",@"6x7",@"7x8"];
+        _PageNumArray = @[@"4x5",@"5x6",@"6x7"];
         _PageTitleArray = @[@"大",@"中",@"小"];
     }else{
         _PageNumArray = @[@"2x4",@"3x5"];
@@ -310,6 +310,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
             [fileManager removeItemAtPath:absolutePath error:nil];
         }
     }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AutoTime) object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(AlertMonitor) object:nil];
 }
 /**
  获取新数据
@@ -453,8 +455,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
         NSString *str = DataDict[@"bd"];
         if ([str isEqualToString:@"明"]) {
             cell.luminance.text = @"明るい";
-        } else {
+        } else if([str isEqualToString:@"暗"]){
             cell.luminance.text = @"暗い";
+        } else {
+            cell.luminance.text = @"";
         }
         if (_CurrentAlertarrays.count > 0) {
             cell.alertArray = _CurrentAlertarrays.copy;
