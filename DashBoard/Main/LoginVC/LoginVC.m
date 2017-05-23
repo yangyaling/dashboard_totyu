@@ -65,8 +65,6 @@
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary new];
     [SystemUserDict setValue:@"0" forKey:@"mainvcrow"];
     [SystemUserDict setValue:@"0" forKey:@"mainvcchildrow"];
-    [SystemUserDict setValue:@"0" forKey:@"visualsetvcrow"];
-    [SystemUserDict setValue:@"0" forKey:@"visualsetvcchildrow"];
     [SystemUserDict setValue:staffid forKey:@"staffid"];
     [SystemUserDict setValue:hostcd forKey:@"hostcd"];
     [SystemUserDict setValue:[NSDate NeedDateFormat:@"yyyy-MM-dd HH:mm:ss" ReturnType:returnstring date:[NSDate date]] forKey:@"newnoticetime"];
@@ -80,13 +78,12 @@
             [SystemUserDict setValue:tmpDic[@"usertype"] forKey:@"systemusertype"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO] && (![tmpDic[@"usertype"] isEqualToString:@"3"] || ![tmpDic[@"usertype"] isEqualToString:@"x"])) {
                 [CATransaction setCompletionBlock:^{
-                    [MBProgressHUD showSuccess:@"登録成功!" toView:self.view];
                     LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
                 }];
             }
         } else {
             [CATransaction setCompletionBlock:^{
-                [MBProgressHUD showError:@"登録失败!" toView:self.view];
+                [MBProgressHUD showError:@"正しい情報を入力してください" toView:self.view];
             }];
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }

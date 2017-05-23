@@ -103,7 +103,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
     UIView *view = [cscv view];
     view.size = _ColorSelectionView.size;
     [_ColorSelectionView addSubview:view];
-    
+    TotalRange = 4;
     //设置楼层信息
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     _FloorTitle.text = SystemUserDict[@"facilityname2floorno"];
@@ -116,7 +116,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
+    [super viewWillAppear:NO];
     ActivityStatisticsChartVC *ascvc = self.controlarr[ScrollPage];
     [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:ascvc.DayStr] sumflg:_SelectSumFlg];
 }

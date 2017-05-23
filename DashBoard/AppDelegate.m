@@ -186,6 +186,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
      [_player stop];
+    [application setApplicationIconBadgeNumber:0];
 }
 
 

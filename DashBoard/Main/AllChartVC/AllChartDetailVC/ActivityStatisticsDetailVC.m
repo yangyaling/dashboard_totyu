@@ -69,7 +69,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
+    [super viewWillAppear:NO];
     ActivityStatisticsDetailChartVC *asdcvc = self.controlarr[ScrollPage];
     [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:asdcvc.DayStr]];
 }

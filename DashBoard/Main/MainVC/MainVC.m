@@ -20,7 +20,7 @@
 @interface MainVC ()<LGFDropDownDelegate>
 {
     NSInteger pageCount;
-    int PageNumArrayNum;
+    NSInteger PageNumArrayNum;
 }
 @property (weak, nonatomic) IBOutlet UIPageControl *UserPC;
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
@@ -57,7 +57,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self LoadBuildingInfoData];
+    [self LoadAlertData];
+    [self LoadNoticeCount];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -86,6 +87,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     _AlertBarView.AlertArray = _LoadAlertArray;
+    [self LoadBuildingInfoData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -139,19 +141,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
     if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
         BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
         _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
-        [self LoadAllData];
+        [self LoadCustListData];
     }
 }
 /**
  获取user数据
  */
-- (void)LoadNewData{
+- (void)LoadCustListData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
     NSString *floorno = SystemUserDict[@"mainvcfloorno"];
     NSString *staffid = SystemUserDict[@"staffid"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
     if (facilitycd && staffid && floorno) {
-        [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid) mjheader:nil superview:self.view success:^(id success){
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid,hostcd) mjheader:nil superview:self.view success:^(id success){
             NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
             if ([tmpDic[@"code"] isEqualToString:@"200"]) {
                 self.UserLisrArray = tmpDic[@"custlist"];
@@ -166,7 +169,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
             }
         }defeats:^(NSError *defeats){
             NSLog(@"errors:%@",[defeats localizedDescription]);
-    //        [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
+//            [CATransaction setCompletionBlock:^{
+//                [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
+//            }];
         }];
     }
 }
@@ -175,10 +180,10 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)LoadAlertData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
-    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+//    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+//    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
     NSString *staffid = SystemUserDict[@"staffid"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid) mjheader:nil superview:nil success:^(id success){
+    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(staffid) mjheader:nil superview:nil success:^(id success){
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             _LoadAlertArray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
@@ -211,13 +216,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSString *title;
     NSString *body;
     if ([alerttype isEqualToString:@"alertinfo"]) {
-        body = [NSString stringWithFormat:@"%@ %@\nアラート通知",AlertDict[@"roomname"],AlertDict[@"username0"]];
         registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:AlertDict[@"registdate"]];
-        title = [NSString stringWithFormat:@"%@ %@",AlertDict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+        title = [NSString stringWithFormat:@"%@",[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+        body = [NSString stringWithFormat:@"%@ %@\n異常検知ありました\n%@ %@",AlertDict[@"roomname"],AlertDict[@"username0"],AlertDict[@"userid1"],AlertDict[@"username1"]];
     } else {
-        body = [NSString stringWithFormat:@"%@ %@\nセンサーの設置情報が更新されました\n%@",AlertDict[@"roomname"],AlertDict[@"username0"],[SystemUserDict[@"systemusertype"] isEqualToString:@"1"] ? @"【可視化設定情報を確認してください】" : @"【可視化設定情報を現在確認しています】"];
         registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm" ReturnType:returndate date:AlertDict[@"registdate"]];
-        title = [NSString stringWithFormat:@"%@ %@",AlertDict[@"roomname"],[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+        title = [NSString stringWithFormat:@"%@",[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
+        body = [NSString stringWithFormat:@"%@ %@\nセンサーの設置情報が更新されました\n%@\n%@ %@",AlertDict[@"roomname"],AlertDict[@"username0"],[SystemUserDict[@"systemusertype"] isEqualToString:@"1"] ? @"【可視化設定情報を確認してください】" : @"【可視化設定情報を現在確認しています】",AlertDict[@"userid1"],AlertDict[@"username1"]];
     }
     NSString *Identifier = [NSString stringWithFormat:@"%@%@%@",AlertDict[@"roomname"],AlertDict[@"username0"],alerttype];
     if(SYSREM_VERSION(10.0)){
@@ -318,6 +323,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (IBAction)ButtonLoadNewData:(id)sender {
     [self LoadBuildingInfoData];
+    [self LoadAlertData];
+    [self LoadNoticeCount];
 }
 /**
  警报一览
@@ -385,13 +392,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSLog(@"--SYSTEM_USER_DICT--:%@",SYSTEM_USER_DICT);
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     if ([[SystemUserDict valueForKey:@"logintype"] isEqualToString:@"1"]) {
-        [self LoadAllData];
+        [self LoadNewData];
         [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
     }
 }
 
--(void)LoadAllData{
-    [self LoadNewData];
+-(void)LoadNewData{
+    [self LoadCustListData];
     [self LoadAlertData];
     [self LoadNoticeCount];
 }
@@ -406,6 +413,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
     int Total = [SystemUserDict[@"rowandcolumn"][@"row"] intValue] * [SystemUserDict[@"rowandcolumn"][@"column"] intValue];
     pageCount = self.UserLisrArray.count;
     while (pageCount % Total != 0) ++pageCount;
+    if ((pageCount / Total) <= 1) {
+        [_UserPC setHidden:YES];
+    } else {
+        [_UserPC setHidden:NO];
+    }
     _UserPC.numberOfPages = pageCount / Total;
     [_UserListCV registerClass:[UICollectionViewCell class]
     forCellWithReuseIdentifier:@"CellWhite"];
@@ -422,7 +434,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.item >= self.UserLisrArray.count) {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CellWhite" forIndexPath:indexPath];
         cell.backgroundColor = [UIColor whiteColor];
@@ -437,7 +448,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
         cell.CellBGView.layer.borderWidth = 0.5;
         [cell.alert removeFromSuperview];
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
-
         [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]
                   placeholderImage:[UIImage imageNamed:@"placeholderImage"]
                            options:SDWebImageRetryFailed

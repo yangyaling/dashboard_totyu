@@ -192,16 +192,25 @@
  *  @param row 选中行数
  */
 -(void)selectRow:(NSInteger)row childrow:(NSInteger)childrow{
-//    _SelectRow = row;
-//    NSDictionary *dict = _DataArray[row];
-//    [self boolchild:dict[[dict allKeys].lastObject] type:2];
-//    
-    if (child) {
-        [self boolchild:childrow type:0];
+
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    NSDictionary *title = [NSDictionary dictionaryWithDictionary:_DataArray[row]];
+    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
+    
+    [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
+    if (floornoinfo.count > 0) {
+        [SystemUserDict setValue:title[@"floornoinfo"][childrow][@"floorno"] forKey:@"mainvcfloorno"];
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            [self selectDropDown:[NSString stringWithFormat:@"%@ %@",title[@"facilityname2"],title[@"floornoinfo"][childrow][@"floorno"]]];
+        }
     } else {
-        _SelectRow = row;
-        [self boolchild:row type:2];
+        [SystemUserDict setValue:@"" forKey:@"mainvcfloorno"];
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            [self selectDropDown:[NSString stringWithFormat:@"%@",title[@"facilityname2"]]];
+        }
     }
+    
+    
 }
 
 #pragma marker---- tableView dataSource----
@@ -241,6 +250,21 @@
         [self cellboolchild:_DataArray[indexPath.row] cell:cell];
     }
     return cell;
+}
+/**
+ *  cell数据源是否存在子菜单判断
+ */
+-(void)cellboolchild:(id)title cell:(UITableViewCell*)cell{
+    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
+    if (floornoinfo.count > 0) {//有子菜单
+        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
+    if (child) {
+        cell.textLabel.text = title[@"floorno"];
+    } else {
+        cell.textLabel.text = title[@"facilityname2"];
+    }
 }
 
 #pragma marker---- tableView delegate----
@@ -339,18 +363,6 @@
 
 #pragma marker---- 封装代码 ----
 /**
- *  cell数据源是否存在子菜单判断
- */
--(void)cellboolchild:(id)title cell:(UITableViewCell*)cell{
-    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
-    if (floornoinfo.count > 0) {//有子菜单
-        cell.textLabel.text = title[@"facilityname2"];
-        cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-    } else {
-        cell.textLabel.text = title[@"floorno"];
-    }
-}
-/**
  *  是否存在子菜单判断
  */
 -(void)boolchild:(NSInteger)row type:(int)type{
@@ -359,66 +371,36 @@
     NSDictionary *title;
     if (child) {
         title = _ChildDataArray[row];
-        if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
-            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcchildrow"];
-        } else {
-            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"visualsetvcchildrow"];
+        [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcchildrow"];
+        [SystemUserDict setValue:title[@"floorno"] forKey:@"mainvcfloorno"];
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            [self selectDropDown:[NSString stringWithFormat:@"%@ %@",SelectTitle,title[@"floorno"]]];
         }
     } else {
         title = _DataArray[row];
-        if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
-            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcrow"];
-        } else {
-            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"visualsetvcrow"];
-        }
-    }
-
-    NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
-    if (floornoinfo.count > 0) {//有子菜单
-        
-        if (type==2) {
-            
-            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
-                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
-                [SystemUserDict setValue:title[@"floornoinfo"][[SystemUserDict[@"mainvcchildrow"] integerValue]][@"floorno"] forKey:@"mainvcfloorno"];
-            } else {
-                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"visualsetvcfacilitycd"];
-                [SystemUserDict setValue:title[@"floornoinfo"][[SystemUserDict[@"visualsetvcchildrow"] integerValue]][@"floorno"] forKey:@"visualsetvcfloorno"];
-            }
-            
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                [self selectDropDown:[NSString stringWithFormat:@"%@ %@",title[@"facilityname2"],title[@"floornoinfo"][0][@"floorno"]]];
-            }
-        } else {
-            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
-                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
-            } else {
-                [SystemUserDict setValue:title[@"facilitycd"] forKey:@"visualsetvcfacilitycd"];
-            }
+        [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcrow"];
+        NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
+        if (floornoinfo.count > 0) {//有子菜单
+            [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
                 SelectTitle = title[@"facilityname2"];
                 _ChildDataArray = [NSMutableArray arrayWithArray:floornoinfo];
                 if (type==1)child = YES;
                 [self doDropDown];
             }
-        }
-    }else{//没有子菜单
-        
-        select = NO;
-        if (type==2) {
+        }else{//没有子菜单
             
-        } else {
-            if ([_LGFDropDownType isEqualToString:@"MainVC"]) {
-                [SystemUserDict setValue:title[@"floorno"] forKey:@"mainvcfloorno"];
-            } else {
-                [SystemUserDict setValue:title[@"floorno"] forKey:@"visualsetvcfloorno"];
-            }
-            
+            select = NO;
+            [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
+            [SystemUserDict setValue:@"" forKey:@"mainvcfloorno"];
+            SelectTitle = title[@"facilityname2"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
-                [self selectDropDown:[NSString stringWithFormat:@"%@ %@",SelectTitle,title[@"floorno"]]];
+                [self selectDropDown:[NSString stringWithFormat:@"%@",SelectTitle]];
             }
         }
     }
+
+    
 }
 /**
  *  没有子菜单的情况封装

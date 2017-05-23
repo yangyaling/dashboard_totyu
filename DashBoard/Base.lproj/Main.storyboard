@@ -2441,9 +2441,8 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wL7-4v-4Xe" customClass="UnderlineView">
                                                     <rect key="frame" x="0.0" y="0.0" width="410" height="144"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="新しい" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd9-kx-4ay">
-                                                            <rect key="frame" x="348.5" y="0.0" width="61" height="25"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="新しい" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd9-kx-4ay">
+                                                            <rect key="frame" x="348.5" y="0.0" width="61.5" height="22"/>
                                                             <color key="backgroundColor" red="1" green="0.24363069070000001" blue="0.48218594889999999" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2479,14 +2478,18 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstItem="fd9-kx-4ay" firstAttribute="width" secondItem="wL7-4v-4Xe" secondAttribute="width" multiplier="0.15" id="2Mh-7G-ePv"/>
                                                         <constraint firstItem="xGr-lg-nOo" firstAttribute="centerX" secondItem="wL7-4v-4Xe" secondAttribute="centerX" id="KpB-Ei-582"/>
+                                                        <constraint firstItem="fd9-kx-4ay" firstAttribute="centerX" secondItem="wL7-4v-4Xe" secondAttribute="centerX" multiplier="1.85" id="NPr-gv-63k"/>
                                                         <constraint firstItem="xGr-lg-nOo" firstAttribute="width" secondItem="wL7-4v-4Xe" secondAttribute="width" multiplier="0.95" id="QjK-rg-EtQ"/>
                                                         <constraint firstItem="boP-QT-uJ3" firstAttribute="centerX" secondItem="wL7-4v-4Xe" secondAttribute="centerX" id="Uac-zz-S8T"/>
                                                         <constraint firstItem="xGr-lg-nOo" firstAttribute="centerY" secondItem="wL7-4v-4Xe" secondAttribute="centerY" multiplier="1.75" id="Xse-jS-lBW"/>
                                                         <constraint firstItem="boP-QT-uJ3" firstAttribute="centerY" secondItem="wL7-4v-4Xe" secondAttribute="centerY" multiplier="0.75" id="b1H-Lq-1zM"/>
                                                         <constraint firstItem="xGr-lg-nOo" firstAttribute="height" secondItem="wL7-4v-4Xe" secondAttribute="height" multiplier="0.25" id="cIa-Zf-4qF"/>
                                                         <constraint firstItem="boP-QT-uJ3" firstAttribute="width" secondItem="wL7-4v-4Xe" secondAttribute="width" multiplier="0.95" id="fD8-rP-CVj"/>
+                                                        <constraint firstItem="fd9-kx-4ay" firstAttribute="height" secondItem="wL7-4v-4Xe" secondAttribute="height" multiplier="0.15" id="fHJ-Bh-3Xz"/>
                                                         <constraint firstItem="boP-QT-uJ3" firstAttribute="height" secondItem="wL7-4v-4Xe" secondAttribute="height" multiplier="0.75" id="hDv-V2-uYh"/>
+                                                        <constraint firstItem="fd9-kx-4ay" firstAttribute="centerY" secondItem="wL7-4v-4Xe" secondAttribute="centerY" multiplier="0.15" id="zUF-vV-26L"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="BottomType" value="YES"/>

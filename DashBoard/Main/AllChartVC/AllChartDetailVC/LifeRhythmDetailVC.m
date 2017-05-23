@@ -70,12 +70,10 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
     [NITNotificationCenter addObserver:self selector:@selector(ReloadColor:) name:@"SystemReloadColor" object:nil];
     //刷新数据
     [self ReloadNewData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:_SelectDay] ColorType:NO];
-    LifeRhythmDetailChartVC *lcvc = self.controlarr[ScrollPage];
-    [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:lcvc.DayStr]];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:YES];
+    [super viewWillAppear:NO];
     LifeRhythmDetailChartVC *lcvc = self.controlarr[ScrollPage];
     [self ReloadCSData:[NSDate NeedDateFormat:@"yyyy-MM-dd" ReturnType:returndate date:lcvc.DayStr]];
 }

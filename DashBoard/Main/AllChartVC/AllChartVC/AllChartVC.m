@@ -20,8 +20,8 @@
 static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
-    [self.collectionView layoutIfNeeded];
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0]]];
+    [_collectionView layoutIfNeeded];
+    [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0]]];
     MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
 }
 
@@ -43,7 +43,12 @@ static NSString * const reuseIdentifier = @"AllChartVCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
 }
 
 - (void)didReceiveMemoryWarning {

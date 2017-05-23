@@ -17,6 +17,15 @@
     if (DataBool == 0) {
         NoDataLabel *nodatalabel = [[NoDataLabel alloc]initWithFrame:[SuperView isKindOfClass:[UICollectionView class]] ? SuperView.frame : SuperView.bounds];
         nodatalabel.text = title;
+        if(NITScreenW == 1024){
+            nodatalabel.font = [UIFont boldSystemFontOfSize:20];
+        }else if(NITScreenW == 1366){
+            nodatalabel.font = [UIFont boldSystemFontOfSize:25];
+        }else if(NITScreenW == 736){
+            nodatalabel.font = [UIFont boldSystemFontOfSize:15];
+        }else{
+            nodatalabel.font = [UIFont boldSystemFontOfSize:12];
+        }
         nodatalabel.textColor = [UIColor lightGrayColor];
         nodatalabel.textAlignment = NSTextAlignmentCenter;
         [SuperView addSubview:nodatalabel];

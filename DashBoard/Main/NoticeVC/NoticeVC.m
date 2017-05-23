@@ -57,7 +57,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
                     [_NoticeCollection reloadData];
                     [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                     NSDictionary *dict = self.NoticeArray[0];
-                    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
+                    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@\n%@",dict[@"content"],dict[@"registdate"]];
                 }
             } else {
                 [_NoticeCollection reloadData];
@@ -100,7 +100,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDictionary *dict = self.NoticeArray[indexPath.row];
-    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@ %@",dict[@"content"],dict[@"registdate"]];
+    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@\n%@",dict[@"content"],dict[@"registdate"]];
 }
 
 - (void)dealloc{

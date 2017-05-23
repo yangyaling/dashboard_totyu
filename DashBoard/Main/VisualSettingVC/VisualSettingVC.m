@@ -459,7 +459,7 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
             _PlaceDropDown.delegate = self;
             _PlaceDropDown.DefaultTitle = tmpDic[@"buildingInfo"][0][@"facilityname2"];
             _PlaceDropDown.DataArray = tmpDic[@"buildingInfo"];
-            [_PlaceDropDown selectRow:[SystemUserDict[@"visualsetvcrow"] integerValue] childrow:[SystemUserDict[@"visualsetvcchildrow"] integerValue]];
+            [_PlaceDropDown selectRow:[SystemUserDict[@"mainvcrow"] integerValue] childrow:[SystemUserDict[@"mainvcchildrow"] integerValue]];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
         }
@@ -472,11 +472,12 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
 - (void)LoadVzConfigData{
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    NSString *facilitycd = SystemUserDict[@"visualsetvcfacilitycd"];
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
     NSString *staffid = SystemUserDict[@"staffid"];
-    NSString *floorno = SystemUserDict[@"visualsetvcfloorno"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
     if (facilitycd && staffid && floorno) {
-        [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(facilitycd,staffid,floorno) mjheader:nil superview:self.view success:^(id success){
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetvzconfiginfoType parameters:NSDictionaryOfVariableBindings(facilitycd,staffid,floorno,hostcd) mjheader:nil superview:self.view success:^(id success){
             NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
             if ([tmpDic[@"code"] isEqualToString:@"200"]) {
                 self.UserListArray = tmpDic[@"vzconfiginfo"];
@@ -500,6 +501,9 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
 //                [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
             }
         }defeats:^(NSError *defeats){
+            [CATransaction setCompletionBlock:^{
+                [[TimeOutReloadButton alloc]Show:self SuperView:self.view];
+            }];
         }];
     }
 }
@@ -836,7 +840,8 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         UIAlertController *TextFieldAlert = [UIAlertController alertControllerWithTitle:@"" message:@"設定情報を削除します、よろしいですか。" preferredStyle:UIAlertControllerStyleAlert];
-        [TextFieldAlert addAction:[UIAlertAction actionWithTitle:@"いいえ" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {}]];
+        [TextFieldAlert addAction:[UIAlertAction actionWithTitle:@"いいえ" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        }]];
         [TextFieldAlert addAction:[UIAlertAction actionWithTitle:@"はい" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             NSMutableArray *savearr = [NSMutableArray arrayWithContentsOfFile:SaveArrayPath];
             NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[indexPath.row]];

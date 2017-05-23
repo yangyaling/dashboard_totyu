@@ -66,7 +66,9 @@
         }
     }defeats:^(NSError *defeats){
         NSLog(@"errors:%@",[defeats localizedDescription]);
-        [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
+        [CATransaction setCompletionBlock:^{
+            [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
+        }];
     }];
 }
 

@@ -13,7 +13,7 @@
 -(void)Show:(id)Super SuperView:(UIView*)SuperView{
     [self removeFromSuperview];
     
-    TimeOutReloadButton *button = [[TimeOutReloadButton alloc]initWithFrame:CGRectMake(SuperView.width / 2-SuperView.width / 10, SuperView.height / 2 + SuperView.height / 20, SuperView.width / 5, SuperView.height / 10)];
+    TimeOutReloadButton *button = [[TimeOutReloadButton alloc]initWithFrame:CGRectMake(SuperView.width / 2-SuperView.width / 10, SuperView.height / 2 - SuperView.height / 20, SuperView.width / 5, SuperView.height / 10)];
     [button setTitle:@"リロード" forState:UIControlStateNormal];
     [button setTitleColor:SystemColor(1.0) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:SuperView.height / 15];

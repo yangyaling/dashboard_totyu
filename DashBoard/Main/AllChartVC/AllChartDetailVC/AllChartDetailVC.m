@@ -20,9 +20,9 @@
 static NSString * const reuseIdentifier = @"AllChartDetailVCCell";
 
 - (IBAction)SelectView:(UISegmentedControl *)sender {
-    [self.collectionView layoutIfNeeded];
-    [self.collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0]]];
-    MAIN([self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
+    [_collectionView layoutIfNeeded];
+    [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:sender.selectedSegmentIndex inSection:0]]];
+    MAIN([_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:sender.selectedSegmentIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];);
 }
 /**
  视图控制器数组
@@ -45,7 +45,12 @@ static NSString * const reuseIdentifier = @"AllChartDetailVCCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:YES];
+    [_collectionView reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,10 +70,6 @@ static NSString * const reuseIdentifier = @"AllChartDetailVCCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    //确保自动适配完毕
-    [cell setNeedsLayout];
-    [cell layoutIfNeeded];
-    //cell添加子控制器
     UIView *view = [self.controlarr[indexPath.item]view];
     view.size = cell.size;
     [cell.contentView addSubview:view];

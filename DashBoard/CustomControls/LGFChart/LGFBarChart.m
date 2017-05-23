@@ -101,6 +101,15 @@
                 }
             }
         }
+    } else {
+        NSArray *DataArray = BarDict[@"data"];
+        if (DataArray.count > 0) {
+            [DataArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                CGContextMoveToPoint(context, BarX(obj), self.height);
+                CGContextAddLineToPoint(context, BarX(obj), 0);
+            }];
+            CGContextDrawPath(context, kCGPathStroke);
+        }
     }
 }
 /**
