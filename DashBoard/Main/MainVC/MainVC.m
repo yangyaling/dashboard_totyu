@@ -57,8 +57,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self LoadAlertData];
-    [self LoadNoticeCount];
     [self performSelector:@selector(AutoTime) withObject:nil afterDelay:1];
     [self performSelector:@selector(AlertMonitor) withObject:nil afterDelay:alertpushnum];
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -77,6 +75,8 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }
     PageNumArrayNum = 0;
     [self SelectPageNum:_PageNumBtn];
+    [self LoadAlertData];
+    [self LoadNoticeCount];
 }
 
 -(void)DidBecomeActive {
