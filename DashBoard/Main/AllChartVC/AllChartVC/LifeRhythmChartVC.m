@@ -118,4 +118,8 @@
         advc.Weekdate = _WeekArray[indexPath.item];
     }
 }
+
+- (void)dealloc{
+    [NITNotificationCenter removeObserver:self];
+}
 @end

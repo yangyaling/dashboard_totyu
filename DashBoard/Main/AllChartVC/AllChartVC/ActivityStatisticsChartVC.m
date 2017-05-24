@@ -115,4 +115,7 @@
     return cell;
 }
 
+- (void)dealloc{
+    [NITNotificationCenter removeObserver:self];
+}
 @end
