@@ -36,6 +36,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageDetailCVCell";
         for (int i = 0; i <= TotalDay; i++) {
             ActivityStatisticsDetailChartVC *asdcvc = [MainSB instantiateViewControllerWithIdentifier:@"ActivityStatisticsDetailChartVCSB"];
             asdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
+            asdcvc.LoadCSNotificationName = @"ActivityStatisticsDetailVCLCSNNChild";
             asdcvc.delegate = self;
             [self addChildViewController:asdcvc];
             [_controlarr addObject:asdcvc];

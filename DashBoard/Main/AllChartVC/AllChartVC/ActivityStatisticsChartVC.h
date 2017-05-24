@@ -16,5 +16,6 @@
 @interface ActivityStatisticsChartVC : UIViewController
 @property (nonatomic, copy) NSString *DayStr;
 @property (nonatomic, copy) NSString *SumFlg;
+@property (nonatomic, strong) NSString *LoadCSNotificationName;
 @property (nonatomic, assign) id<ActivityStatisticsChartVCDelegate> delegate;
 @end

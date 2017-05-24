@@ -37,6 +37,7 @@
     [self LoadNewData];
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
+    [NITNotificationCenter addObserver:self selector:@selector(ReloadData) name:_LoadCSNotificationName object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,7 +60,7 @@
             _DataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][0]];
             _OneDataArray = [NSArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
             [[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count == 0 && _OneDataArray.count == 0 ? 0 : 1];
-            [_ChartCV reloadData];
+            [self ReloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [MBProgressHUD showError:@"system errors" toView:_ChartCV];
@@ -71,6 +72,10 @@
             [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
         }];
     }];
+}
+
+-(void)ReloadData{
+    [_ChartCV reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate

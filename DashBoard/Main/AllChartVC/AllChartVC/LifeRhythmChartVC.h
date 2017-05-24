@@ -14,5 +14,6 @@
 
 @interface LifeRhythmChartVC : UIViewController
 @property (nonatomic, copy) NSString *DayStr;
+@property (nonatomic, strong) NSString *LoadCSNotificationName;
 @property (nonatomic, assign) id<LifeRhythmChartVCDelegate> delegate;
 @end

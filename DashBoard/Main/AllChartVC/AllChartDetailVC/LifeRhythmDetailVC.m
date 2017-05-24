@@ -38,6 +38,7 @@ static NSString * const reuseIdentifier = @"PageDetailCVCell";
         for (int i = 0; i <= TotalDay; i++) {
             LifeRhythmDetailChartVC *lrdcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmDetailChartVCSB"];
             lrdcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:TotalDay - i];
+            lrdcvc.LoadCSNotificationName = @"LifeRhythmDetailVCLCSNNChild";
             lrdcvc.delegate = self;
             [self addChildViewController:lrdcvc];
             [_controlarr addObject:lrdcvc];

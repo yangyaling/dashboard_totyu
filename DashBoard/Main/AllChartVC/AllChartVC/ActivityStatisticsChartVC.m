@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *ChartCV;
 @property (weak, nonatomic) IBOutlet LGFChartNumBar *ChartNum;
 @property (nonatomic, strong) NSMutableArray *DataArray;
+@property (nonatomic, strong) NSMutableArray *LrsumList;
 @end
 
 @implementation ActivityStatisticsChartVC
@@ -30,6 +31,7 @@
     [self LoadNewData];
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
+    [NITNotificationCenter addObserver:self selector:@selector(ReloadData) name:_LoadCSNotificationName object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -50,35 +52,8 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSArray *datesArray = [tmpDic valueForKey:@"dates"];
             _ChartNum.YValuesArray = [NSArray arrayWithArray:datesArray];
-            _DataArray = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
-                NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-                NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:[SystemUserDict objectForKey:@"systemactioninfo"]];
-                NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
-                int selecttype = 0;
-                for (NSDictionary *DataDict in DataArrayCopy) {
-                    for (NSDictionary *removedict in systemactioninfo) {
-                        if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
-                            if (removedict[@"selecttype"]) {
-                                if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
-                                    [_DataArray removeObject:DataDict];
-                                }
-                            }
-                        }
-                        if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
-                            selecttype = 1;
-                        }
-                    }
-                }
-                if (selecttype == 1) {
-                    for (NSDictionary *DataDict in DataArrayCopy) {
-                        if (DataDict.count == 8) {
-                            [_DataArray removeObject:DataDict];
-                        }
-                    }
-                }
-            }
-            [_ChartCV reloadData];
+            _LrsumList = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
+            [self ReloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [MBProgressHUD showError:@"system errors" toView:_ChartCV];
@@ -90,6 +65,38 @@
             [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
         }];
     }];
+}
+
+-(void)ReloadData{
+    _DataArray = [NSMutableArray arrayWithArray:_LrsumList];
+    if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+        NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+        NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:[SystemUserDict objectForKey:@"systemactioninfo"]];
+        NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
+        int selecttype = 0;
+        for (NSDictionary *DataDict in DataArrayCopy) {
+            for (NSDictionary *removedict in systemactioninfo) {
+                if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
+                    if (removedict[@"selecttype"]) {
+                        if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                            [_DataArray removeObject:DataDict];
+                        }
+                    }
+                }
+                if ([removedict[@"actionselect"] isEqualToString:@"YES"]) {
+                    selecttype = 1;
+                }
+            }
+        }
+        if (selecttype == 1) {
+            for (NSDictionary *DataDict in DataArrayCopy) {
+                if (DataDict.count == 8) {
+                    [_DataArray removeObject:DataDict];
+                }
+            }
+        }
+    }
+    [_ChartCV reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate

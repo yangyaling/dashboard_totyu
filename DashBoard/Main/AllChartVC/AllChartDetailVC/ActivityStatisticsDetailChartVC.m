@@ -18,7 +18,8 @@
 @interface ActivityStatisticsDetailChartVC ()
 @property (weak, nonatomic) IBOutlet UICollectionView *ChartCV;
 @property (nonatomic, strong) NSMutableArray *DataArray;
-@property (nonatomic, strong) NSString    *indexSelectedStr;
+@property (nonatomic, strong) NSMutableArray *LrList;
+@property (nonatomic, strong) NSString *indexSelectedStr;
 @end
 
 @implementation ActivityStatisticsDetailChartVC
@@ -28,6 +29,7 @@
     [self LoadNewData];
     _ChartCV.mj_header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(MJHeaderLoadNewData)];
     [NITRefreshInit MJRefreshNormalHeaderInit:(MJRefreshNormalHeader*)_ChartCV.mj_header];
+    [NITNotificationCenter addObserver:self selector:@selector(ReloadData) name:_LoadCSNotificationName object:nil];
 }
 
 -(void)MJHeaderLoadNewData{
@@ -47,24 +49,8 @@
         NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
-            _DataArray  = [NSMutableArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
-            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
-                NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-                NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray: [SystemUserDict objectForKey:@"systemactioninfo"]];
-                NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
-                for (NSDictionary *DataDict in DataArrayCopy) {
-                    for (NSDictionary *removedict in systemactioninfo) {
-                        if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
-                            if (removedict[@"selecttype"]) {
-                                if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
-                                    [_DataArray removeObject:DataDict];
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            [_ChartCV reloadData];
+            _LrList  = [NSMutableArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
+            [self ReloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [MBProgressHUD showError:@"system errors" toView:_ChartCV];
@@ -76,6 +62,27 @@
             [[TimeOutReloadButton alloc]Show:self SuperView:_ChartCV];
         }];
     }];
+}
+
+-(void)ReloadData{
+    _DataArray = [NSMutableArray arrayWithArray:_LrList];
+    if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+        NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+        NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray: [SystemUserDict objectForKey:@"systemactioninfo"]];
+        NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
+        for (NSDictionary *DataDict in DataArrayCopy) {
+            for (NSDictionary *removedict in systemactioninfo) {
+                if ([removedict[@"actionid"] isEqualToString:DataDict[@"actionid"]]) {
+                    if (removedict[@"selecttype"]) {
+                        if ([removedict[@"selecttype"] isEqualToString:@"YES"]) {
+                            [_DataArray removeObject:DataDict];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    [_ChartCV reloadData];
 }
 
 #pragma mark - UICollectionViewDataSource And Delegate

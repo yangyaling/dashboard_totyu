@@ -154,6 +154,7 @@
             [SystemUserDict setObject:_ColorSelectionArray forKey:@"systemactioninfo"];
             if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
                 [_ColorSelection reloadData];
+                [NITNotificationCenter postNotification:[NSNotification notificationWithName:[NSString stringWithFormat:@"%@%@",_LoadCSNotificationName,@"Child"] object:nil userInfo:nil]];
             }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);

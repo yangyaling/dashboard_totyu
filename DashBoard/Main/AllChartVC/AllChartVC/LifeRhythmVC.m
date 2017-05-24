@@ -39,6 +39,7 @@ static NSString * const reuseIdentifier = @"PageVCCell";
         for (int i = 0; i <= TotalWeek; i++) {
             LifeRhythmChartVC *lrcvc = [MainSB instantiateViewControllerWithIdentifier:@"LifeRhythmChartVCSB"];
             lrcvc.DayStr = [NSDate SotherDay:_SelectDate symbols:LGFMinus dayNum:(TotalWeek - i) * 7];
+            lrcvc.LoadCSNotificationName = @"LifeRhythmVCLCSNNChild";
             lrcvc.delegate = self;
             [self addChildViewController:lrcvc];
             [_controlarr addObject:lrcvc];

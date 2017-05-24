@@ -82,6 +82,7 @@ static NSString * const reuseIdentifier = @"ActivityStatisticsPageCell";
                 }
                 ascvc.SumFlg = @"y";
             }
+            ascvc.LoadCSNotificationName = @"ActivityStatisticsVCLCSNNChild";
             ascvc.delegate = self;
             [self addChildViewController:ascvc];
             [reverscontrolarr addObject:ascvc];
