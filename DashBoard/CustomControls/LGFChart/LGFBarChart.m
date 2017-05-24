@@ -111,7 +111,7 @@
             CGContextDrawPath(context, kCGPathStroke);
         }
     }
-}
+} 
 /**
  长按查看值
  */
