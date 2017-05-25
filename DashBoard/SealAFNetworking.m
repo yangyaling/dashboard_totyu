@@ -6,31 +6,31 @@
 //  Copyright © 2016年 totyu3. All rights reserved.
 //
 
-#define ZwloginURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwlogin.php"
+#define ZwloginURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwlogin.php"
 
-#define ZwgetFacilityListURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetfacilitylist.php"
+#define ZwgetFacilityListURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetfacilitylist.php"
 
-#define ZwgetcolorinfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/Zwgetcolorinfo.php"
+#define ZwgetcolorinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/Zwgetcolorinfo.php"
 
-#define ZwgetbuildinginfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetbuildinginfo.php"
-#define ZwgetcustlistURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetcustlist.php"
+#define ZwgetbuildinginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetbuildinginfo.php"
+#define ZwgetcustlistURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetcustlist.php"
 
-#define ZwgetalertinfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetalertinfo.php"
+#define ZwgetalertinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetalertinfo.php"
 
-#define ZwgetvzconfiginfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetvzconfiginfo.php"
-#define ZwgetupdatevzconfiginfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwupdatevzconfiginfo.php"
-#define ZwupdatenoticeURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwupdatenoticeinfo.php"
+#define ZwgetvzconfiginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvzconfiginfo.php"
+#define ZwgetupdatevzconfiginfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdatevzconfiginfo.php"
+#define ZwupdatenoticeURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdatenoticeinfo.php"
 
-#define ZwupdateactioncolorURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwupdateactioncolor.php"
+#define ZwupdateactioncolorURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwupdateactioncolor.php"
 
-#define ZwgetvznoticeinfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetvznoticeinfo.php"
-#define ZwgetvznoticecountURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetvznoticecount.php"
+#define ZwgetvznoticeinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvznoticeinfo.php"
+#define ZwgetvznoticecountURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetvznoticecount.php"
 
-#define WeeklylrinfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetweeklylrinfo.php"
+#define WeeklylrinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetweeklylrinfo.php"
 
-#define LrinfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetlrinfo.php"
+#define LrinfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetlrinfo.php"
 
-#define LrsuminfoURL @"https://mimamori2p1hb.azurewebsites.net/dashboard/zwgetlrsuminfo.php"
+#define LrsuminfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetlrsuminfo.php"
 
 //#define LrsuminfoURL @"https://mimamori2p1.azurewebsites.net/dashboard/zwgetcolor.php"
 
