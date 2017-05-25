@@ -49,7 +49,7 @@
     [dicBt setObject:ColorDict[@"actioncolor"] forKey:@"actioncolor"];
     [systemactioninfo replaceObjectAtIndex:_Row withObject:dicBt];
     [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         [[SealAFNetworking NIT] PostWithUrl:ZwupdateactioncolorType parameters:ColorDict mjheader:nil superview:nil success:^(id success){
             NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
             self.ColorView.backgroundColor = [UIColor colorWithHex:ColorDict[@"actioncolor"]];
@@ -93,7 +93,7 @@
     }];
     [SystemUserDict setObject:systemactioninfo forKey:@"systemactioninfo"];
     
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         [NITNotificationCenter postNotification:[NSNotification notificationWithName:@"SystemReloadColor" object:nil userInfo:nil]];
     }
 }
@@ -152,7 +152,7 @@
                 [_ColorSelectionArray replaceObjectAtIndex:idx withObject:obj];
                 }];
             [SystemUserDict setObject:_ColorSelectionArray forKey:@"systemactioninfo"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
                 [_ColorSelection reloadData];
                 [NITNotificationCenter postNotification:[NSNotification notificationWithName:[NSString stringWithFormat:@"%@%@",_LoadCSNotificationName,@"Child"] object:nil userInfo:nil]];
             }

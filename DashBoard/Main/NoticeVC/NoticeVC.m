@@ -53,7 +53,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
             if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count]){
                 NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
                 [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
-                if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+                if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
                     [_NoticeCollection reloadData];
                     [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                     NSDictionary *dict = self.NoticeArray[0];
@@ -107,7 +107,7 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
     [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"oldnoticetime"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
 }
 
 @end

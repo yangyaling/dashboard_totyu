@@ -76,7 +76,7 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             [NITUserDefaults setObject:tmpDic forKey:@"MainUserDict"];
             [SystemUserDict setValue:tmpDic[@"usertype"] forKey:@"systemusertype"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO] && (![tmpDic[@"usertype"] isEqualToString:@"3"] || ![tmpDic[@"usertype"] isEqualToString:@"x"])) {
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES] && (![tmpDic[@"usertype"] isEqualToString:@"3"] || ![tmpDic[@"usertype"] isEqualToString:@"x"])) {
                 [CATransaction setCompletionBlock:^{
                     LGFKeyWindow.rootViewController = [MainSB instantiateViewControllerWithIdentifier:@"MainView"];
                 }];

@@ -481,6 +481,7 @@
     NSDateFormatter *dateformater = [[NSDateFormatter alloc] init];
     [dateformater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [dateformater setTimeZone:[NSTimeZone systemTimeZone]];
+    [dateformater setLocale:[NSLocale systemLocale]];
     NSDate *dta = [dateformater dateFromString:aDate];
     NSDate *dtb = [dateformater dateFromString:bDate];
     NSComparisonResult result = [dtb compare:dta];

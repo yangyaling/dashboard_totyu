@@ -2447,6 +2447,12 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <nil key="highlightedColor"/>
+                                                            <variation key="heightClass=compact-widthClass=compact">
+                                                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                            </variation>
+                                                            <variation key="heightClass=compact-widthClass=regular">
+                                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                            </variation>
                                                         </label>
                                                         <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Lorem ipsum dolor sit er elit " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boP-QT-uJ3">
                                                             <rect key="frame" x="10" y="0.0" width="390" height="108"/>

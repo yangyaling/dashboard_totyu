@@ -200,12 +200,12 @@
     [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
     if (floornoinfo.count > 0) {
         [SystemUserDict setValue:title[@"floornoinfo"][childrow][@"floorno"] forKey:@"mainvcfloorno"];
-        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
             [self selectDropDown:[NSString stringWithFormat:@"%@ %@",title[@"facilityname2"],title[@"floornoinfo"][childrow][@"floorno"]]];
         }
     } else {
         [SystemUserDict setValue:@"" forKey:@"mainvcfloorno"];
-        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
             [self selectDropDown:[NSString stringWithFormat:@"%@",title[@"facilityname2"]]];
         }
     }
@@ -373,7 +373,7 @@
         title = _ChildDataArray[row];
         [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",(long)row] forKey:@"mainvcchildrow"];
         [SystemUserDict setValue:title[@"floorno"] forKey:@"mainvcfloorno"];
-        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+        if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
             [self selectDropDown:[NSString stringWithFormat:@"%@ %@",SelectTitle,title[@"floorno"]]];
         }
     } else {
@@ -382,7 +382,7 @@
         NSArray *floornoinfo = [NSArray arrayWithArray:title[@"floornoinfo"]];
         if (floornoinfo.count > 0) {//有子菜单
             [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
                 SelectTitle = title[@"facilityname2"];
                 _ChildDataArray = [NSMutableArray arrayWithArray:floornoinfo];
                 if (type==1)child = YES;
@@ -394,7 +394,7 @@
             [SystemUserDict setValue:title[@"facilitycd"] forKey:@"mainvcfacilitycd"];
             [SystemUserDict setValue:@"" forKey:@"mainvcfloorno"];
             SelectTitle = title[@"facilityname2"];
-            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+            if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
                 [self selectDropDown:[NSString stringWithFormat:@"%@",SelectTitle]];
             }
         }

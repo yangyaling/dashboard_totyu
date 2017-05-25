@@ -62,7 +62,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [NITNotificationCenter addObserver:self selector:@selector(DidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:@"1" forKey:@"logintype"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
     if(NITScreenW == 1024){
         _PageNumArray = @[@"3x4",@"4x5",@"5x6"];
         _PageTitleArray = @[@"大",@"中",@"小"];
@@ -101,7 +101,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSArray *rowandcolumn=[_PageNumArray[PageNumArrayNum] componentsSeparatedByString:@"x"];
     [SystemUserDict setObject:@{@"row" : rowandcolumn[0] , @"column" : rowandcolumn[1]} forKey:@"rowandcolumn"];
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         [self CellHorizontalAlignment];
     }
     if (PageNumArrayNum == _PageNumArray.count-1) {
@@ -138,7 +138,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:selecttitle forKey:@"facilityname2floorno"];
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
         _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
         [self LoadCustListData];
@@ -198,7 +198,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 [self PostAlertNotice:historydict alerttype:@"historyinfo"];
             }
             [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
-            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
             [_UserListCV reloadData];
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
@@ -362,7 +362,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [SystemUserDict setValue:DataDict[@"roomname"] forKey:@"roomname"];
     [SystemUserDict setValue:DataDict[@"username0"] forKey:@"username0"];
     [SystemUserDict removeObjectForKey:@"systemactioninfo"];
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO]) {
+    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         [self performSegueWithIdentifier:@"AllChartVCPush" sender:self];
     }
 }

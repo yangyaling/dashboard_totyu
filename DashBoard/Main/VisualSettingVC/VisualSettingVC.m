@@ -110,7 +110,7 @@
             }
             sender.backgroundColor = [UIColor clearColor];
             [savearr replaceObjectAtIndex:_SuperRow withObject:savedict];
-            if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+            if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
                 [self.SensorInformationDelegate SensorInformationTableReload];
             }
         }]];
@@ -145,7 +145,7 @@
         }
     }
     [savearr replaceObjectAtIndex:_SuperRow withObject:savedict];
-    if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+    if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
         [self.SensorInformationDelegate SensorInformationTableReload];
     }
     [textField resignFirstResponder];
@@ -228,7 +228,7 @@
         [DataDict setValue:[NSString stringWithFormat:@"%ld",(long)_Row - EnvironmentalArr.count + 1] forKey:@"actionorder"];
     }
     [savearr replaceObjectAtIndex:_Row withObject:DataDict];
-    [savearr writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:YES];
     //sensor情报数组生成
     _SensorInformationArray = [NSMutableArray array];
     if ([[NSString stringWithFormat:@"%@",DataDict[@"actionexplain"]]isEqualToString:@"6"]) {
@@ -327,7 +327,7 @@
         [savedict setValue:@"U" forKey:@"oflag"];
     }
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
-    if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+    if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
         [self.VisualSetOneDelegate VisualSetTableReload:savearr Row:_Row];
     }
     [textField resignFirstResponder];
@@ -375,7 +375,7 @@
         [savedict setValue:@"U" forKey:@"oflag"];
     }
     [savearr replaceObjectAtIndex:_Row withObject:savedict];
-    [savearr writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:YES];
 }
 
 -(void)SensorInformationTableReload{
@@ -435,7 +435,7 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSMutableArray *savearr = [NSMutableArray array];
-    [savearr writeToFile:SaveArrayPath atomically:NO];
+    [savearr writeToFile:SaveArrayPath atomically:YES];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     SystemUserType = [SystemUserDict[@"systemusertype"] intValue];
     [_AddVisualSet setHidden:YES];
@@ -488,9 +488,9 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
                     [SystemUserDict setValue:tmpDic[@"devicetypelist"] forKey:@"devicetypelist"];
                     [SystemUserDict setValue:dict[@"userid0"] forKey:@"userid0"];
                     [SystemUserDict setValue:dict[@"roomid"] forKey:@"roomid"];
-                    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+                    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
                     NSMutableArray *savearr = dict[@"actioninfo"];
-                    [savearr writeToFile:SaveArrayPath atomically:NO];
+                    [savearr writeToFile:SaveArrayPath atomically:YES];
                 }
                 [self VisualSetTableNotEdit:NO];
                 [_UserListCollection reloadData];
@@ -627,7 +627,7 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
         [SaveArr addObject:DataDict];
         NewRow = SaveArr.count-1;
     }
-    if ([SaveArr writeToFile:SaveArrayPath atomically:NO]) {
+    if ([SaveArr writeToFile:SaveArrayPath atomically:YES]) {
         [self VisualSetTableReload:SaveArr Row:NewRow];
     }
 }
@@ -751,9 +751,9 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     [SystemUserDict setValue:dict[@"userid0"] forKey:@"userid0"];
     [SystemUserDict setValue:dict[@"roomid"] forKey:@"roomid"];
-    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:NO];
+    [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
     NSMutableArray *savearr = dict[@"actioninfo"];
-    if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+    if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
         [self VisualSetTableReload:savearr Row:0];
     }
 }
@@ -795,7 +795,7 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
         [savedicttwo setValue:@"U" forKey:@"oflag"];
     }
     [savearr replaceObjectAtIndex:destinationIndexPath.row withObject:savedicttwo];
-    if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+    if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
         [self VisualSetTableReload:savearr Row:destinationIndexPath.row];
     }
 }
@@ -847,7 +847,7 @@ static NSString * const reuseIdentifiertbvone = @"VisualSetTableOneCell";
             NSMutableDictionary *savedict = [NSMutableDictionary dictionaryWithDictionary:savearr[indexPath.row]];
             [savedict setValue:@"D" forKey:@"oflag"];
             [savearr replaceObjectAtIndex:indexPath.row withObject:savedict];
-            if ([savearr writeToFile:SaveArrayPath atomically:NO]) {
+            if ([savearr writeToFile:SaveArrayPath atomically:YES]) {
                 [self SaveVisualSetData];
             }
         }]];
