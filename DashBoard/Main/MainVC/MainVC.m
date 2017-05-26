@@ -136,13 +136,9 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 -(void)nowSelectRow:(NSString *)selecttitle selectrow:(NSInteger)selectrow{
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
-    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-    [SystemUserDict setValue:selecttitle forKey:@"facilityname2floorno"];
-    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
-        BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
-        _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
-        [self LoadCustListData];
-    }
+    BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+    _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
+    [self LoadCustListData];
 }
 /**
  获取user数据
@@ -153,7 +149,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     NSString *floorno = SystemUserDict[@"mainvcfloorno"];
     NSString *staffid = SystemUserDict[@"staffid"];
     NSString *hostcd = SystemUserDict[@"hostcd"];
-    if (facilitycd && staffid && floorno) {
+    if (facilitycd && staffid && floorno && hostcd) {
         [[SealAFNetworking NIT] PostWithUrl:ZwgetcustlistType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,staffid,hostcd) mjheader:nil superview:self.view success:^(id success){
             NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
             if ([tmpDic[@"code"] isEqualToString:@"200"]) {
@@ -180,31 +176,34 @@ static NSString * const reuseIdentifier = @"MainVCell";
  */
 - (void)LoadAlertData{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
-//    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
-//    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
     NSString *staffid = SystemUserDict[@"staffid"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(staffid) mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            _LoadAlertArray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
-            _CurrentAlertarrays = _LoadAlertArray.copy;
-            _AlertBarView.AlertArray = _LoadAlertArray;
-            NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
-            if (_LoadAlertArray.count > 0) {
-                NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
-                [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
+    if (facilitycd && staffid && floorno && hostcd) {
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetalertinfoType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,hostcd,staffid) mjheader:nil superview:nil success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            if ([tmpDic[@"code"] isEqualToString:@"200"]) {
+                _LoadAlertArray = [NSArray arrayWithArray:tmpDic[@"alertinfo"]];
+                _CurrentAlertarrays = _LoadAlertArray.copy;
+                _AlertBarView.AlertArray = _LoadAlertArray;
+                NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
+                if (_LoadAlertArray.count > 0) {
+                    NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
+                    [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+                }
+                for (NSDictionary *historydict in LoadHistoryArray) {
+                    [self PostAlertNotice:historydict alerttype:@"historyinfo"];
+                }
+                [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
+                [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
+                [_UserListCV reloadData];
+            } else {
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
             }
-            for (NSDictionary *historydict in LoadHistoryArray) {
-                [self PostAlertNotice:historydict alerttype:@"historyinfo"];
-            }
-            [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
-            [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
-            [_UserListCV reloadData];
-        } else {
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-        }
-    }defeats:^(NSError *defeats){
-    }];
+        }defeats:^(NSError *defeats){
+        }];
+    }
 }
 
 -(void)PostAlertNotice:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
@@ -265,25 +264,30 @@ static NSString * const reuseIdentifier = @"MainVCell";
 - (void)LoadNoticeCount{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     NSString *registdate = SystemUserDict[@"newnoticetime"];
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
     NSString *staffid = SystemUserDict[@"staffid"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:NSDictionaryOfVariableBindings(registdate,staffid) mjheader:nil superview:nil success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            if ([tmpDic[@"vznoticecount"] intValue] == 0) {
-                _NoticeNewDataTap.alpha = 0.0;
-            } else {
-                _NoticeNewDataTap.alpha = 1.0;
-                if ([tmpDic[@"vznoticecount"] intValue] > 99) {
-                    _NoticeNewDataTap.text = @"99+";
+    if (facilitycd && staffid && floorno && hostcd) {
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticecountType parameters:NSDictionaryOfVariableBindings(registdate,facilitycd,floorno,hostcd,staffid) mjheader:nil superview:nil success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            if ([tmpDic[@"code"] isEqualToString:@"200"]) {
+                if ([tmpDic[@"vznoticecount"] intValue] == 0) {
+                    _NoticeNewDataTap.alpha = 0.0;
                 } else {
-                    _NoticeNewDataTap.text = [NSString stringWithFormat:@"%@",tmpDic[@"vznoticecount"]];
+                    _NoticeNewDataTap.alpha = 1.0;
+                    if ([tmpDic[@"vznoticecount"] intValue] > 99) {
+                        _NoticeNewDataTap.text = @"99+";
+                    } else {
+                        _NoticeNewDataTap.text = [NSString stringWithFormat:@"%@",tmpDic[@"vznoticecount"]];
+                    }
                 }
+            } else {
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
             }
-        } else {
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-        }
-    }defeats:^(NSError *defeats){
-    }];
+        }defeats:^(NSError *defeats){
+        }];
+    }
 }
 
 /**
@@ -361,6 +365,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
     [SystemUserDict setValue:DataDict[@"roomid"] forKey:@"roomid"];
     [SystemUserDict setValue:DataDict[@"roomname"] forKey:@"roomname"];
     [SystemUserDict setValue:DataDict[@"username0"] forKey:@"username0"];
+    [SystemUserDict setValue:[NSString stringWithFormat:@"%@ %@",DataDict[@"facilityname2"],DataDict[@"floorno"]] forKey:@"facilityname2floorno"];
     [SystemUserDict removeObjectForKey:@"systemactioninfo"];
     if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
         [self performSegueWithIdentifier:@"AllChartVCPush" sender:self];

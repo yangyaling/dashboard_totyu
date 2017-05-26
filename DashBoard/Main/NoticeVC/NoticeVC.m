@@ -45,30 +45,35 @@ static NSString * const reuseIdentifier = @"NoticeCollectionCell";
     [MBProgressHUD showMessage:@"後ほど..." toView:self.view];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
 //    NSString *registdate = SystemUserDict[@"newnoticetime"];
+    NSString *facilitycd = SystemUserDict[@"mainvcfacilitycd"];
+    NSString *floorno = SystemUserDict[@"mainvcfloorno"];
+    NSString *hostcd = SystemUserDict[@"hostcd"];
     NSString *staffid = SystemUserDict[@"staffid"];
-    [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:NSDictionaryOfVariableBindings(staffid) mjheader:nil superview:self.view success:^(id success){
-        NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
-        if ([tmpDic[@"code"] isEqualToString:@"200"]) {
-            self.NoticeArray = tmpDic[@"vznoticeinfo"];
-            if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count]){
-                NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
-                [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
-                if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
+    if (facilitycd && staffid && floorno && hostcd) {
+        [[SealAFNetworking NIT] PostWithUrl:ZwgetvznoticeinfoType parameters:NSDictionaryOfVariableBindings(facilitycd,floorno,hostcd,staffid) mjheader:nil superview:self.view success:^(id success){
+            NSDictionary *tmpDic = [LGFNullCheck CheckNSNullObject:success];
+            if ([tmpDic[@"code"] isEqualToString:@"200"]) {
+                self.NoticeArray = tmpDic[@"vznoticeinfo"];
+                if ([[NoDataLabel alloc] Show:@"すべてが正常で" SuperView:self.view DataBool:self.NoticeArray.count]){
+                    NSDictionary *newdatadict = [NSDictionary dictionaryWithDictionary:self.NoticeArray[0]];
+                    [SystemUserDict setValue:newdatadict[@"registdate"] forKey:@"newnoticetime"];
+                    if ([SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES]) {
+                        [_NoticeCollection reloadData];
+                        [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+                        NSDictionary *dict = self.NoticeArray[0];
+                        _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@\n%@",dict[@"content"],dict[@"registdate"]];
+                    }
+                } else {
                     [_NoticeCollection reloadData];
-                    [_NoticeCollection selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-                    NSDictionary *dict = self.NoticeArray[0];
-                    _NoticeDetailTextView.text = [NSString stringWithFormat:@"%@\n%@",dict[@"content"],dict[@"registdate"]];
                 }
             } else {
-                [_NoticeCollection reloadData];
+                NSLog(@"errors: %@",tmpDic[@"errors"]);
+                [MBProgressHUD showError:@"system errors" toView:self.view];
+    //            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
             }
-        } else {
-            NSLog(@"errors: %@",tmpDic[@"errors"]);
-            [MBProgressHUD showError:@"system errors" toView:self.view];
-//            [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
-        }
-    }defeats:^(NSError *defeats){
-    }];
+        }defeats:^(NSError *defeats){
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
