@@ -21,6 +21,7 @@
 {
     NSInteger pageCount;
     NSInteger PageNumArrayNum;
+    BOOL FirstLoad;
 }
 @property (weak, nonatomic) IBOutlet UIPageControl *UserPC;
 @property (weak, nonatomic) IBOutlet AlertBar *AlertBarView;
@@ -35,6 +36,8 @@
 @property (nonatomic, strong) NSArray *CurrentAlertarrays;
 @property (nonatomic, strong) NSArray *PageNumArray;
 @property (nonatomic, strong) NSArray *PageTitleArray;
+@property (nonatomic, strong) NSMutableArray *UserAlertWindowArray;
+@property (nonatomic, strong) NSMutableArray *SensorAlertWindowArray;
 @end
 
 @implementation MainVC
@@ -74,13 +77,12 @@ static NSString * const reuseIdentifier = @"MainVCell";
         _PageTitleArray = @[@"大",@"中"];
     }
     PageNumArrayNum = 0;
+    FirstLoad = YES;
     [self SelectPageNum:_PageNumBtn];
-    [self LoadAlertData];
-    [self LoadNoticeCount];
 }
 
 -(void)DidBecomeActive {
-//    [self LoadBuildingInfoData];
+    //    [self LoadBuildingInfoData];
     _AlertBarView.AlertArray = _LoadAlertArray;
 }
 
@@ -95,7 +97,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
 }
 
 - (IBAction)SelectPageNum:(UIButton *)sender {
-
+    
     [_PageNumBtn setTitle:_PageTitleArray[PageNumArrayNum] forState:UIControlStateNormal];
     [_PageNumBtn setBackgroundImage:[UIImage imageNamed:_PageTitleArray[PageNumArrayNum]] forState:UIControlStateNormal];
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
@@ -139,6 +141,11 @@ static NSString * const reuseIdentifier = @"MainVCell";
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
     _NowTime.text = [NSDate NeedDateFormat:[NSString stringWithFormat:@"yyyy年MM月dd日 %@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:[NSDate date]];
     [self LoadCustListData];
+    if (FirstLoad) {
+        [self LoadAlertData];
+        [self LoadNoticeCount];
+    }
+    FirstLoad = NO;
 }
 /**
  获取user数据
@@ -161,13 +168,13 @@ static NSString * const reuseIdentifier = @"MainVCell";
             } else {
                 NSLog(@"errors: %@",tmpDic[@"errors"]);
                 [MBProgressHUD showError:@"system errors" toView:self.view];
-//                [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
+                //                [[NoDataLabel alloc] Show:@"system errors" SuperView:self.view DataBool:0];
             }
         }defeats:^(NSError *defeats){
             NSLog(@"errors:%@",[defeats localizedDescription]);
-//            [CATransaction setCompletionBlock:^{
-//                [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
-//            }];
+            //            [CATransaction setCompletionBlock:^{
+            //                [[TimeOutReloadButton alloc]Show:self SuperView:_UserListCV];
+            //            }];
         }];
     }
 }
@@ -188,13 +195,43 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 _CurrentAlertarrays = _LoadAlertArray.copy;
                 _AlertBarView.AlertArray = _LoadAlertArray;
                 NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
-                if (_LoadAlertArray.count > 0) {
-                    NSDictionary *alertdict = _LoadAlertArray[_LoadAlertArray.count - 1];
-                    [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+                
+                if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
+                    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                    [center removeAllDeliveredNotifications];
+                    [center removeAllPendingNotificationRequests];
+                } else {
+                    [[UIApplication sharedApplication] cancelAllLocalNotifications];
                 }
+                
+                for (UIAlertController *obj in self.UserAlertWindowArray) {
+                    [obj dismissViewControllerAnimated:NO completion:nil];
+                }
+                [self.UserAlertWindowArray removeAllObjects];
+                
+                for (NSDictionary *alertdict in _LoadAlertArray) {
+                    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+                        [self PostAlert:alertdict alerttype:@"alertinfo"];
+                    }
+                    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+                        [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
+                    }
+                }
+                
+                for (UIAlertController *obj in self.SensorAlertWindowArray) {
+                    [obj dismissViewControllerAnimated:NO completion:nil];
+                }
+                [self.SensorAlertWindowArray removeAllObjects];
+                
                 for (NSDictionary *historydict in LoadHistoryArray) {
-                    [self PostAlertNotice:historydict alerttype:@"historyinfo"];
+                    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+                        [self PostAlert:historydict alerttype:@"historyinfo"];
+                    }
+                    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground) {
+                        [self PostAlertNotice:historydict alerttype:@"historyinfo"];
+                    }
                 }
+                
                 [SystemUserDict setValue:[NSString stringWithFormat:@"%ld",LoadHistoryArray.count] forKey:@"historyinfocount"];
                 [SystemUserDict writeToFile:SYSTEM_USER_DICT atomically:YES];
                 [_UserListCV reloadData];
@@ -206,9 +243,21 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }
 }
 
--(void)PostAlertNotice:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
-    //播放系统声音
-    //                AudioServicesPlaySystemSound(1005);
+-(NSMutableArray *)UserAlertWindowArray{
+    if (!_UserAlertWindowArray) {
+        _UserAlertWindowArray = [NSMutableArray array];
+    }
+    return _UserAlertWindowArray;
+}
+
+-(NSMutableArray *)SensorAlertWindowArray{
+    if (!_SensorAlertWindowArray) {
+        _SensorAlertWindowArray = [NSMutableArray array];
+    }
+    return _SensorAlertWindowArray;
+}
+
+-(void)PostAlert:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
     NSDate *registdate;
@@ -223,7 +272,46 @@ static NSString * const reuseIdentifier = @"MainVCell";
         title = [NSString stringWithFormat:@"%@",[NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate]];
         body = [NSString stringWithFormat:@"%@ %@\nセンサーの設置情報が更新されました\n%@\n%@ %@",AlertDict[@"roomname"],AlertDict[@"username0"],[SystemUserDict[@"systemusertype"] isEqualToString:@"1"] ? @"【可視化設定情報を確認してください】" : @"【可視化設定情報を現在確認しています】",AlertDict[@"userid1"],AlertDict[@"username1"]];
     }
-    NSString *Identifier = [NSString stringWithFormat:@"%@%@%@",AlertDict[@"roomname"],AlertDict[@"username0"],alerttype];
+    
+    UIAlertController *Alert = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
+    [Alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [Alert dismissViewControllerAnimated:NO completion:nil];
+    }]];
+    UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    alertWindow.rootViewController = [UIViewController new];
+    [alertWindow makeKeyAndVisible];
+    [alertWindow.rootViewController presentViewController:Alert animated:NO completion:nil];
+    
+    if ([alerttype isEqualToString:@"alertinfo"]) {
+        [self.UserAlertWindowArray addObject:Alert];
+    } else {
+        [self.SensorAlertWindowArray addObject:Alert];
+    }
+    
+}
+
+-(void)PostAlertNotice:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
+    
+    //播放系统声音
+    //                AudioServicesPlaySystemSound(1005);
+    NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
+    BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
+    NSDate *registdate;
+    NSString *title;
+    NSString *subtitle;
+    NSString *body;
+    if ([alerttype isEqualToString:@"alertinfo"]) {
+        registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm:ss" ReturnType:returndate date:AlertDict[@"registdate"]];
+        title = [NSDate NeedDateFormat:@"YYYY年MM月dd日" ReturnType:returnstring date:registdate];
+        subtitle = [NSDate NeedDateFormat:[NSString stringWithFormat:@"%@%@:mm:ss",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate];
+        body = [NSString stringWithFormat:@"%@ %@\n異常検知ありました\n%@ %@",AlertDict[@"roomname"],AlertDict[@"username0"],AlertDict[@"userid1"],AlertDict[@"username1"]];
+    } else {
+        registdate = [NSDate NeedDateFormat:@"YYYY-MM-dd HH:mm" ReturnType:returndate date:AlertDict[@"registdate"]];
+        title = [NSDate NeedDateFormat:[NSString stringWithFormat:@"YYYY年MM月dd日 \n%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate];
+        subtitle = [NSDate NeedDateFormat:[NSString stringWithFormat:@"%@%@:mm",hasAMPM ? @"aa " : @"", hasAMPM ? @"hh" : @"HH"] ReturnType:returnstring date:registdate];
+        body = [NSString stringWithFormat:@"%@ %@\nセンサーの設置情報が更新されました\n%@\n%@ %@",AlertDict[@"roomname"],AlertDict[@"username0"],[SystemUserDict[@"systemusertype"] isEqualToString:@"1"] ? @"【可視化設定情報を確認してください】" : @"【可視化設定情報を現在確認しています】",AlertDict[@"userid1"],AlertDict[@"username1"]];
+    }
+    NSString *Identifier = [NSString stringWithFormat:@"%@%@%@%@",title,subtitle,body,alerttype];
     if(SYSREM_VERSION(10.0)){
         //创建通知
         UNTimeIntervalNotificationTrigger *trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:2 repeats:NO];
@@ -232,12 +320,12 @@ static NSString * const reuseIdentifier = @"MainVCell";
         //内容
         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
         content.title = title;
-        content.subtitle = @"";
+        content.subtitle = subtitle;
         content.body = body;
         content.badge = @1;
         content.categoryIdentifier = Identifier;
         content.sound = [UNNotificationSound defaultSound];
-        content.userInfo = @{@"alerttype" : alerttype};
+        //content.userInfo = @{@"alerttype" : alerttype ,@"loadalertarray" : _LoadAlertArray};
         NSString *requestIdentifier = Identifier;
         UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier
                                                                               content:content
@@ -334,12 +422,12 @@ static NSString * const reuseIdentifier = @"MainVCell";
  警报一览
  */
 - (IBAction)AllAlert:(id)sender {
-
+    
 }
 /**
  可视化设定
  */
-- (IBAction)VisualSetting:(id)sender { 
+- (IBAction)VisualSetting:(id)sender {
     [self performSegueWithIdentifier:@"DBVisualSettingPush" sender:self];
 }
 /**
@@ -375,7 +463,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
  **************** segue跳转 *****************
  */
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-
+    
 }
 
 #pragma mark - 循环调用
@@ -454,14 +542,14 @@ static NSString * const reuseIdentifier = @"MainVCell";
         [cell.alert removeFromSuperview];
         NSDictionary *DataDict = self.UserLisrArray[indexPath.item];
         [cell.UserImage sd_setImageWithURL:[NSURL URLWithString:DataDict[@"picpath"]]
-                  placeholderImage:[UIImage imageNamed:@"placeholderImage"]
-                           options:SDWebImageRetryFailed
-                          progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                              float showProgress = (float)receivedSize/(float)expectedSize;
-                              cell.UserImage.alpha = showProgress;
-                          } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                              cell.UserImage.alpha = 1.0;
-                          }];
+                          placeholderImage:[UIImage imageNamed:@"placeholderImage"]
+                                   options:SDWebImageRetryFailed
+                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                      float showProgress = (float)receivedSize/(float)expectedSize;
+                                      cell.UserImage.alpha = showProgress;
+                                  } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      cell.UserImage.alpha = 1.0;
+                                  }];
         cell.RoomName.text = DataDict[@"roomid"];
         cell.UserName.text = DataDict[@"username0"];
         cell.UserSex.text = DataDict[@"usersex"];
@@ -477,7 +565,7 @@ static NSString * const reuseIdentifier = @"MainVCell";
         }
         if (_CurrentAlertarrays.count > 0) {
             cell.alertArray = _CurrentAlertarrays.copy;
-            cell.alerttype = DataDict[@"roomid"];
+            cell.alerttype = [NSString stringWithFormat:@"%@%@%@",DataDict[@"facilityname2"],DataDict[@"floorno"],DataDict[@"roomid"]];
         }
         return cell;
     }

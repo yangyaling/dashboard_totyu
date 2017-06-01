@@ -21,32 +21,6 @@
 @implementation AppDelegate
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    
-    NSLog(@"%@ %@",notification.userInfo[@"alerttype"],notification.alertBody);
-    if ([notification.userInfo[@"alerttype"]isEqualToString:@"alertinfo"]) {
-        [CATransaction setCompletionBlock:^{
-            
-            //弹出alert框之前先dismiss
-            [_UserAlert dismissViewControllerAnimated:YES completion:nil];    //在KeyWindow上弹出alert框(每个页面都能看到)
-            _UserAlert = [UIAlertController alertControllerWithTitle:notification.alertTitle message:notification.alertBody preferredStyle:UIAlertControllerStyleAlert];
-            [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [_UserAlert dismissViewControllerAnimated:YES completion:nil];
-            }]];
-            [LGFKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
-        }];
-    } else {
-        [CATransaction setCompletionBlock:^{
-            _VisualSetAlert = [UIAlertController alertControllerWithTitle:notification.alertTitle message:notification.alertBody preferredStyle:UIAlertControllerStyleAlert];
-            [_VisualSetAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [_VisualSetAlert dismissViewControllerAnimated:YES completion:nil];
-            }]];
-            UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-            alertWindow.rootViewController = [UIViewController new];
-            alertWindow.windowLevel = UIWindowLevelAlert + 1;
-            [alertWindow makeKeyAndVisible];
-            [alertWindow.rootViewController presentViewController:_VisualSetAlert animated:YES completion:nil];
-        }];
-    }
 }
 
 //当通过点击推送进入或者回到App的时候触发
@@ -56,32 +30,6 @@
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler{
-
-    NSLog(@"%@ %@",notification.request.content.userInfo[@"alerttype"],notification.request.content.body);
-    if ([notification.request.content.userInfo[@"alerttype"]isEqualToString:@"alertinfo"]) {
-        [CATransaction setCompletionBlock:^{
-        
-            //弹出alert框之前先dismiss
-            [_UserAlert dismissViewControllerAnimated:YES completion:nil];    //在KeyWindow上弹出alert框(每个页面都能看到)
-            _UserAlert = [UIAlertController alertControllerWithTitle:notification.request.content.title message:notification.request.content.body preferredStyle:UIAlertControllerStyleAlert];
-            [_UserAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [_UserAlert dismissViewControllerAnimated:YES completion:nil];
-            }]];
-            [LGFKeyWindow.rootViewController presentViewController:_UserAlert animated:YES completion:nil];
-        }];
-    } else {
-        [CATransaction setCompletionBlock:^{
-            _VisualSetAlert = [UIAlertController alertControllerWithTitle:notification.request.content.title message:notification.request.content.body preferredStyle:UIAlertControllerStyleAlert];
-            [_VisualSetAlert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-                [_VisualSetAlert dismissViewControllerAnimated:YES completion:nil];
-            }]];
-            UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-            alertWindow.rootViewController = [UIViewController new];
-            alertWindow.windowLevel = UIWindowLevelAlert + 1;
-            [alertWindow makeKeyAndVisible];
-            [alertWindow.rootViewController presentViewController:_VisualSetAlert animated:YES completion:nil];
-        }];
-    }
 }
 
 -(void)ShowLogin{
@@ -98,7 +46,7 @@
     
     //注册通知
     [self NotificationRegister:application];
-
+    
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     [[UIScreen mainScreen] setBrightness:1.0f];
     [[UINavigationBar appearance] setTintColor:SystemColor(1.0)];
@@ -185,7 +133,7 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-     [_player stop];
+    [_player stop];
     [application setApplicationIconBadgeNumber:0];
 }
 

@@ -14,7 +14,7 @@
     
     _alerttype = alerttype;
     for (NSDictionary *dic in _alertArray) {
-        if ([dic[@"roomid"] isEqualToString:alerttype]) {
+        if ([[NSString stringWithFormat:@"%@%@%@",dic[@"facilityname2"],dic[@"floorno"],dic[@"roomid"]] isEqualToString:alerttype]) {
             [_alert removeFromSuperview];
             _alert = [[AlertLabel alloc]initWithFrame:CGRectMake(self.width-self.width/6, 0, self.width/6, self.width/6)];
             _alert.delegate = self;
@@ -25,9 +25,9 @@
 }
 
 -(void)AlertLabelClick{
-//    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:[NSString stringWithFormat:@"%@はクリックしました，このページは展示されていません",_RoomName.text] preferredStyle:UIAlertControllerStyleAlert];
-//    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-//    }]];
-//    [LGFKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
+    //    UIAlertController *testalert = [UIAlertController alertControllerWithTitle:@"TestAlert" message:[NSString stringWithFormat:@"%@はクリックしました，このページは展示されていません",_RoomName.text] preferredStyle:UIAlertControllerStyleAlert];
+    //    [testalert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    //    }]];
+    //    [LGFKeyWindow.rootViewController presentViewController:testalert animated:YES completion:nil];
 }
 @end
