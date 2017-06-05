@@ -46,10 +46,10 @@
 #pragma mark 键盘消失
 -(void)keyboardWillHide:(NSNotification *)note{
     self.contentInset = UIEdgeInsetsZero;
+    [self.tapGesture removeFromSuperview];
 }
 
 - (void)selecttap{
-    [self.tapGesture removeFromSuperview];
     [self endEditing:YES];
 }
 
