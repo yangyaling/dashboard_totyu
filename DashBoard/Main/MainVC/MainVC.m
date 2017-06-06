@@ -6,7 +6,7 @@
 //  Copyright © 2017年 NIT. All rights reserved.
 //
 
-#define alertpushnum 20
+#define alertpushnum 60
 
 #import "MainVC.h"
 #import "AlertBar.h"
