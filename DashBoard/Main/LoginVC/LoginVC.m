@@ -23,9 +23,9 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     _passWord.text = @"";
-    _userId.text = @"sw00001";
-    _passWord.text = @"P@ssw0rd";
-    _hostcode.text = @"host01";
+    _userId.text = @"";
+    _passWord.text = @"";
+    _hostcode.text = @"";
 }
 
 - (void)didReceiveMemoryWarning {
