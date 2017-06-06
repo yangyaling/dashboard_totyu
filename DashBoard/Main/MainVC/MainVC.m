@@ -194,11 +194,15 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 _AlertBarView.AlertArray = _LoadAlertArray;
                 NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
                 
-                for (int i = 1; i < [UIApplication sharedApplication].windows.count; i++) {
-                    __block UIWindow *obj = [UIApplication sharedApplication].windows[i];
-                    MAIN(obj.hidden = YES;
-                         [obj resignKeyWindow];
-                         obj = nil;);
+                for (int i = 0; i < [UIApplication sharedApplication].windows.count; i++) {
+                    UIWindow *obj = [UIApplication sharedApplication].windows[i];
+                    if (i == 0) {
+                        [obj becomeKeyWindow];
+                    } else {
+                        obj.hidden = YES;
+                        [obj resignKeyWindow];
+                        obj = nil;
+                    }
                 }
                 
                 NSLog(@"%lu",(unsigned long)[UIApplication sharedApplication].windows.count)
