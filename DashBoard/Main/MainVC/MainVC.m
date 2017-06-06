@@ -6,7 +6,7 @@
 //  Copyright © 2017年 NIT. All rights reserved.
 //
 
-#define alertpushnum 60
+#define alertpushnum 20
 
 #import "MainVC.h"
 #import "AlertBar.h"
@@ -36,8 +36,6 @@
 @property (nonatomic, strong) NSArray *CurrentAlertarrays;
 @property (nonatomic, strong) NSArray *PageNumArray;
 @property (nonatomic, strong) NSArray *PageTitleArray;
-@property (nonatomic, strong) NSMutableArray *UserAlertWindowArray;
-@property (nonatomic, strong) NSMutableArray *SensorAlertWindowArray;
 @end
 
 @implementation MainVC
@@ -196,6 +194,16 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 _AlertBarView.AlertArray = _LoadAlertArray;
                 NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
                 
+                for (int i = 1; i < [UIApplication sharedApplication].windows.count; i++) {
+                    __block UIWindow *obj = [UIApplication sharedApplication].windows[i];
+                    MAIN(obj.hidden = YES;
+                         [obj resignKeyWindow];
+                         obj = nil;);
+                }
+                
+                NSLog(@"%lu",(unsigned long)[UIApplication sharedApplication].windows.count)
+                ;
+
                 if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
                     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
                     [center removeAllDeliveredNotifications];
@@ -203,11 +211,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 } else {
                     [[UIApplication sharedApplication] cancelAllLocalNotifications];
                 }
-                
-                for (UIAlertController *obj in self.UserAlertWindowArray) {
-                    [obj dismissViewControllerAnimated:NO completion:nil];
-                }
-                [self.UserAlertWindowArray removeAllObjects];
                 
                 for (NSDictionary *alertdict in _LoadAlertArray) {
                     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
@@ -217,11 +220,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
                         [self PostAlertNotice:alertdict alerttype:@"alertinfo"];
                     }
                 }
-                
-                for (UIAlertController *obj in self.SensorAlertWindowArray) {
-                    [obj dismissViewControllerAnimated:NO completion:nil];
-                }
-                [self.SensorAlertWindowArray removeAllObjects];
                 
                 for (NSDictionary *historydict in LoadHistoryArray) {
                     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
@@ -243,20 +241,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
     }
 }
 
--(NSMutableArray *)UserAlertWindowArray{
-    if (!_UserAlertWindowArray) {
-        _UserAlertWindowArray = [NSMutableArray array];
-    }
-    return _UserAlertWindowArray;
-}
-
--(NSMutableArray *)SensorAlertWindowArray{
-    if (!_SensorAlertWindowArray) {
-        _SensorAlertWindowArray = [NSMutableArray array];
-    }
-    return _SensorAlertWindowArray;
-}
-
 -(void)PostAlert:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
@@ -275,25 +259,20 @@ static NSString * const reuseIdentifier = @"MainVCell";
     
     UIAlertController *Alert = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
     [Alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
-        [Alert dismissViewControllerAnimated:NO completion:nil];
     }]];
+    
     UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     alertWindow.rootViewController = [UIViewController new];
+    alertWindow.windowLevel = UIWindowLevelAlert;
     [alertWindow makeKeyAndVisible];
     [alertWindow.rootViewController presentViewController:Alert animated:NO completion:nil];
-    
-    if ([alerttype isEqualToString:@"alertinfo"]) {
-        [self.UserAlertWindowArray addObject:Alert];
-    } else {
-        [self.SensorAlertWindowArray addObject:Alert];
-    }
     
 }
 
 -(void)PostAlertNotice:(NSDictionary*)AlertDict alerttype:(NSString*)alerttype{
     
     //播放系统声音
-    //                AudioServicesPlaySystemSound(1005);
+    //AudioServicesPlaySystemSound(1005);
     NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
     BOOL hasAMPM = [[NSDateFormatter dateFormatFromTemplate:@"j" options:0 locale:[NSLocale currentLocale]] rangeOfString:@"a"].location != NSNotFound;
     NSDate *registdate;
