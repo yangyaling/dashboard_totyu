@@ -50,7 +50,9 @@
         if ([tmpDic[@"code"] isEqualToString:@"200"]) {
             NSDictionary *Dict = [NSDictionary dictionaryWithDictionary:[tmpDic valueForKey:@"lrlist"]];
             _LrList  = [NSMutableArray arrayWithArray:Dict[[[Dict allKeys] firstObject]][1]];
-            [self ReloadData];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_LrList.count]) {
+                [self ReloadData];
+            }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [MBProgressHUD showError:@"system errors" toView:_ChartCV];
@@ -66,7 +68,7 @@
 
 -(void)ReloadData{
     _DataArray = [NSMutableArray arrayWithArray:_LrList];
-    if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+    if (_DataArray.count > 0){
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray: [SystemUserDict objectForKey:@"systemactioninfo"]];
         NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];

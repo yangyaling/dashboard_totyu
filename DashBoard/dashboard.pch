@@ -124,7 +124,7 @@
 #define NITScreenH [UIScreen mainScreen].bounds.size.height
 
 //当前视图
-#define LGFLastView [UIApplication sharedApplication].windows.lastObject
+#define LGFLastView [UIApplication sharedApplication].windows.firstObject
 //keyWindow
 #define LGFKeyWindow [UIApplication sharedApplication].keyWindow
 

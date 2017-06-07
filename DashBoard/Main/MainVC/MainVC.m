@@ -193,21 +193,6 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 _CurrentAlertarrays = _LoadAlertArray.copy;
                 _AlertBarView.AlertArray = _LoadAlertArray;
                 NSArray *LoadHistoryArray = [NSArray arrayWithArray:tmpDic[@"historyinfo"]];
-                
-                for (int i = 0; i < [UIApplication sharedApplication].windows.count; i++) {
-                    UIWindow *obj = [UIApplication sharedApplication].windows[i];
-                    if (i == 0) {
-                        [obj becomeKeyWindow];
-                    } else {
-                        obj.hidden = YES;
-                        [obj resignKeyWindow];
-                        obj = nil;
-                    }
-                }
-                
-                NSLog(@"%lu",(unsigned long)[UIApplication sharedApplication].windows.count)
-                ;
-
                 if ([[UIDevice currentDevice].systemVersion floatValue] >= 10.0) {
                     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
                     [center removeAllDeliveredNotifications];
@@ -215,6 +200,14 @@ static NSString * const reuseIdentifier = @"MainVCell";
                 } else {
                     [[UIApplication sharedApplication] cancelAllLocalNotifications];
                 }
+                
+                [[UIApplication sharedApplication].windows enumerateObjectsUsingBlock:^(__kindof UIWindow * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if (idx > 0) {
+                        [obj.rootViewController dismissViewControllerAnimated:NO completion:nil];
+                        [obj resignKeyWindow];
+                        obj = nil;
+                    }
+                }];
                 
                 for (NSDictionary *alertdict in _LoadAlertArray) {
                     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {

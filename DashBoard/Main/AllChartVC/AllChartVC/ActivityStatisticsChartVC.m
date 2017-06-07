@@ -53,7 +53,9 @@
             NSArray *datesArray = [tmpDic valueForKey:@"dates"];
             _ChartNum.YValuesArray = [NSArray arrayWithArray:datesArray];
             _LrsumList = [NSMutableArray arrayWithArray:[tmpDic valueForKey:@"lrsumlist"]];
-            [self ReloadData];
+            if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_LrsumList.count]){
+                [self ReloadData];
+            }
         } else {
             NSLog(@"errors: %@",tmpDic[@"errors"]);
             [MBProgressHUD showError:@"system errors" toView:_ChartCV];
@@ -69,7 +71,7 @@
 
 -(void)ReloadData{
     _DataArray = [NSMutableArray arrayWithArray:_LrsumList];
-    if ([[NoDataLabel alloc] Show:@"データがない" SuperView:_ChartCV DataBool:_DataArray.count]){
+    if (_DataArray.count > 0){
         NSMutableDictionary *SystemUserDict = [NSMutableDictionary dictionaryWithContentsOfFile:SYSTEM_USER_DICT];
         NSMutableArray *systemactioninfo = [NSMutableArray arrayWithArray:[SystemUserDict objectForKey:@"systemactioninfo"]];
         NSMutableArray *DataArrayCopy = [_DataArray mutableCopy];
